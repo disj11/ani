@@ -5,14 +5,14 @@ export enum Season {
   WINTER = "WINTER",
 }
 
-export interface TrendSearchParams {
+export interface TrendingSearchParams {
   season: Season;
   seasonYear: number;
   nextSeason: Season;
   nextYear: number;
 }
 
-export interface TrendResponse {
+export interface TrendingResponse {
   trending: { media: Array<Media> };
   season: { media: Array<Media> };
   nextSeason: { media: Array<Media> };

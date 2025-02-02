@@ -1,4 +1,4 @@
-import { Season } from "../types/home.type";
+import { Season } from "../types/trending.type";
 
 export const getCurrentSeason = () => {
   const currentMonth = new Date().getMonth() + 1;

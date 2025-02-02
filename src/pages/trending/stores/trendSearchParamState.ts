@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { TrendSearchParams } from "../types/home.type";
+import { TrendingSearchParams } from "../types/trending.type";
 import {
   getCurrentSeason,
   getCurrentSeasonYear,
@@ -7,20 +7,20 @@ import {
   getNextSeasonYear,
 } from "../utils/season";
 
-interface TrendSearchParamState {
-  searchParams: TrendSearchParams;
-  setSearchParams: (params: TrendSearchParams) => void;
+interface TrendingSearchParamState {
+  searchParams: TrendingSearchParams;
+  setSearchParams: (params: TrendingSearchParams) => void;
   initializeSearchParams: () => void;
 }
 
-const initialState: TrendSearchParams = {
+const initialState: TrendingSearchParams = {
   season: getCurrentSeason(),
   seasonYear: getCurrentSeasonYear(),
   nextSeason: getNextSeason(),
   nextYear: getNextSeasonYear(),
 };
 
-const useTrendSearchParamState = create<TrendSearchParamState>((set) => ({
+const useTrendSearchParamState = create<TrendingSearchParamState>((set) => ({
   searchParams: initialState,
   setSearchParams: (params) => set({ searchParams: params }),
   initializeSearchParams: () => set({ searchParams: initialState }),
