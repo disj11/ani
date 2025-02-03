@@ -13,17 +13,17 @@ export interface TrendingSearchParams {
 }
 
 export interface TrendingResponse {
-  trending: { media: Array<Media> };
-  season: { media: Array<Media> };
-  nextSeason: { media: Array<Media> };
-  popular: { media: Array<Media> };
-  top: { media: Array<Media> };
+  trending: { media: Media[] };
+  season: { media: Media[] };
+  nextSeason: { media: Media[] };
+  popular: { media: Media[] };
+  top: { media: Media[] };
 }
 
 export interface Media {
   averageScore?: number;
   coverImage: CoverImage;
-  genres: Array<string>;
+  genres: string[];
   id: number;
   title: Title;
   description?: string;
