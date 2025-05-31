@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { ChangeEvent, useState } from "react";
 import {
   Box,
   Typography,
@@ -10,13 +10,20 @@ import {
   CircularProgress,
   Pagination,
   Paper,
-  Chip
-} from '@mui/material';
-import { useQuery, gql } from '@apollo/client';
-import AnimationCard from '../trending/components/AnimationCard/AnimationCard';
+  Chip,
+  SelectChangeEvent,
+} from "@mui/material";
+import { useQuery, gql } from "@apollo/client";
+import AnimationCard from "../trending/components/AnimationCard/AnimationCard";
 
 const GET_NEW_RELEASES = gql`
-  query GetNewReleases($page: Int, $perPage: Int, $season: MediaSeason, $seasonYear: Int, $isAdult: Boolean = false) {
+  query GetNewReleases(
+    $page: Int
+    $perPage: Int
+    $season: MediaSeason
+    $seasonYear: Int
+    $isAdult: Boolean = false
+  ) {
     Page(page: $page, perPage: $perPage) {
       pageInfo {
         total
@@ -58,15 +65,15 @@ const GET_NEW_RELEASES = gql`
 `;
 
 const seasons = [
-  { value: 'WINTER', label: '겨울' },
-  { value: 'SPRING', label: '봄' },
-  { value: 'SUMMER', label: '여름' },
-  { value: 'FALL', label: '가을' }
+  { value: "WINTER", label: "겨울" },
+  { value: "SPRING", label: "봄" },
+  { value: "SUMMER", label: "여름" },
+  { value: "FALL", label: "가을" },
 ];
 
 const NewReleasesPage: React.FC = () => {
   const [page, setPage] = useState(1);
-  const [selectedSeason, setSelectedSeason] = useState('');
+  const [selectedSeason, setSelectedSeason] = useState("");
   const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
 
   const { data, loading, error } = useQuery(GET_NEW_RELEASES, {
@@ -76,25 +83,28 @@ const NewReleasesPage: React.FC = () => {
       season: selectedSeason || undefined,
       seasonYear: selectedYear,
     },
-    fetchPolicy: 'cache-and-network'
+    fetchPolicy: "cache-and-network",
   });
 
-  const handleSeasonChange = (event: React.ChangeEvent<{ value: unknown }>) => {
+  const handleSeasonChange = (event: SelectChangeEvent<string>) => {
     setSelectedSeason(event.target.value as string);
     setPage(1);
   };
 
-  const handleYearChange = (event: React.ChangeEvent<{ value: unknown }>) => {
+  const handleYearChange = (event: SelectChangeEvent<number>) => {
     setSelectedYear(event.target.value as number);
     setPage(1);
   };
 
-  const handlePageChange = (_event: React.ChangeEvent<unknown>, value: number) => {
-    setPage(value);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+  const handlePageChange = (_event: ChangeEvent<unknown>, page: number) => {
+    setPage(page);
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  const years = Array.from({ length: 5 }, (_, i) => new Date().getFullYear() - i);
+  const years = Array.from(
+    { length: 5 },
+    (_, i) => new Date().getFullYear() - i,
+  );
 
   return (
     <Box>
@@ -103,7 +113,14 @@ const NewReleasesPage: React.FC = () => {
       </Typography>
 
       <Paper sx={{ p: 2, mb: 3 }}>
-        <Box sx={{ display: 'flex', gap: 2, alignItems: 'center', flexWrap: 'wrap' }}>
+        <Box
+          sx={{
+            display: "flex",
+            gap: 2,
+            alignItems: "center",
+            flexWrap: "wrap",
+          }}
+        >
           <FormControl size="small" sx={{ minWidth: 120 }}>
             <InputLabel>연도</InputLabel>
             <Select
@@ -135,9 +152,9 @@ const NewReleasesPage: React.FC = () => {
             </Select>
           </FormControl>
 
-          <Chip 
-            label="방영중만 표시" 
-            color="primary" 
+          <Chip
+            label="방영중만 표시"
+            color="primary"
             variant="outlined"
             size="small"
           />
@@ -160,27 +177,33 @@ const NewReleasesPage: React.FC = () => {
         <>
           <Box mb={2}>
             <Typography variant="h6">
-              {selectedYear}년 {selectedSeason ? seasons.find(s => s.value === selectedSeason)?.label : '전체'} 신작: {data.Page.pageInfo.total}개
+              {selectedYear}년{" "}
+              {selectedSeason
+                ? seasons.find((s) => s.value === selectedSeason)?.label
+                : "전체"}{" "}
+              신작: {data.Page.pageInfo.total}개
             </Typography>
           </Box>
 
           <Grid container spacing={3}>
-            {data.Page.media.map((anime: {
-              id: number;
-              title: { userPreferred: string };
-              coverImage: { large: string };
-              averageScore?: number;
-              genres: string[];
-              description?: string;
-              bannerImage?: string;
-              status: string;
-              episodes?: number;
-              format: string;
-            }) => (
-              <Grid item xs={12} key={anime.id}>
-                <AnimationCard media={anime} />
-              </Grid>
-            ))}
+            {data.Page.media.map(
+              (anime: {
+                id: number;
+                title: { userPreferred: string };
+                coverImage: { large: string };
+                averageScore?: number;
+                genres: string[];
+                description?: string;
+                bannerImage?: string;
+                status: string;
+                episodes?: number;
+                format: string;
+              }) => (
+                <Grid item xs={12} key={anime.id}>
+                  <AnimationCard media={anime} />
+                </Grid>
+              ),
+            )}
           </Grid>
 
           {data.Page.pageInfo.lastPage > 1 && (

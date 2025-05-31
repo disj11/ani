@@ -738,7 +738,7 @@ const SearchPage: React.FC = () => {
                       episodes?: number;
                       format: string;
                     },
-                    index,
+                    index: number,
                   ) => (
                     <Grid item xs={12} key={anime.id}>
                       <Fade in timeout={300 + index * 50}>

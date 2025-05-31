@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 import {
   Box,
   Typography,
@@ -11,14 +11,21 @@ import {
   Pagination,
   Tabs,
   Tab,
-  Paper
-} from '@mui/material';
-import { useQuery, gql } from '@apollo/client';
-import { useLocation } from 'react-router';
-import AnimationCard from '../trending/components/AnimationCard/AnimationCard';
+  Paper,
+  SelectChangeEvent,
+} from "@mui/material";
+import { useQuery, gql } from "@apollo/client";
+import { useLocation } from "react-router";
+import AnimationCard from "../trending/components/AnimationCard/AnimationCard";
 
 const GET_POPULAR_ANIME = gql`
-  query GetPopularAnime($sort: [MediaSort], $page: Int, $perPage: Int, $year: Int, $isAdult: Boolean = false) {
+  query GetPopularAnime(
+    $sort: [MediaSort]
+    $page: Int
+    $perPage: Int
+    $year: Int
+    $isAdult: Boolean = false
+  ) {
     Page(page: $page, perPage: $perPage) {
       pageInfo {
         total
@@ -71,18 +78,18 @@ function TabPanel(props: TabPanelProps) {
 const PopularPage: React.FC = () => {
   const location = useLocation();
   const [tabValue, setTabValue] = useState(0);
-  const [selectedYear, setSelectedYear] = useState<number | ''>('');
+  const [selectedYear, setSelectedYear] = useState<number | "">("");
   const [page, setPage] = useState(1);
 
   const sortOptions = [
-    'POPULARITY_DESC',
-    'SCORE_DESC',
-    'TRENDING_DESC',
-    'FAVOURITES_DESC'
+    "POPULARITY_DESC",
+    "SCORE_DESC",
+    "TRENDING_DESC",
+    "FAVOURITES_DESC",
   ];
 
   useEffect(() => {
-    if (location.pathname === '/top-rated') {
+    if (location.pathname === "/top-rated") {
       setTabValue(1); // Set to score tab for top-rated
     }
   }, [location.pathname]);
@@ -94,7 +101,7 @@ const PopularPage: React.FC = () => {
       perPage: 20,
       year: selectedYear || undefined,
     },
-    fetchPolicy: 'cache-and-network'
+    fetchPolicy: "cache-and-network",
   });
 
   const handleTabChange = (_event: React.SyntheticEvent, newValue: number) => {
@@ -102,21 +109,27 @@ const PopularPage: React.FC = () => {
     setPage(1);
   };
 
-  const handleYearChange = (event: React.ChangeEvent<{ value: unknown }>) => {
+  const handleYearChange = (event: SelectChangeEvent<number>) => {
     setSelectedYear(event.target.value as number);
     setPage(1);
   };
 
-  const handlePageChange = (_event: React.ChangeEvent<unknown>, value: number) => {
+  const handlePageChange = (
+    _event: React.ChangeEvent<unknown>,
+    value: number,
+  ) => {
     setPage(value);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  const years = Array.from({ length: 30 }, (_, i) => new Date().getFullYear() - i);
+  const years = Array.from(
+    { length: 30 },
+    (_, i) => new Date().getFullYear() - i,
+  );
 
   const getPageTitle = () => {
-    if (location.pathname === '/top-rated') return '높은 평점 순위';
-    return '인기 순위';
+    if (location.pathname === "/top-rated") return "높은 평점 순위";
+    return "인기 순위";
   };
 
   return (
@@ -126,7 +139,7 @@ const PopularPage: React.FC = () => {
       </Typography>
 
       <Paper sx={{ mb: 3 }}>
-        <Box sx={{ borderBottom: 1, borderColor: 'divider', px: 2 }}>
+        <Box sx={{ borderBottom: 1, borderColor: "divider", px: 2 }}>
           <Tabs value={tabValue} onChange={handleTabChange}>
             <Tab label="인기도" />
             <Tab label="평점" />
@@ -159,19 +172,19 @@ const PopularPage: React.FC = () => {
           인기도 순위 {selectedYear && `(${selectedYear}년)`}
         </Typography>
       </TabPanel>
-      
+
       <TabPanel value={tabValue} index={1}>
         <Typography variant="h6" gutterBottom>
           평점 순위 {selectedYear && `(${selectedYear}년)`}
         </Typography>
       </TabPanel>
-      
+
       <TabPanel value={tabValue} index={2}>
         <Typography variant="h6" gutterBottom>
           트렌딩 순위 {selectedYear && `(${selectedYear}년)`}
         </Typography>
       </TabPanel>
-      
+
       <TabPanel value={tabValue} index={3}>
         <Typography variant="h6" gutterBottom>
           즐겨찾기 순위 {selectedYear && `(${selectedYear}년)`}
@@ -193,34 +206,39 @@ const PopularPage: React.FC = () => {
       {data && (
         <>
           <Grid container spacing={3}>
-            {data.Page.media.map((anime: {
-              id: number;
-              title: { userPreferred: string };
-              coverImage: { large: string };
-              averageScore?: number;
-              genres: string[];
-              description?: string;
-              bannerImage?: string;
-              status: string;
-              episodes?: number;
-              format: string;
-            }, index: number) => (
-              <Grid item xs={12} key={anime.id}>
-                <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-                  <Typography 
-                    variant="h4" 
-                    color="primary" 
-                    fontWeight="bold"
-                    sx={{ minWidth: 60, textAlign: 'center' }}
-                  >
-                    #{(page - 1) * 20 + index + 1}
-                  </Typography>
-                  <Box sx={{ flex: 1 }}>
-                    <AnimationCard media={anime} />
+            {data.Page.media.map(
+              (
+                anime: {
+                  id: number;
+                  title: { userPreferred: string };
+                  coverImage: { large: string };
+                  averageScore?: number;
+                  genres: string[];
+                  description?: string;
+                  bannerImage?: string;
+                  status: string;
+                  episodes?: number;
+                  format: string;
+                },
+                index: number,
+              ) => (
+                <Grid item xs={12} key={anime.id}>
+                  <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
+                    <Typography
+                      variant="h4"
+                      color="primary"
+                      fontWeight="bold"
+                      sx={{ minWidth: 60, textAlign: "center" }}
+                    >
+                      #{(page - 1) * 20 + index + 1}
+                    </Typography>
+                    <Box sx={{ flex: 1 }}>
+                      <AnimationCard media={anime} />
+                    </Box>
                   </Box>
-                </Box>
-              </Grid>
-            ))}
+                </Grid>
+              ),
+            )}
           </Grid>
 
           {data.Page.pageInfo.lastPage > 1 && (
