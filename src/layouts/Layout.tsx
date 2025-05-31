@@ -415,10 +415,10 @@ export default function Layout() {
 
             {/* Year Filter */}
             <FormControl fullWidth size="small" sx={{ mt: 2 }}>
-              <InputLabel>연도</InputLabel>
+              <InputLabel>Year</InputLabel>
               <Select
                 value={selectedYear}
-                label="연도"
+                label="Year"
                 onChange={(e) => setSelectedYear(e.target.value as number)}
                 sx={{
                   borderRadius: 2,
@@ -427,7 +427,7 @@ export default function Layout() {
                   },
                 }}
               >
-                <MenuItem value="">전체</MenuItem>
+                <MenuItem value="">All</MenuItem>
                 {years.slice(0, 10).map((year) => (
                   <MenuItem key={year} value={year}>
                     {year}
@@ -438,10 +438,10 @@ export default function Layout() {
 
             {/* Status Filter */}
             <FormControl fullWidth size="small" sx={{ mt: 2 }}>
-              <InputLabel>상태</InputLabel>
+              <InputLabel>Status</InputLabel>
               <Select
                 value={selectedStatus}
-                label="상태"
+                label="Status"
                 onChange={(e) => setSelectedStatus(e.target.value)}
                 sx={{
                   borderRadius: 2,
@@ -451,10 +451,10 @@ export default function Layout() {
                 }}
               >
                 <MenuItem value="">전체</MenuItem>
-                <MenuItem value="RELEASING">방영중</MenuItem>
-                <MenuItem value="FINISHED">완결</MenuItem>
-                <MenuItem value="NOT_YET_RELEASED">방영예정</MenuItem>
-                <MenuItem value="CANCELLED">취소</MenuItem>
+                <MenuItem value="RELEASING">Airing</MenuItem>
+                <MenuItem value="FINISHED">Completed</MenuItem>
+                <MenuItem value="NOT_YET_RELEASED">Upcoming</MenuItem>
+                <MenuItem value="CANCELLED">Cancelled</MenuItem>
               </Select>
             </FormControl>
 
@@ -486,7 +486,7 @@ export default function Layout() {
                 },
               }}
             >
-              필터 적용
+              Apply Filters
             </Button>
           </CardContent>
         </Card>

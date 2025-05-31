@@ -15,7 +15,7 @@ import {
   Stack,
   Tooltip,
 } from "@mui/material";
-import { Favorite, Share, Visibility } from "@mui/icons-material";
+import { Favorite, Share } from "@mui/icons-material";
 import DOMPurify from "dompurify";
 import { useNavigate } from "react-router";
 import { Media } from "../../types/trending.type";
@@ -263,7 +263,7 @@ const AnimationCard = ({ media }: AnimationCardProps) => {
             }}
             dangerouslySetInnerHTML={{
               __html: DOMPurify.sanitize(
-                media.description || "설명이 없습니다.",
+                media.description || "No description available.",
               ),
             }}
           />
@@ -277,26 +277,7 @@ const AnimationCard = ({ media }: AnimationCardProps) => {
               mt: "auto",
             }}
           >
-            <Stack direction="row" spacing={1}>
-              <IconButton
-                size="small"
-                sx={{
-                  color: "text.secondary",
-                  "&:hover": { color: "primary.main" },
-                }}
-              >
-                <Visibility fontSize="small" />
-              </IconButton>
-              <IconButton
-                size="small"
-                sx={{
-                  color: "text.secondary",
-                  "&:hover": { color: "error.main" },
-                }}
-              >
-                <Favorite fontSize="small" />
-              </IconButton>
-            </Stack>
+            <Box />
 
             <Link
               component="button"
@@ -318,7 +299,7 @@ const AnimationCard = ({ media }: AnimationCardProps) => {
                 },
               }}
             >
-              자세히 보기
+              View Details
             </Link>
           </Box>
         </CardContent>

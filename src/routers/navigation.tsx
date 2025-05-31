@@ -25,26 +25,26 @@ type Navigation = NavigationItem[];
 export const navigation: Navigation = [
   {
     kind: "header",
-    title: "둘러보기",
+    title: "Explore",
   },
   {
     segment: "trending",
-    title: "트렌딩",
+    title: "Trending",
     icon: <TrendingUp />,
   },
   {
     segment: "search",
-    title: "고급 검색",
+    title: "Advanced Search",
     icon: <Search />,
   },
   {
     segment: "popular",
-    title: "인기 순위",
+    title: "Popular Rankings",
     icon: <Whatshot />,
   },
   {
     segment: "new-releases",
-    title: "신작",
+    title: "New Releases",
     icon: <NewReleases />,
   },
   {
@@ -53,36 +53,36 @@ export const navigation: Navigation = [
   },
   {
     kind: "header",
-    title: "카테고리",
+    title: "Categories",
   },
   {
     segment: "genre",
-    title: "장르별",
+    title: "By Genre",
     icon: <Category />,
   },
   {
     segment: "year",
-    title: "연도별",
+    title: "By Year",
     icon: <DateRange />,
   },
   {
     segment: "status",
-    title: "상태별",
+    title: "By Status",
     icon: <PlayArrow />,
     children: [
       {
         segment: "status/airing",
-        title: "방영중",
+        title: "Airing",
         icon: <PlayArrow />,
       },
       {
         segment: "status/finished",
-        title: "완결",
+        title: "Completed",
         icon: <CheckCircle />,
       },
       {
         segment: "status/upcoming",
-        title: "방영 예정",
+        title: "Upcoming",
         icon: <Schedule />,
       },
     ],
@@ -93,16 +93,16 @@ export const navigation: Navigation = [
   },
   {
     kind: "header",
-    title: "랭킹",
+    title: "Rankings",
   },
   {
     segment: "top-rated",
-    title: "높은 평점",
+    title: "Top Rated",
     icon: <Star />,
   },
   {
     segment: "animations",
-    title: "전체 목록",
+    title: "Full List",
     icon: <Category />,
   },
 ];

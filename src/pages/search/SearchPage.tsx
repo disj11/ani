@@ -80,12 +80,12 @@ const statuses = [
 ];
 
 const sortOptions = [
-  { value: "POPULARITY_DESC", label: "인기도 높은순" },
-  { value: "SCORE_DESC", label: "평점 높은순" },
-  { value: "TRENDING_DESC", label: "트렌딩" },
-  { value: "UPDATED_AT_DESC", label: "최근 업데이트" },
-  { value: "START_DATE_DESC", label: "최신순" },
-  { value: "TITLE_ROMAJI", label: "제목순" },
+  { value: "POPULARITY_DESC", label: "Most Popular" },
+  { value: "SCORE_DESC", label: "Highest Rated" },
+  { value: "TRENDING_DESC", label: "Trending" },
+  { value: "UPDATED_AT_DESC", label: "Recently Updated" },
+  { value: "START_DATE_DESC", label: "Newest" },
+  { value: "TITLE_ROMAJI", label: "Title Order" },
 ];
 
 const SearchPage: React.FC = () => {
@@ -247,15 +247,15 @@ const SearchPage: React.FC = () => {
 
   const getPageTitle = () => {
     if (location.pathname.includes("/status/airing"))
-      return "방영중 애니메이션";
+      return "Airing Animations";
     if (location.pathname.includes("/status/finished"))
-      return "완결 애니메이션";
+      return "Completed Animations";
     if (location.pathname.includes("/status/upcoming"))
-      return "방영 예정 애니메이션";
-    if (location.pathname === "/genre") return "장르별 애니메이션";
-    if (location.pathname === "/year") return "연도별 애니메이션";
-    if (location.pathname === "/animations") return "전체 애니메이션";
-    return "고급 검색";
+      return "Upcoming Animations";
+    if (location.pathname === "/genre") return "Animations by Genre";
+    if (location.pathname === "/year") return "Animations by Year";
+    if (location.pathname === "/animations") return "All Animations";
+    return "Advanced Search";
   };
 
   const renderFilters = () => (
@@ -264,7 +264,7 @@ const SearchPage: React.FC = () => {
         <Box sx={{ display: "flex", alignItems: "center", gap: 1, mb: 3 }}>
           <FilterList color="primary" />
           <Typography variant="h6" fontWeight="bold" color="primary">
-            검색 필터
+            Search Filters
           </Typography>
           {isMobile && (
             <IconButton
@@ -279,7 +279,7 @@ const SearchPage: React.FC = () => {
         {/* Search Query */}
         <TextField
           fullWidth
-          label="제목 검색"
+          label="Search by Title"
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
           onKeyPress={(e) => e.key === "Enter" && handleSearch()}
@@ -303,7 +303,7 @@ const SearchPage: React.FC = () => {
 
         {/* Sort */}
         <FormControl fullWidth sx={{ mb: 3 }}>
-          <InputLabel>정렬 기준</InputLabel>
+          <InputLabel>Sort Criteria</InputLabel>
           <Select
             value={sortBy}
             label="정렬 기준"
@@ -329,7 +329,7 @@ const SearchPage: React.FC = () => {
         >
           <AccordionSummary expandIcon={<ExpandMore />}>
             <Typography fontWeight={500}>
-              장르{" "}
+              Genre{" "}
               {selectedGenres.length > 0 && (
                 <Chip
                   label={selectedGenres.length}
@@ -380,7 +380,7 @@ const SearchPage: React.FC = () => {
 
         {/* Year */}
         <FormControl fullWidth sx={{ mb: 2 }}>
-          <InputLabel>연도</InputLabel>
+          <InputLabel>Year</InputLabel>
           <Select
             value={selectedYear}
             label="연도"
@@ -398,7 +398,7 @@ const SearchPage: React.FC = () => {
 
         {/* Status */}
         <FormControl fullWidth sx={{ mb: 2 }}>
-          <InputLabel>상태</InputLabel>
+          <InputLabel>Status</InputLabel>
           <Select
             value={selectedStatus}
             label="상태"
@@ -416,7 +416,7 @@ const SearchPage: React.FC = () => {
 
         {/* Format */}
         <FormControl fullWidth sx={{ mb: 2 }}>
-          <InputLabel>형식</InputLabel>
+          <InputLabel>Format</InputLabel>
           <Select
             value={selectedFormat}
             label="형식"
@@ -437,7 +437,7 @@ const SearchPage: React.FC = () => {
         {/* Score Range */}
         <Box sx={{ mb: 3 }}>
           <Typography gutterBottom fontWeight={500} color="primary">
-            평점 범위
+            Score Range
           </Typography>
           <Slider
             value={scoreRange}
@@ -466,13 +466,13 @@ const SearchPage: React.FC = () => {
               onChange={(e) => setUseEpisodeFilter(e.target.checked)}
             />
           }
-          label="에피소드 수 필터"
+          label="Episode Count Filter"
           sx={{ mb: 1 }}
         />
         {useEpisodeFilter && (
           <Box sx={{ mb: 3 }}>
             <Typography gutterBottom fontWeight={500} color="primary">
-              에피소드 수
+              Episode Count
             </Typography>
             <Slider
               value={episodeRange}
@@ -517,7 +517,7 @@ const SearchPage: React.FC = () => {
               },
             }}
           >
-            검색
+            Search
           </Button>
           <Button
             variant="outlined"
@@ -538,7 +538,7 @@ const SearchPage: React.FC = () => {
               },
             }}
           >
-            초기화
+            Reset
           </Button>
         </Stack>
       </CardContent>
@@ -566,7 +566,7 @@ const SearchPage: React.FC = () => {
           {getPageTitle()}
         </Typography>
         <Typography variant="body1" sx={{ opacity: 0.9 }}>
-          원하는 조건으로 애니메이션을 검색해보세요
+          Search for animations based on your desired criteria
         </Typography>
       </Paper>
 
@@ -588,7 +588,7 @@ const SearchPage: React.FC = () => {
               onClick={() => setMobileFiltersOpen(true)}
               sx={{ mb: 2, borderRadius: 2 }}
             >
-              필터 설정
+              Filter Settings
             </Button>
           </Grid>
         )}
@@ -639,10 +639,10 @@ const SearchPage: React.FC = () => {
           {error && (
             <Paper sx={{ p: 4, textAlign: "center", borderRadius: 3 }}>
               <Typography color="error" variant="h6" gutterBottom>
-                검색 중 오류가 발생했습니다.
+                An error occurred during the search.
               </Typography>
               <Typography color="text.secondary">
-                잠시 후 다시 시도해주세요.
+                Please try again later.
               </Typography>
             </Paper>
           )}
@@ -657,10 +657,10 @@ const SearchPage: React.FC = () => {
                   spacing={2}
                 >
                   <Typography variant="h6" fontWeight="bold">
-                    검색 결과: {data.Page.pageInfo.total.toLocaleString()}개
+                    Search Results: {data.Page.pageInfo.total.toLocaleString()} items
                   </Typography>
                   <Typography variant="body2" color="text.secondary">
-                    페이지 {page} / {data.Page.pageInfo.lastPage}
+                    Page {page} / {data.Page.pageInfo.lastPage}
                   </Typography>
                 </Stack>
               </Paper>
