@@ -364,10 +364,18 @@ const SearchPage: React.FC = () => {
                   variant={selectedGenres.includes(genre) ? "filled" : "outlined"}
                   onClick={() => handleGenreToggle(genre)}
                   sx={{
+                    height: 24,
+                    fontSize: '0.75rem',
+                    fontWeight: 500,
+                    borderRadius: 12,
                     transition: 'all 0.2s ease-in-out',
                     '&:hover': {
-                      transform: 'scale(1.05)',
-                      boxShadow: theme.shadows[2]
+                      transform: 'scale(1.02)',
+                      boxShadow: theme.shadows[1]
+                    },
+                    '& .MuiChip-label': {
+                      px: 1.5,
+                      py: 0
                     }
                   }}
                 />
@@ -493,18 +501,25 @@ const SearchPage: React.FC = () => {
           </Box>
         )}
 
-        <Stack direction="row" spacing={1}>
+        <Stack direction="row" spacing={1} justifyContent="center">
           <Button
             variant="contained"
             onClick={handleSearch}
-            fullWidth
+            size="small"
             startIcon={<SearchIcon />}
             sx={{
-              borderRadius: 2,
+              px: 3,
+              py: 1,
+              borderRadius: 20,
+              fontSize: '0.8rem',
+              fontWeight: 500,
+              textTransform: 'none',
+              minHeight: 32,
               background: `linear-gradient(135deg, ${theme.palette.primary.main}, ${theme.palette.primary.dark})`,
+              boxShadow: 'none',
               '&:hover': {
-                transform: 'translateY(-2px)',
-                boxShadow: theme.shadows[8]
+                transform: 'translateY(-1px)',
+                boxShadow: theme.shadows[2]
               }
             }}
           >
@@ -513,8 +528,21 @@ const SearchPage: React.FC = () => {
           <Button
             variant="outlined"
             onClick={clearFilters}
+            size="small"
             startIcon={<Clear />}
-            sx={{ borderRadius: 2 }}
+            sx={{ 
+              px: 3,
+              py: 1,
+              borderRadius: 20,
+              fontSize: '0.8rem',
+              fontWeight: 500,
+              textTransform: 'none',
+              minHeight: 32,
+              '&:hover': {
+                transform: 'translateY(-1px)',
+                boxShadow: theme.shadows[1]
+              }
+            }}
           >
             초기화
           </Button>

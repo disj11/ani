@@ -349,6 +349,19 @@ export default function Layout() {
                   deleteIcon={<Clear />}
                   onDelete={clearFilters}
                   onClick={clearFilters}
+                  sx={{
+                    height: 22,
+                    fontSize: '0.7rem',
+                    fontWeight: 500,
+                    borderRadius: 11,
+                    '& .MuiChip-label': {
+                      px: 1,
+                      py: 0
+                    },
+                    '& .MuiChip-deleteIcon': {
+                      fontSize: '0.8rem'
+                    }
+                  }}
                 />
               )}
             </Box>
@@ -450,19 +463,25 @@ export default function Layout() {
             {/* Apply Filters Button */}
             <Button
               variant="contained"
-              fullWidth
+              size="small"
               onClick={handleAdvancedSearch}
               disabled={
                 selectedGenres.length === 0 && !selectedYear && !selectedStatus
               }
               sx={{
                 mt: 2,
-                borderRadius: 2,
+                px: 3,
+                py: 1,
+                borderRadius: 20,
+                fontSize: '0.8rem',
+                fontWeight: 500,
+                textTransform: 'none',
                 background: `linear-gradient(135deg, ${theme.palette.primary.main}, ${theme.palette.primary.dark})`,
-                boxShadow: theme.shadows[4],
+                boxShadow: 'none',
+                minHeight: 32,
                 "&:hover": {
-                  boxShadow: theme.shadows[8],
-                  transform: "translateY(-2px)",
+                  boxShadow: theme.shadows[2],
+                  transform: "translateY(-1px)",
                 },
                 "&:disabled": {
                   background: theme.palette.action.disabledBackground,
