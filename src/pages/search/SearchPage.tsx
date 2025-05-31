@@ -120,18 +120,18 @@ const genres = [
 ];
 
 const formats = [
-  { value: "TV", label: "TV 시리즈" },
-  { value: "MOVIE", label: "영화" },
+  { value: "TV", label: "TV" },
+  { value: "MOVIE", label: "Movie" },
   { value: "OVA", label: "OVA" },
   { value: "ONA", label: "ONA" },
-  { value: "SPECIAL", label: "스페셜" },
+  { value: "SPECIAL", label: "Special" },
 ];
 
 const statuses = [
-  { value: "RELEASING", label: "방영중" },
-  { value: "FINISHED", label: "완결" },
-  { value: "NOT_YET_RELEASED", label: "방영예정" },
-  { value: "CANCELLED", label: "취소" },
+  { value: "RELEASING", label: "Airing" },
+  { value: "FINISHED", label: "Completed" },
+  { value: "NOT_YET_RELEASED", label: "Upcoming" },
+  { value: "CANCELLED", label: "Cancelled" },
 ];
 
 const sortOptions = [

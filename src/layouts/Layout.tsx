@@ -165,7 +165,7 @@ export default function Layout() {
         <TextField
           fullWidth
           size="small"
-          placeholder="빠른 검색..."
+          placeholder="Quick search..."
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
           onKeyPress={(e) => e.key === "Enter" && handleQuickSearch()}
@@ -334,13 +334,13 @@ export default function Layout() {
             <Box sx={{ display: "flex", alignItems: "center", gap: 1, mb: 2 }}>
               <FilterList fontSize="small" color="primary" />
               <Typography variant="subtitle2" fontWeight="bold" color="primary">
-                스마트 필터
+                Smart Filter
               </Typography>
               {(selectedGenres.length > 0 ||
                 selectedYear ||
                 selectedStatus) && (
                 <Chip
-                  label="초기화"
+                  label="Reset"
                   size="small"
                   variant="outlined"
                   color="secondary"
@@ -377,7 +377,7 @@ export default function Layout() {
                 sx={{ px: 0, minHeight: 40 }}
               >
                 <Typography variant="body2" fontWeight={500}>
-                  장르{" "}
+                  Genre{" "}
                   {selectedGenres.length > 0 && (
                     <Chip
                       label={selectedGenres.length}

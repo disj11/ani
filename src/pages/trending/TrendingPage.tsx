@@ -96,32 +96,32 @@ const TrendingPage = () => {
 
   const sections = [
     {
-      title: "실시간 인기 애니",
-      subtitle: "지금 가장 많이 시청되고 있는 애니메이션",
+      title: "Real-time Popular Anime",
+      subtitle: "The most watched anime right now",
       data: data?.trending.media || [],
       icon: <Whatshot />,
       color: theme.palette.error.main,
       gradient: `linear-gradient(135deg, ${theme.palette.error.light}, ${theme.palette.error.main})`,
     },
     {
-      title: "이번 분기 인기 애니",
-      subtitle: "현재 시즌의 인기 작품들",
+      title: "This Season's Popular Anime",
+      subtitle: "Popular works of the current season",
       data: data?.season.media || [],
       icon: <TrendingUp />,
       color: theme.palette.primary.main,
       gradient: `linear-gradient(135deg, ${theme.palette.primary.light}, ${theme.palette.primary.main})`,
     },
     {
-      title: "다음 분기 애니",
-      subtitle: "곧 방영될 기대작들",
+      title: "Next Season's Anime",
+      subtitle: "Upcoming anticipated works",
       data: data?.nextSeason.media || [],
       icon: <Schedule />,
       color: theme.palette.info.main,
       gradient: `linear-gradient(135deg, ${theme.palette.info.light}, ${theme.palette.info.main})`,
     },
     {
-      title: "역대 인기 애니",
-      subtitle: "모든 시간을 통틀어 가장 사랑받는 작품들",
+      title: "All-time Popular Anime",
+      subtitle: "The most beloved works of all time",
       data: data?.popular.media || [],
       icon: <Star />,
       color: theme.palette.warning.main,
@@ -190,7 +190,7 @@ const TrendingPage = () => {
           gutterBottom
           sx={{ position: "relative", zIndex: 1 }}
         >
-          트렌딩 애니메이션
+          Trending Anime
         </Typography>
         <Typography
           variant={isMobile ? "body1" : "h6"}
@@ -201,8 +201,7 @@ const TrendingPage = () => {
             maxWidth: "600px",
           }}
         >
-          지금 가장 인기 있는 애니메이션들을 확인하고, 새로운 작품을
-          발견해보세요
+          Discover the most popular anime right now and find new works
         </Typography>
       </Paper>
 
@@ -255,7 +254,7 @@ const TrendingPage = () => {
                   </Typography>
                 </Box>
                 <Chip
-                  label={`${section.data.length}개`}
+                  label={`${section.data.length} items`}
                   sx={{
                     backgroundColor: "rgba(255,255,255,0.2)",
                     color: "white",

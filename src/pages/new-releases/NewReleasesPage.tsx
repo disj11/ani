@@ -65,10 +65,10 @@ const GET_NEW_RELEASES = gql`
 `;
 
 const seasons = [
-  { value: "WINTER", label: "겨울" },
-  { value: "SPRING", label: "봄" },
-  { value: "SUMMER", label: "여름" },
-  { value: "FALL", label: "가을" },
+  { value: "WINTER", label: "Winter" },
+  { value: "SPRING", label: "Spring" },
+  { value: "SUMMER", label: "Summer" },
+  { value: "FALL", label: "Fall" },
 ];
 
 const NewReleasesPage: React.FC = () => {
@@ -109,7 +109,7 @@ const NewReleasesPage: React.FC = () => {
   return (
     <Box>
       <Typography variant="h4" gutterBottom fontWeight="bold">
-        신작 애니메이션
+        New Anime Releases
       </Typography>
 
       <Paper sx={{ p: 2, mb: 3 }}>
@@ -122,10 +122,10 @@ const NewReleasesPage: React.FC = () => {
           }}
         >
           <FormControl size="small" sx={{ minWidth: 120 }}>
-            <InputLabel>연도</InputLabel>
+            <InputLabel>Year</InputLabel>
             <Select
               value={selectedYear}
-              label="연도"
+              label="Year"
               onChange={handleYearChange}
             >
               {years.map((year) => (
@@ -137,13 +137,13 @@ const NewReleasesPage: React.FC = () => {
           </FormControl>
 
           <FormControl size="small" sx={{ minWidth: 120 }}>
-            <InputLabel>시즌</InputLabel>
+            <InputLabel>Season</InputLabel>
             <Select
               value={selectedSeason}
-              label="시즌"
+              label="Season"
               onChange={handleSeasonChange}
             >
-              <MenuItem value="">전체</MenuItem>
+              <MenuItem value="">All</MenuItem>
               {seasons.map((season) => (
                 <MenuItem key={season.value} value={season.value}>
                   {season.label}
@@ -153,7 +153,7 @@ const NewReleasesPage: React.FC = () => {
           </FormControl>
 
           <Chip
-            label="방영중만 표시"
+            label="Show Airing Only"
             color="primary"
             variant="outlined"
             size="small"
@@ -169,7 +169,7 @@ const NewReleasesPage: React.FC = () => {
 
       {error && (
         <Typography color="error" textAlign="center">
-          데이터를 불러오는 중 오류가 발생했습니다.
+          An error occurred while fetching data.
         </Typography>
       )}
 
@@ -177,11 +177,11 @@ const NewReleasesPage: React.FC = () => {
         <>
           <Box mb={2}>
             <Typography variant="h6">
-              {selectedYear}년{" "}
+              {selectedYear}{" "}
               {selectedSeason
                 ? seasons.find((s) => s.value === selectedSeason)?.label
                 : "전체"}{" "}
-              신작: {data.Page.pageInfo.total}개
+              : {data.Page.pageInfo.total} items
             </Typography>
           </Box>
 

@@ -128,8 +128,8 @@ const PopularPage: React.FC = () => {
   );
 
   const getPageTitle = () => {
-    if (location.pathname === "/top-rated") return "높은 평점 순위";
-    return "인기 순위";
+    if (location.pathname === "/top-rated") return "Top Rated Rankings";
+    return "Popular Rankings";
   };
 
   return (
@@ -141,22 +141,22 @@ const PopularPage: React.FC = () => {
       <Paper sx={{ mb: 3 }}>
         <Box sx={{ borderBottom: 1, borderColor: "divider", px: 2 }}>
           <Tabs value={tabValue} onChange={handleTabChange}>
-            <Tab label="인기도" />
-            <Tab label="평점" />
-            <Tab label="트렌딩" />
-            <Tab label="즐겨찾기" />
+            <Tab label="Popularity" />
+            <Tab label="Score" />
+            <Tab label="Trending" />
+            <Tab label="Favorites" />
           </Tabs>
         </Box>
 
         <Box sx={{ p: 2 }}>
           <FormControl size="small" sx={{ minWidth: 120 }}>
-            <InputLabel>연도</InputLabel>
+            <InputLabel>Year</InputLabel>
             <Select
               value={selectedYear}
-              label="연도"
+              label="Year"
               onChange={handleYearChange}
             >
-              <MenuItem value="">전체</MenuItem>
+              <MenuItem value="">All</MenuItem>
               {years.map((year) => (
                 <MenuItem key={year} value={year}>
                   {year}
@@ -169,25 +169,25 @@ const PopularPage: React.FC = () => {
 
       <TabPanel value={tabValue} index={0}>
         <Typography variant="h6" gutterBottom>
-          인기도 순위 {selectedYear && `(${selectedYear}년)`}
+          Popularity Rankings {selectedYear && `(${selectedYear})`}
         </Typography>
       </TabPanel>
 
       <TabPanel value={tabValue} index={1}>
         <Typography variant="h6" gutterBottom>
-          평점 순위 {selectedYear && `(${selectedYear}년)`}
+          Score Rankings {selectedYear && `(${selectedYear})`}
         </Typography>
       </TabPanel>
 
       <TabPanel value={tabValue} index={2}>
         <Typography variant="h6" gutterBottom>
-          트렌딩 순위 {selectedYear && `(${selectedYear}년)`}
+          Trending Rankings {selectedYear && `(${selectedYear})`}
         </Typography>
       </TabPanel>
 
       <TabPanel value={tabValue} index={3}>
         <Typography variant="h6" gutterBottom>
-          즐겨찾기 순위 {selectedYear && `(${selectedYear}년)`}
+          Favorites Rankings {selectedYear && `(${selectedYear})`}
         </Typography>
       </TabPanel>
 
@@ -199,7 +199,7 @@ const PopularPage: React.FC = () => {
 
       {error && (
         <Typography color="error" textAlign="center">
-          데이터를 불러오는 중 오류가 발생했습니다.
+          An error occurred while fetching data.
         </Typography>
       )}
 

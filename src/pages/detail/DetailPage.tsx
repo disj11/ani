@@ -55,10 +55,10 @@ const DetailPage: React.FC = () => {
       <Container maxWidth="xl">
         <Box display="flex" flexDirection="column" justifyContent="center" alignItems="center" height="50vh">
           <Typography variant="h6" color="error" gutterBottom>
-            미디어 정보를 불러올 수 없습니다.
+            Unable to load media information.
           </Typography>
           <Button variant="outlined" onClick={() => navigate(-1)} sx={{ mt: 2 }}>
-            돌아가기
+            Go Back
           </Button>
         </Box>
       </Container>
@@ -163,7 +163,7 @@ const DetailPage: React.FC = () => {
                     }}
                   />
                   <Typography variant="body2" color="text.secondary">
-                    평균 평점
+                    Average Rating
                   </Typography>
                 </Box>
               )}
@@ -174,7 +174,7 @@ const DetailPage: React.FC = () => {
               <Stack spacing={2}>
                 <Box>
                   <Typography variant="subtitle2" color="primary" fontWeight="bold">
-                    형식
+                    Format
                   </Typography>
                   <Typography variant="body2">
                     {media.format}
@@ -183,7 +183,7 @@ const DetailPage: React.FC = () => {
 
                 <Box>
                   <Typography variant="subtitle2" color="primary" fontWeight="bold">
-                    상태
+                    Status
                   </Typography>
                   <Chip 
                     label={media.status} 
@@ -196,10 +196,10 @@ const DetailPage: React.FC = () => {
                 {media.episodes && (
                   <Box>
                     <Typography variant="subtitle2" color="primary" fontWeight="bold">
-                      에피소드
+                      Episodes
                     </Typography>
                     <Typography variant="body2">
-                      {media.episodes}화
+                      {media.episodes} episodes
                     </Typography>
                   </Box>
                 )}
@@ -207,12 +207,12 @@ const DetailPage: React.FC = () => {
                 {media.duration && (
                   <Box>
                     <Typography variant="subtitle2" color="primary" fontWeight="bold">
-                      러닝타임
+                      Runtime
                     </Typography>
                     <Stack direction="row" alignItems="center" spacing={1}>
                       <AccessTime fontSize="small" color="action" />
                       <Typography variant="body2">
-                        {media.duration}분
+                        {media.duration} minutes
                       </Typography>
                     </Stack>
                   </Box>
@@ -220,7 +220,7 @@ const DetailPage: React.FC = () => {
 
                 <Box>
                   <Typography variant="subtitle2" color="primary" fontWeight="bold">
-                    방영일
+                    Air Date
                   </Typography>
                   <Stack direction="row" alignItems="center" spacing={1}>
                     <CalendarToday fontSize="small" color="action" />
@@ -233,7 +233,7 @@ const DetailPage: React.FC = () => {
                 {media.endDate?.year && (
                   <Box>
                     <Typography variant="subtitle2" color="primary" fontWeight="bold">
-                      종료일
+                      End Date
                     </Typography>
                     <Stack direction="row" alignItems="center" spacing={1}>
                       <CalendarToday fontSize="small" color="action" />
@@ -250,7 +250,7 @@ const DetailPage: React.FC = () => {
               {/* Genres */}
               <Box>
                 <Typography variant="subtitle2" color="primary" fontWeight="bold" gutterBottom>
-                  장르
+                  Genre
                 </Typography>
                 <Box display="flex" flexWrap="wrap" gap={0.5}>
                   {media.genres.map((genre: string) => (
@@ -277,7 +277,7 @@ const DetailPage: React.FC = () => {
                   <Divider sx={{ my: 2 }} />
                   <Box>
                     <Typography variant="subtitle2" color="primary" fontWeight="bold" gutterBottom>
-                      제작사
+                      Studio
                     </Typography>
                     {media.studios.nodes.map((studio: { id: number; name: string }) => (
                       <Chip
@@ -311,12 +311,12 @@ const DetailPage: React.FC = () => {
                       }
                     }}
                   >
-                    트레일러 보기
+                    Watch Trailer
                   </Button>
                 )}
                 
                 <Stack direction="row" spacing={1}>
-                  <Tooltip title="관심목록에 추가">
+                  <Tooltip title="Add to Favorites">
                     <IconButton
                       sx={{
                         flex: 1,
@@ -332,7 +332,7 @@ const DetailPage: React.FC = () => {
                       <Favorite />
                     </IconButton>
                   </Tooltip>
-                  <Tooltip title="공유하기">
+                  <Tooltip title="Share">
                     <IconButton
                       sx={{
                         flex: 1,
@@ -389,7 +389,7 @@ const DetailPage: React.FC = () => {
             {/* Statistics */}
             <Paper elevation={2} sx={{ p: 3, borderRadius: 3 }}>
               <Typography variant="h6" gutterBottom fontWeight="bold" color="primary">
-                통계
+                Statistics
               </Typography>
               <Grid container spacing={2}>
                 <Grid item xs={6} sm={3}>
@@ -398,7 +398,7 @@ const DetailPage: React.FC = () => {
                       {media.averageScore || 'N/A'}
                     </Typography>
                     <Typography variant="body2" color="text.secondary">
-                      평균 점수
+                      Average Score
                     </Typography>
                   </Paper>
                 </Grid>
@@ -408,7 +408,7 @@ const DetailPage: React.FC = () => {
                       {media.popularity?.toLocaleString() || 'N/A'}
                     </Typography>
                     <Typography variant="body2" color="text.secondary">
-                      인기도
+                      Popularity
                     </Typography>
                   </Paper>
                 </Grid>
