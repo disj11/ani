@@ -129,7 +129,7 @@ const NewReleasesPage: React.FC = () => {
               {selectedYear}{" "}
               {selectedSeason
                 ? seasons.find((s) => s.value === selectedSeason)?.label
-                : "전체"}{" "}
+                : "All"}{" "}
               : {data.Page.pageInfo.total} items
             </Typography>
           </Box>
