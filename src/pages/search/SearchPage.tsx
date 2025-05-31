@@ -57,6 +57,7 @@ const SEARCH_ANIME = gql`
     $scoreGreater: Int
     $episodeGreater: Int
     $episodeLesser: Int
+    $isAdult: Boolean = false
   ) {
     Page(page: $page, perPage: $perPage) {
       pageInfo {
@@ -74,6 +75,7 @@ const SEARCH_ANIME = gql`
         format: $format
         sort: $sort
         type: ANIME
+        isAdult: $isAdult
         averageScore_greater: $scoreGreater
         episodes_greater: $episodeGreater
         episodes_lesser: $episodeLesser
@@ -349,7 +351,13 @@ const SearchPage: React.FC = () => {
                   label={selectedGenres.length} 
                   size="small" 
                   color="primary" 
-                  sx={{ ml: 1, height: 20 }}
+                  sx={{ 
+                    ml: 1, 
+                    height: 18, 
+                    fontSize: '0.7rem', 
+                    fontWeight: 500, 
+                    borderRadius: 9 
+                  }}
                 />
               )}
             </Typography>

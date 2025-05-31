@@ -18,7 +18,7 @@ import { useLocation } from 'react-router';
 import AnimationCard from '../trending/components/AnimationCard/AnimationCard';
 
 const GET_POPULAR_ANIME = gql`
-  query GetPopularAnime($sort: [MediaSort], $page: Int, $perPage: Int, $year: Int) {
+  query GetPopularAnime($sort: [MediaSort], $page: Int, $perPage: Int, $year: Int, $isAdult: Boolean = false) {
     Page(page: $page, perPage: $perPage) {
       pageInfo {
         total
@@ -27,7 +27,7 @@ const GET_POPULAR_ANIME = gql`
         hasNextPage
         perPage
       }
-      media(sort: $sort, type: ANIME, seasonYear: $year) {
+      media(sort: $sort, type: ANIME, seasonYear: $year, isAdult: $isAdult) {
         id
         title {
           userPreferred

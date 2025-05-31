@@ -16,7 +16,7 @@ import { useQuery, gql } from '@apollo/client';
 import AnimationCard from '../trending/components/AnimationCard/AnimationCard';
 
 const GET_NEW_RELEASES = gql`
-  query GetNewReleases($page: Int, $perPage: Int, $season: MediaSeason, $seasonYear: Int) {
+  query GetNewReleases($page: Int, $perPage: Int, $season: MediaSeason, $seasonYear: Int, $isAdult: Boolean = false) {
     Page(page: $page, perPage: $perPage) {
       pageInfo {
         total
@@ -31,6 +31,7 @@ const GET_NEW_RELEASES = gql`
         season: $season
         seasonYear: $seasonYear
         status: RELEASING
+        isAdult: $isAdult
       ) {
         id
         title {
