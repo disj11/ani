@@ -40,63 +40,8 @@ import {
   Tune,
   Close,
 } from "@mui/icons-material";
-import { useQuery, gql } from "@apollo/client";
 import AnimationCard from "../trending/components/AnimationCard/AnimationCard";
-
-const SEARCH_ANIME = gql`
-  query SearchAnime(
-    $search: String
-    $genre: [String]
-    $year: Int
-    $status: MediaStatus
-    $format: MediaFormat
-    $sort: [MediaSort]
-    $page: Int
-    $perPage: Int
-    $scoreGreater: Int
-    $episodeGreater: Int
-    $episodeLesser: Int
-    $isAdult: Boolean = false
-  ) {
-    Page(page: $page, perPage: $perPage) {
-      pageInfo {
-        total
-        currentPage
-        lastPage
-        hasNextPage
-        perPage
-      }
-      media(
-        search: $search
-        genre_in: $genre
-        seasonYear: $year
-        status: $status
-        format: $format
-        sort: $sort
-        type: ANIME
-        isAdult: $isAdult
-        averageScore_greater: $scoreGreater
-        episodes_greater: $episodeGreater
-        episodes_lesser: $episodeLesser
-      ) {
-        id
-        title {
-          userPreferred
-        }
-        coverImage {
-          large
-        }
-        averageScore
-        genres
-        description
-        bannerImage
-        status
-        episodes
-        format
-      }
-    }
-  }
-`;
+import { useSearchAnimeQuery } from "./apis/search.api";
 
 const genres = [
   "Action",
@@ -160,21 +105,18 @@ const SearchPage: React.FC = () => {
   const [useEpisodeFilter, setUseEpisodeFilter] = useState(false);
   const [page, setPage] = useState(1);
 
-  const { data, loading, error, refetch } = useQuery(SEARCH_ANIME, {
-    variables: {
-      search: searchQuery || undefined,
-      genre: selectedGenres.length > 0 ? selectedGenres : undefined,
-      year: selectedYear || undefined,
-      status: selectedStatus || undefined,
-      format: selectedFormat || undefined,
-      sort: [sortBy],
-      page,
-      perPage: 20,
-      scoreGreater: scoreRange[0] > 0 ? scoreRange[0] : undefined,
-      episodeGreater: useEpisodeFilter ? episodeRange[0] : undefined,
-      episodeLesser: useEpisodeFilter ? episodeRange[1] : undefined,
-    },
-    fetchPolicy: "cache-and-network",
+  const { data, loading, error, refetch } = useSearchAnimeQuery({
+    search: searchQuery || undefined,
+    genre: selectedGenres.length > 0 ? selectedGenres : undefined,
+    year: selectedYear || undefined,
+    status: selectedStatus || undefined,
+    format: selectedFormat || undefined,
+    sort: [sortBy],
+    page,
+    perPage: 20,
+    scoreGreater: scoreRange[0] > 0 ? scoreRange[0] : undefined,
+    episodeGreater: useEpisodeFilter ? episodeRange[0] : undefined,
+    episodeLesser: useEpisodeFilter ? episodeRange[1] : undefined,
   });
 
   useEffect(() => {
