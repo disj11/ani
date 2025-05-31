@@ -376,7 +376,7 @@ export default function Layout() {
                 expandIcon={<ExpandMore />}
                 sx={{ px: 0, minHeight: 40 }}
               >
-                <Typography variant="body2" fontWeight={500}>
+                <Typography variant="body2" fontWeight={500} sx={{ ml: 2 }}>
                   Genre{" "}
                   {selectedGenres.length > 0 && (
                     <Chip
@@ -388,7 +388,7 @@ export default function Layout() {
                   )}
                 </Typography>
               </AccordionSummary>
-              <AccordionDetails sx={{ px: 0, pt: 0 }}>
+              <AccordionDetails sx={{ px: 2, pt: 0 }}>
                 <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
                   {genres.slice(0, 12).map((genre) => (
                     <Chip

@@ -13,56 +13,8 @@ import {
   Chip,
   SelectChangeEvent,
 } from "@mui/material";
-import { useQuery, gql } from "@apollo/client";
 import AnimationCard from "../trending/components/AnimationCard/AnimationCard";
-
-const GET_NEW_RELEASES = gql`
-  query GetNewReleases(
-    $page: Int
-    $perPage: Int
-    $season: MediaSeason
-    $seasonYear: Int
-    $isAdult: Boolean = false
-  ) {
-    Page(page: $page, perPage: $perPage) {
-      pageInfo {
-        total
-        currentPage
-        lastPage
-        hasNextPage
-        perPage
-      }
-      media(
-        sort: [START_DATE_DESC]
-        type: ANIME
-        season: $season
-        seasonYear: $seasonYear
-        status: RELEASING
-        isAdult: $isAdult
-      ) {
-        id
-        title {
-          userPreferred
-        }
-        coverImage {
-          large
-        }
-        averageScore
-        genres
-        description
-        bannerImage
-        status
-        episodes
-        format
-        startDate {
-          year
-          month
-          day
-        }
-      }
-    }
-  }
-`;
+import { useNewReleasesQuery } from "./apis/new-releases.api";
 
 const seasons = [
   { value: "WINTER", label: "Winter" },
@@ -76,14 +28,11 @@ const NewReleasesPage: React.FC = () => {
   const [selectedSeason, setSelectedSeason] = useState("");
   const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
 
-  const { data, loading, error } = useQuery(GET_NEW_RELEASES, {
-    variables: {
-      page,
-      perPage: 20,
-      season: selectedSeason || undefined,
-      seasonYear: selectedYear,
-    },
-    fetchPolicy: "cache-and-network",
+  const { data, loading, error } = useNewReleasesQuery({
+    page,
+    perPage: 20,
+    season: selectedSeason || undefined,
+    seasonYear: selectedYear,
   });
 
   const handleSeasonChange = (event: SelectChangeEvent<string>) => {

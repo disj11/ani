@@ -83,7 +83,7 @@ const DetailPage: React.FC = () => {
           onClick={() => navigate(-1)}
           sx={{ color: 'text.secondary' }}
         >
-          돌아가기
+          Go Back
         </Button>
       </Box>
 
@@ -418,7 +418,7 @@ const DetailPage: React.FC = () => {
                       {media.favourites?.toLocaleString() || 'N/A'}
                     </Typography>
                     <Typography variant="body2" color="text.secondary">
-                      즐겨찾기
+                      Favorites
                     </Typography>
                   </Paper>
                 </Grid>
@@ -439,7 +439,7 @@ const DetailPage: React.FC = () => {
             {media.characters.nodes.length > 0 && (
               <Paper elevation={2} sx={{ p: 3, borderRadius: 3 }}>
                 <Typography variant="h6" gutterBottom fontWeight="bold" color="primary">
-                  캐릭터
+                  Characters
                 </Typography>
                 <Grid container spacing={2}>
                   {media.characters.nodes.slice(0, isMobile ? 4 : 8).map((character: { id: number; name: { userPreferred: string }; image?: { medium: string } }) => (
@@ -489,7 +489,7 @@ const DetailPage: React.FC = () => {
             {media.staff.nodes.length > 0 && (
               <Paper elevation={2} sx={{ p: 3, borderRadius: 3 }}>
                 <Typography variant="h6" gutterBottom fontWeight="bold" color="primary">
-                  제작진
+                  Staff
                 </Typography>
                 <Grid container spacing={2}>
                   {media.staff.nodes.slice(0, isMobile ? 4 : 8).map((staff: { id: number; name: { userPreferred: string }; image?: { medium: string } }) => (
@@ -539,7 +539,7 @@ const DetailPage: React.FC = () => {
             {media.recommendations.nodes.length > 0 && (
               <Paper elevation={2} sx={{ p: 3, borderRadius: 3 }}>
                 <Typography variant="h6" gutterBottom fontWeight="bold" color="primary">
-                  추천 작품
+                  Recommended Works
                 </Typography>
                 <Grid container spacing={2}>
                   {media.recommendations.nodes.slice(0, isMobile ? 3 : 6).map((rec: { mediaRecommendation: { id: number; title: { userPreferred: string }; coverImage: { medium: string }; averageScore?: number } }, index: number) => (
@@ -594,7 +594,7 @@ const DetailPage: React.FC = () => {
             {media.externalLinks.length > 0 && (
               <Paper elevation={2} sx={{ p: 3, borderRadius: 3 }}>
                 <Typography variant="h6" gutterBottom fontWeight="bold" color="primary">
-                  외부 링크
+                  External Links
                 </Typography>
                 <Stack direction="row" spacing={1} sx={{ flexWrap: 'wrap', gap: 1 }}>
                   {media.externalLinks.map((link: { id: number; url: string; site: string }) => (
