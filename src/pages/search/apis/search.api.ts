@@ -1,5 +1,8 @@
 import { useQuery, gql } from "@apollo/client";
-import { SearchAnimeVariables } from "../types/search.types";
+import {
+  SearchAnimeResponse,
+  SearchAnimeVariables,
+} from "../types/search.types";
 
 const SEARCH_ANIME = gql`
   query SearchAnime(
@@ -57,7 +60,7 @@ const SEARCH_ANIME = gql`
 `;
 
 export const useSearchAnimeQuery = (variables: SearchAnimeVariables) => {
-  return useQuery(SEARCH_ANIME, {
+  return useQuery<SearchAnimeResponse>(SEARCH_ANIME, {
     variables,
     fetchPolicy: "cache-and-network",
   });

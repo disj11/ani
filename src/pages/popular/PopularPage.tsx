@@ -14,45 +14,9 @@ import {
   Paper,
   SelectChangeEvent,
 } from "@mui/material";
-import { useQuery, gql } from "@apollo/client";
 import { useLocation } from "react-router";
 import AnimationCard from "../trending/components/AnimationCard/AnimationCard";
-
-const GET_POPULAR_ANIME = gql`
-  query GetPopularAnime(
-    $sort: [MediaSort]
-    $page: Int
-    $perPage: Int
-    $year: Int
-    $isAdult: Boolean = false
-  ) {
-    Page(page: $page, perPage: $perPage) {
-      pageInfo {
-        total
-        currentPage
-        lastPage
-        hasNextPage
-        perPage
-      }
-      media(sort: $sort, type: ANIME, seasonYear: $year, isAdult: $isAdult) {
-        id
-        title {
-          userPreferred
-        }
-        coverImage {
-          large
-        }
-        averageScore
-        genres
-        description
-        bannerImage
-        status
-        episodes
-        format
-      }
-    }
-  }
-`;
+import { usePopularAnimeQuery } from "./apis/popular.api";
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -94,14 +58,11 @@ const PopularPage: React.FC = () => {
     }
   }, [location.pathname]);
 
-  const { data, loading, error } = useQuery(GET_POPULAR_ANIME, {
-    variables: {
-      sort: [sortOptions[tabValue]],
-      page,
-      perPage: 20,
-      year: selectedYear || undefined,
-    },
-    fetchPolicy: "cache-and-network",
+  const { data, loading, error } = usePopularAnimeQuery({
+    sort: [sortOptions[tabValue]],
+    page,
+    perPage: 20,
+    year: selectedYear || undefined,
   });
 
   const handleTabChange = (_event: React.SyntheticEvent, newValue: number) => {
