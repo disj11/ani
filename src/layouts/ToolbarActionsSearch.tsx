@@ -1,5 +1,5 @@
-import { Stack, Tooltip, IconButton, TextField } from "@mui/material";
-import { Brightness4, Brightness7, Search } from "@mui/icons-material";
+import { Stack, Tooltip, IconButton } from "@mui/material";
+import { Brightness4, Brightness7 } from "@mui/icons-material";
 import { useThemeMode } from "../commons/context/ThemeContext";
 
 export default function ToolbarActionsSearch() {

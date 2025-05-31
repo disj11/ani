@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { useSearchParams, useLocation } from 'react-router';
+import React, { useState, useEffect } from "react";
+import { useSearchParams, useLocation } from "react-router";
 import {
   Box,
   Typography,
@@ -11,7 +11,6 @@ import {
   MenuItem,
   Chip,
   Button,
-  CircularProgress,
   Pagination,
   Paper,
   Accordion,
@@ -31,18 +30,18 @@ import {
   InputAdornment,
   Drawer,
   IconButton,
-  Skeleton
-} from '@mui/material';
-import { 
-  Search as SearchIcon, 
-  ExpandMore, 
-  Clear, 
+  Skeleton,
+} from "@mui/material";
+import {
+  Search as SearchIcon,
+  ExpandMore,
+  Clear,
   FilterList,
   Tune,
-  Close
-} from '@mui/icons-material';
-import { useQuery, gql } from '@apollo/client';
-import AnimationCard from '../trending/components/AnimationCard/AnimationCard';
+  Close,
+} from "@mui/icons-material";
+import { useQuery, gql } from "@apollo/client";
+import AnimationCard from "../trending/components/AnimationCard/AnimationCard";
 
 const SEARCH_ANIME = gql`
   query SearchAnime(
@@ -100,47 +99,62 @@ const SEARCH_ANIME = gql`
 `;
 
 const genres = [
-  "Action", "Adventure", "Comedy", "Drama", "Ecchi", "Fantasy",
-  "Horror", "Mahou Shoujo", "Mecha", "Music", "Mystery", "Psychological",
-  "Romance", "Sci-Fi", "Slice of Life", "Sports", "Supernatural", "Thriller"
+  "Action",
+  "Adventure",
+  "Comedy",
+  "Drama",
+  "Ecchi",
+  "Fantasy",
+  "Horror",
+  "Mahou Shoujo",
+  "Mecha",
+  "Music",
+  "Mystery",
+  "Psychological",
+  "Romance",
+  "Sci-Fi",
+  "Slice of Life",
+  "Sports",
+  "Supernatural",
+  "Thriller",
 ];
 
 const formats = [
-  { value: 'TV', label: 'TV 시리즈' },
-  { value: 'MOVIE', label: '영화' },
-  { value: 'OVA', label: 'OVA' },
-  { value: 'ONA', label: 'ONA' },
-  { value: 'SPECIAL', label: '스페셜' }
+  { value: "TV", label: "TV 시리즈" },
+  { value: "MOVIE", label: "영화" },
+  { value: "OVA", label: "OVA" },
+  { value: "ONA", label: "ONA" },
+  { value: "SPECIAL", label: "스페셜" },
 ];
 
 const statuses = [
-  { value: 'RELEASING', label: '방영중' },
-  { value: 'FINISHED', label: '완결' },
-  { value: 'NOT_YET_RELEASED', label: '방영예정' },
-  { value: 'CANCELLED', label: '취소' }
+  { value: "RELEASING", label: "방영중" },
+  { value: "FINISHED", label: "완결" },
+  { value: "NOT_YET_RELEASED", label: "방영예정" },
+  { value: "CANCELLED", label: "취소" },
 ];
 
 const sortOptions = [
-  { value: 'POPULARITY_DESC', label: '인기도 높은순' },
-  { value: 'SCORE_DESC', label: '평점 높은순' },
-  { value: 'TRENDING_DESC', label: '트렌딩' },
-  { value: 'UPDATED_AT_DESC', label: '최근 업데이트' },
-  { value: 'START_DATE_DESC', label: '최신순' },
-  { value: 'TITLE_ROMAJI', label: '제목순' }
+  { value: "POPULARITY_DESC", label: "인기도 높은순" },
+  { value: "SCORE_DESC", label: "평점 높은순" },
+  { value: "TRENDING_DESC", label: "트렌딩" },
+  { value: "UPDATED_AT_DESC", label: "최근 업데이트" },
+  { value: "START_DATE_DESC", label: "최신순" },
+  { value: "TITLE_ROMAJI", label: "제목순" },
 ];
 
 const SearchPage: React.FC = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const location = useLocation();
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+  const isMobile = useMediaQuery(theme.breakpoints.down("md"));
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
-  const [searchQuery, setSearchQuery] = useState(searchParams.get('q') || '');
+  const [searchQuery, setSearchQuery] = useState(searchParams.get("q") || "");
   const [selectedGenres, setSelectedGenres] = useState<string[]>([]);
-  const [selectedYear, setSelectedYear] = useState<number | ''>('');
-  const [selectedStatus, setSelectedStatus] = useState('');
-  const [selectedFormat, setSelectedFormat] = useState('');
-  const [sortBy, setSortBy] = useState('POPULARITY_DESC');
+  const [selectedYear, setSelectedYear] = useState<number | "">("");
+  const [selectedStatus, setSelectedStatus] = useState("");
+  const [selectedFormat, setSelectedFormat] = useState("");
+  const [sortBy, setSortBy] = useState("POPULARITY_DESC");
   const [scoreRange, setScoreRange] = useState<number[]>([0, 100]);
   const [episodeRange, setEpisodeRange] = useState<number[]>([1, 50]);
   const [useEpisodeFilter, setUseEpisodeFilter] = useState(false);
@@ -160,45 +174,45 @@ const SearchPage: React.FC = () => {
       episodeGreater: useEpisodeFilter ? episodeRange[0] : undefined,
       episodeLesser: useEpisodeFilter ? episodeRange[1] : undefined,
     },
-    fetchPolicy: 'cache-and-network'
+    fetchPolicy: "cache-and-network",
   });
 
   useEffect(() => {
-    const q = searchParams.get('q');
-    const genres = searchParams.get('genres');
-    const year = searchParams.get('year');
-    const status = searchParams.get('status');
-    
+    const q = searchParams.get("q");
+    const genres = searchParams.get("genres");
+    const year = searchParams.get("year");
+    const status = searchParams.get("status");
+
     // Handle route-based filtering
-    if (location.pathname.includes('/status/')) {
-      const pathStatus = location.pathname.split('/status/')[1];
+    if (location.pathname.includes("/status/")) {
+      const pathStatus = location.pathname.split("/status/")[1];
       switch (pathStatus) {
-        case 'airing':
-          setSelectedStatus('RELEASING');
+        case "airing":
+          setSelectedStatus("RELEASING");
           break;
-        case 'finished':
-          setSelectedStatus('FINISHED');
+        case "finished":
+          setSelectedStatus("FINISHED");
           break;
-        case 'upcoming':
-          setSelectedStatus('NOT_YET_RELEASED');
+        case "upcoming":
+          setSelectedStatus("NOT_YET_RELEASED");
           break;
       }
-    } else if (location.pathname === '/genre') {
+    } else if (location.pathname === "/genre") {
       // Show genre selection interface
-      setSortBy('POPULARITY_DESC');
-    } else if (location.pathname === '/year') {
+      setSortBy("POPULARITY_DESC");
+    } else if (location.pathname === "/year") {
       // Show year selection interface
-      setSortBy('START_DATE_DESC');
-    } else if (location.pathname === '/animations') {
+      setSortBy("START_DATE_DESC");
+    } else if (location.pathname === "/animations") {
       // Show all animations
-      setSortBy('POPULARITY_DESC');
+      setSortBy("POPULARITY_DESC");
     }
-    
+
     if (q) {
       setSearchQuery(q);
     }
     if (genres) {
-      setSelectedGenres(genres.split(','));
+      setSelectedGenres(genres.split(","));
     }
     if (year) {
       setSelectedYear(parseInt(year));
@@ -206,19 +220,38 @@ const SearchPage: React.FC = () => {
     if (status) {
       setSelectedStatus(status);
     }
-    
+
     // Trigger search if there are parameters or route-based filters
-    if (q || genres || year || status || location.pathname.includes('/status/')) {
+    if (
+      q ||
+      genres ||
+      year ||
+      status ||
+      location.pathname.includes("/status/")
+    ) {
       setPage(1);
     }
   }, [searchParams, location.pathname]);
 
   // Auto-search when filters change
   useEffect(() => {
-    if (selectedGenres.length > 0 || selectedYear || selectedStatus || selectedFormat || searchQuery) {
+    if (
+      selectedGenres.length > 0 ||
+      selectedYear ||
+      selectedStatus ||
+      selectedFormat ||
+      searchQuery
+    ) {
       refetch();
     }
-  }, [selectedGenres, selectedYear, selectedStatus, selectedFormat, searchQuery, refetch]);
+  }, [
+    selectedGenres,
+    selectedYear,
+    selectedStatus,
+    selectedFormat,
+    searchQuery,
+    refetch,
+  ]);
 
   const handleSearch = () => {
     setPage(1);
@@ -227,66 +260,74 @@ const SearchPage: React.FC = () => {
   };
 
   const handleGenreToggle = (genre: string) => {
-    setSelectedGenres(prev =>
-      prev.includes(genre)
-        ? prev.filter(g => g !== genre)
-        : [...prev, genre]
+    setSelectedGenres((prev) =>
+      prev.includes(genre) ? prev.filter((g) => g !== genre) : [...prev, genre],
     );
   };
 
   const clearFilters = () => {
-    setSearchQuery('');
+    setSearchQuery("");
     setSelectedGenres([]);
-    setSelectedYear('');
-    setSelectedStatus('');
-    setSelectedFormat('');
+    setSelectedYear("");
+    setSelectedStatus("");
+    setSelectedFormat("");
     setScoreRange([0, 100]);
     setEpisodeRange([1, 50]);
     setUseEpisodeFilter(false);
-    setSortBy('POPULARITY_DESC');
+    setSortBy("POPULARITY_DESC");
     setPage(1);
     setSearchParams({});
   };
 
   const updateSearchParams = () => {
     const params = new URLSearchParams();
-    if (searchQuery) params.set('q', searchQuery);
-    if (selectedGenres.length > 0) params.set('genres', selectedGenres.join(','));
-    if (selectedYear) params.set('year', selectedYear.toString());
-    if (selectedStatus) params.set('status', selectedStatus);
-    if (selectedFormat) params.set('format', selectedFormat);
+    if (searchQuery) params.set("q", searchQuery);
+    if (selectedGenres.length > 0)
+      params.set("genres", selectedGenres.join(","));
+    if (selectedYear) params.set("year", selectedYear.toString());
+    if (selectedStatus) params.set("status", selectedStatus);
+    if (selectedFormat) params.set("format", selectedFormat);
     setSearchParams(params);
   };
 
-  const handlePageChange = (_event: React.ChangeEvent<unknown>, value: number) => {
+  const handlePageChange = (
+    _event: React.ChangeEvent<unknown>,
+    value: number,
+  ) => {
     setPage(value);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  const years = Array.from({ length: 30 }, (_, i) => new Date().getFullYear() - i);
+  const years = Array.from(
+    { length: 30 },
+    (_, i) => new Date().getFullYear() - i,
+  );
 
   const getPageTitle = () => {
-    if (location.pathname.includes('/status/airing')) return '방영중 애니메이션';
-    if (location.pathname.includes('/status/finished')) return '완결 애니메이션';
-    if (location.pathname.includes('/status/upcoming')) return '방영 예정 애니메이션';
-    if (location.pathname === '/genre') return '장르별 애니메이션';
-    if (location.pathname === '/year') return '연도별 애니메이션';
-    if (location.pathname === '/animations') return '전체 애니메이션';
-    return '고급 검색';
+    if (location.pathname.includes("/status/airing"))
+      return "방영중 애니메이션";
+    if (location.pathname.includes("/status/finished"))
+      return "완결 애니메이션";
+    if (location.pathname.includes("/status/upcoming"))
+      return "방영 예정 애니메이션";
+    if (location.pathname === "/genre") return "장르별 애니메이션";
+    if (location.pathname === "/year") return "연도별 애니메이션";
+    if (location.pathname === "/animations") return "전체 애니메이션";
+    return "고급 검색";
   };
 
   const renderFilters = () => (
-    <Card elevation={3} sx={{ borderRadius: 3, overflow: 'hidden' }}>
+    <Card elevation={3} sx={{ borderRadius: 3, overflow: "hidden" }}>
       <CardContent sx={{ p: 3 }}>
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 3 }}>
+        <Box sx={{ display: "flex", alignItems: "center", gap: 1, mb: 3 }}>
           <FilterList color="primary" />
           <Typography variant="h6" fontWeight="bold" color="primary">
             검색 필터
           </Typography>
           {isMobile && (
-            <IconButton 
+            <IconButton
               onClick={() => setMobileFiltersOpen(false)}
-              sx={{ ml: 'auto' }}
+              sx={{ ml: "auto" }}
             >
               <Close />
             </IconButton>
@@ -299,22 +340,22 @@ const SearchPage: React.FC = () => {
           label="제목 검색"
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
-          onKeyPress={(e) => e.key === 'Enter' && handleSearch()}
-          sx={{ 
+          onKeyPress={(e) => e.key === "Enter" && handleSearch()}
+          sx={{
             mb: 3,
-            '& .MuiOutlinedInput-root': {
+            "& .MuiOutlinedInput-root": {
               borderRadius: 2,
-              '&:hover': {
-                boxShadow: theme.shadows[2]
-              }
-            }
+              "&:hover": {
+                boxShadow: theme.shadows[2],
+              },
+            },
           }}
           InputProps={{
             endAdornment: (
               <InputAdornment position="end">
                 <SearchIcon color="action" />
               </InputAdornment>
-            )
+            ),
           }}
         />
 
@@ -336,55 +377,58 @@ const SearchPage: React.FC = () => {
         </FormControl>
 
         {/* Genres */}
-        <Accordion 
-          elevation={0} 
-          sx={{ 
-            mb: 3, 
-            '&:before': { display: 'none' },
-            backgroundColor: 'transparent'
+        <Accordion
+          elevation={0}
+          sx={{
+            mb: 3,
+            "&:before": { display: "none" },
+            backgroundColor: "transparent",
           }}
         >
           <AccordionSummary expandIcon={<ExpandMore />}>
             <Typography fontWeight={500}>
-              장르 {selectedGenres.length > 0 && (
-                <Chip 
-                  label={selectedGenres.length} 
-                  size="small" 
-                  color="primary" 
-                  sx={{ 
-                    ml: 1, 
-                    height: 18, 
-                    fontSize: '0.7rem', 
-                    fontWeight: 500, 
-                    borderRadius: 9 
+              장르{" "}
+              {selectedGenres.length > 0 && (
+                <Chip
+                  label={selectedGenres.length}
+                  size="small"
+                  color="primary"
+                  sx={{
+                    ml: 1,
+                    height: 18,
+                    fontSize: "0.7rem",
+                    fontWeight: 500,
+                    borderRadius: 9,
                   }}
                 />
               )}
             </Typography>
           </AccordionSummary>
           <AccordionDetails>
-            <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
+            <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
               {genres.map((genre) => (
                 <Chip
                   key={genre}
                   label={genre}
                   size="small"
-                  variant={selectedGenres.includes(genre) ? "filled" : "outlined"}
+                  variant={
+                    selectedGenres.includes(genre) ? "filled" : "outlined"
+                  }
                   onClick={() => handleGenreToggle(genre)}
                   sx={{
                     height: 24,
-                    fontSize: '0.75rem',
+                    fontSize: "0.75rem",
                     fontWeight: 500,
                     borderRadius: 12,
-                    transition: 'all 0.2s ease-in-out',
-                    '&:hover': {
-                      transform: 'scale(1.02)',
-                      boxShadow: theme.shadows[1]
+                    transition: "all 0.2s ease-in-out",
+                    "&:hover": {
+                      transform: "scale(1.02)",
+                      boxShadow: theme.shadows[1],
                     },
-                    '& .MuiChip-label': {
+                    "& .MuiChip-label": {
                       px: 1.5,
-                      py: 0
-                    }
+                      py: 0,
+                    },
                   }}
                 />
               ))}
@@ -460,14 +504,14 @@ const SearchPage: React.FC = () => {
             min={0}
             max={100}
             marks={[
-              { value: 0, label: '0' },
-              { value: 50, label: '50' },
-              { value: 100, label: '100' }
+              { value: 0, label: "0" },
+              { value: 50, label: "50" },
+              { value: 100, label: "100" },
             ]}
             sx={{
-              '& .MuiSlider-thumb': {
-                boxShadow: theme.shadows[2]
-              }
+              "& .MuiSlider-thumb": {
+                boxShadow: theme.shadows[2],
+              },
             }}
           />
         </Box>
@@ -495,15 +539,15 @@ const SearchPage: React.FC = () => {
               min={1}
               max={200}
               marks={[
-                { value: 1, label: '1' },
-                { value: 12, label: '12' },
-                { value: 24, label: '24' },
-                { value: 50, label: '50+' }
+                { value: 1, label: "1" },
+                { value: 12, label: "12" },
+                { value: 24, label: "24" },
+                { value: 50, label: "50+" },
               ]}
               sx={{
-                '& .MuiSlider-thumb': {
-                  boxShadow: theme.shadows[2]
-                }
+                "& .MuiSlider-thumb": {
+                  boxShadow: theme.shadows[2],
+                },
               }}
             />
           </Box>
@@ -519,16 +563,16 @@ const SearchPage: React.FC = () => {
               px: 3,
               py: 1,
               borderRadius: 20,
-              fontSize: '0.8rem',
+              fontSize: "0.8rem",
               fontWeight: 500,
-              textTransform: 'none',
+              textTransform: "none",
               minHeight: 32,
               background: `linear-gradient(135deg, ${theme.palette.primary.main}, ${theme.palette.primary.dark})`,
-              boxShadow: 'none',
-              '&:hover': {
-                transform: 'translateY(-1px)',
-                boxShadow: theme.shadows[2]
-              }
+              boxShadow: "none",
+              "&:hover": {
+                transform: "translateY(-1px)",
+                boxShadow: theme.shadows[2],
+              },
             }}
           >
             검색
@@ -538,18 +582,18 @@ const SearchPage: React.FC = () => {
             onClick={clearFilters}
             size="small"
             startIcon={<Clear />}
-            sx={{ 
+            sx={{
               px: 3,
               py: 1,
               borderRadius: 20,
-              fontSize: '0.8rem',
+              fontSize: "0.8rem",
               fontWeight: 500,
-              textTransform: 'none',
+              textTransform: "none",
               minHeight: 32,
-              '&:hover': {
-                transform: 'translateY(-1px)',
-                boxShadow: theme.shadows[1]
-              }
+              "&:hover": {
+                transform: "translateY(-1px)",
+                boxShadow: theme.shadows[1],
+              },
             }}
           >
             초기화
@@ -569,10 +613,14 @@ const SearchPage: React.FC = () => {
           mb: 4,
           borderRadius: 4,
           background: `linear-gradient(135deg, ${theme.palette.primary.main}, ${theme.palette.primary.dark})`,
-          color: 'white'
+          color: "white",
         }}
       >
-        <Typography variant={isMobile ? "h5" : "h4"} fontWeight="bold" gutterBottom>
+        <Typography
+          variant={isMobile ? "h5" : "h4"}
+          fontWeight="bold"
+          gutterBottom
+        >
           {getPageTitle()}
         </Typography>
         <Typography variant="body1" sx={{ opacity: 0.9 }}>
@@ -584,9 +632,7 @@ const SearchPage: React.FC = () => {
         {/* Desktop Filters */}
         {!isMobile && (
           <Grid item xs={12} md={4}>
-            <Box sx={{ position: 'sticky', top: 120 }}>
-              {renderFilters()}
-            </Box>
+            <Box sx={{ position: "sticky", top: 120 }}>{renderFilters()}</Box>
           </Grid>
         )}
 
@@ -612,16 +658,31 @@ const SearchPage: React.FC = () => {
               {Array.from({ length: 6 }).map((_, index) => (
                 <Grid item xs={12} key={`skeleton-${index}`}>
                   <Card elevation={2} sx={{ borderRadius: 3 }}>
-                    <Box sx={{ display: 'flex', flexDirection: { xs: 'column', sm: 'row' } }}>
-                      <Skeleton 
-                        variant="rectangular" 
-                        width={isMobile ? '100%' : 220} 
+                    <Box
+                      sx={{
+                        display: "flex",
+                        flexDirection: { xs: "column", sm: "row" },
+                      }}
+                    >
+                      <Skeleton
+                        variant="rectangular"
+                        width={isMobile ? "100%" : 220}
                         height={isMobile ? 200 : 300}
                         animation="wave"
                       />
                       <Box sx={{ p: 2, flex: 1 }}>
-                        <Skeleton variant="text" height={32} width="80%" sx={{ mb: 1 }} />
-                        <Skeleton variant="text" height={24} width="60%" sx={{ mb: 2 }} />
+                        <Skeleton
+                          variant="text"
+                          height={32}
+                          width="80%"
+                          sx={{ mb: 1 }}
+                        />
+                        <Skeleton
+                          variant="text"
+                          height={24}
+                          width="60%"
+                          sx={{ mb: 2 }}
+                        />
                         <Skeleton variant="text" height={16} sx={{ mb: 1 }} />
                         <Skeleton variant="text" height={16} sx={{ mb: 1 }} />
                         <Skeleton variant="text" height={16} width="40%" />
@@ -634,7 +695,7 @@ const SearchPage: React.FC = () => {
           )}
 
           {error && (
-            <Paper sx={{ p: 4, textAlign: 'center', borderRadius: 3 }}>
+            <Paper sx={{ p: 4, textAlign: "center", borderRadius: 3 }}>
               <Typography color="error" variant="h6" gutterBottom>
                 검색 중 오류가 발생했습니다.
               </Typography>
@@ -647,10 +708,10 @@ const SearchPage: React.FC = () => {
           {data && (
             <>
               <Paper elevation={1} sx={{ p: 3, mb: 3, borderRadius: 3 }}>
-                <Stack 
-                  direction={{ xs: 'column', sm: 'row' }} 
-                  justifyContent="space-between" 
-                  alignItems={{ xs: 'flex-start', sm: 'center' }}
+                <Stack
+                  direction={{ xs: "column", sm: "row" }}
+                  justifyContent="space-between"
+                  alignItems={{ xs: "flex-start", sm: "center" }}
                   spacing={2}
                 >
                   <Typography variant="h6" fontWeight="bold">
@@ -663,26 +724,31 @@ const SearchPage: React.FC = () => {
               </Paper>
 
               <Grid container spacing={3}>
-                {data.Page.media.map((anime: {
-                  id: number;
-                  title: { userPreferred: string };
-                  coverImage: { large: string };
-                  averageScore?: number;
-                  genres: string[];
-                  description?: string;
-                  bannerImage?: string;
-                  status: string;
-                  episodes?: number;
-                  format: string;
-                }, index) => (
-                  <Grid item xs={12} key={anime.id}>
-                    <Fade in timeout={300 + index * 50}>
-                      <div>
-                        <AnimationCard media={anime} />
-                      </div>
-                    </Fade>
-                  </Grid>
-                ))}
+                {data.Page.media.map(
+                  (
+                    anime: {
+                      id: number;
+                      title: { userPreferred: string };
+                      coverImage: { large: string };
+                      averageScore?: number;
+                      genres: string[];
+                      description?: string;
+                      bannerImage?: string;
+                      status: string;
+                      episodes?: number;
+                      format: string;
+                    },
+                    index,
+                  ) => (
+                    <Grid item xs={12} key={anime.id}>
+                      <Fade in timeout={300 + index * 50}>
+                        <div>
+                          <AnimationCard media={anime} />
+                        </div>
+                      </Fade>
+                    </Grid>
+                  ),
+                )}
               </Grid>
 
               {data.Page.pageInfo.lastPage > 1 && (
@@ -694,9 +760,9 @@ const SearchPage: React.FC = () => {
                     color="primary"
                     size={isMobile ? "medium" : "large"}
                     sx={{
-                      '& .MuiPaginationItem-root': {
-                        borderRadius: 2
-                      }
+                      "& .MuiPaginationItem-root": {
+                        borderRadius: 2,
+                      },
                     }}
                   />
                 </Box>
@@ -712,15 +778,15 @@ const SearchPage: React.FC = () => {
         open={mobileFiltersOpen}
         onClose={() => setMobileFiltersOpen(false)}
         sx={{
-          display: { xs: 'block', md: 'none' },
-          '& .MuiDrawer-paper': {
+          display: { xs: "block", md: "none" },
+          "& .MuiDrawer-paper": {
             borderTopLeftRadius: 16,
             borderTopRightRadius: 16,
-            maxHeight: '90vh'
-          }
+            maxHeight: "90vh",
+          },
         }}
       >
-        <Box sx={{ p: 2, maxHeight: '90vh', overflowY: 'auto' }}>
+        <Box sx={{ p: 2, maxHeight: "90vh", overflowY: "auto" }}>
           {renderFilters()}
         </Box>
       </Drawer>

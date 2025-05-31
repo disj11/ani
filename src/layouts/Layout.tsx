@@ -31,8 +31,6 @@ import {
   Fade,
   Card,
   CardContent,
-  Backdrop,
-  Slide,
 } from "@mui/material";
 import {
   ExpandLess,
@@ -351,16 +349,16 @@ export default function Layout() {
                   onClick={clearFilters}
                   sx={{
                     height: 22,
-                    fontSize: '0.7rem',
+                    fontSize: "0.7rem",
                     fontWeight: 500,
                     borderRadius: 11,
-                    '& .MuiChip-label': {
+                    "& .MuiChip-label": {
                       px: 1,
-                      py: 0
+                      py: 0,
                     },
-                    '& .MuiChip-deleteIcon': {
-                      fontSize: '0.8rem'
-                    }
+                    "& .MuiChip-deleteIcon": {
+                      fontSize: "0.8rem",
+                    },
                   }}
                 />
               )}
@@ -473,11 +471,11 @@ export default function Layout() {
                 px: 3,
                 py: 1,
                 borderRadius: 20,
-                fontSize: '0.8rem',
+                fontSize: "0.8rem",
                 fontWeight: 500,
-                textTransform: 'none',
+                textTransform: "none",
                 background: `linear-gradient(135deg, ${theme.palette.primary.main}, ${theme.palette.primary.dark})`,
-                boxShadow: 'none',
+                boxShadow: "none",
                 minHeight: 32,
                 "&:hover": {
                   boxShadow: theme.shadows[2],
