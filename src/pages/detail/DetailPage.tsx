@@ -12,33 +12,56 @@ import {
   Paper,
   Avatar,
   CircularProgress,
-  Button
+  Button,
+  Container,
+  useTheme,
+  useMediaQuery,
+  Stack,
+  Divider,
+  Tooltip,
+  IconButton
 } from '@mui/material';
-import { PlayArrow } from '@mui/icons-material';
+import { 
+  PlayArrow, 
+  Favorite, 
+  Share, 
+  ArrowBack,
+  CalendarToday,
+  AccessTime
+} from '@mui/icons-material';
 import DOMPurify from 'dompurify';
 import { useMediaDetailQuery } from './apis/detail.api';
 
 const DetailPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const mediaId = parseInt(id || '0', 10);
   const { data, loading, error } = useMediaDetailQuery(mediaId);
 
   if (loading) {
     return (
-      <Box display="flex" justifyContent="center" alignItems="center" height="50vh">
-        <CircularProgress />
-      </Box>
+      <Container maxWidth="xl">
+        <Box display="flex" justifyContent="center" alignItems="center" height="50vh">
+          <CircularProgress size={60} />
+        </Box>
+      </Container>
     );
   }
 
   if (error || !data?.Media) {
     return (
-      <Box display="flex" justifyContent="center" alignItems="center" height="50vh">
-        <Typography variant="h6" color="error">
-          미디어 정보를 불러올 수 없습니다.
-        </Typography>
-      </Box>
+      <Container maxWidth="xl">
+        <Box display="flex" flexDirection="column" justifyContent="center" alignItems="center" height="50vh">
+          <Typography variant="h6" color="error" gutterBottom>
+            미디어 정보를 불러올 수 없습니다.
+          </Typography>
+          <Button variant="outlined" onClick={() => navigate(-1)} sx={{ mt: 2 }}>
+            돌아가기
+          </Button>
+        </Box>
+      </Container>
     );
   }
 
@@ -52,17 +75,31 @@ const DetailPage: React.FC = () => {
   };
 
   return (
-    <Box>
+    <Container maxWidth="xl">
+      {/* Back Button */}
+      <Box sx={{ mb: 2 }}>
+        <Button
+          startIcon={<ArrowBack />}
+          onClick={() => navigate(-1)}
+          sx={{ color: 'text.secondary' }}
+        >
+          돌아가기
+        </Button>
+      </Box>
+
       {/* Banner Section */}
       {media.bannerImage && (
-        <Box
+        <Paper
+          elevation={4}
           sx={{
-            height: 300,
+            height: { xs: 200, md: 300 },
             backgroundImage: `url(${media.bannerImage})`,
             backgroundSize: 'cover',
             backgroundPosition: 'center',
             position: 'relative',
             mb: 3,
+            borderRadius: 3,
+            overflow: 'hidden'
           }}
         >
           <Box
@@ -72,91 +109,192 @@ const DetailPage: React.FC = () => {
               left: 0,
               right: 0,
               background: 'linear-gradient(transparent, rgba(0,0,0,0.8))',
-              p: 3,
+              p: { xs: 2, md: 3 },
             }}
           >
-            <Typography variant="h3" color="white" fontWeight="bold">
+            <Typography 
+              variant={isMobile ? "h4" : "h3"} 
+              color="white" 
+              fontWeight="bold"
+              sx={{ textShadow: '2px 2px 4px rgba(0,0,0,0.7)' }}
+            >
               {media.title.userPreferred}
             </Typography>
           </Box>
-        </Box>
+        </Paper>
       )}
 
       <Grid container spacing={3}>
         {/* Left Column - Cover Image and Basic Info */}
         <Grid item xs={12} md={4}>
-          <Card>
-            <CardMedia
-              component="img"
-              image={media.coverImage.extraLarge || media.coverImage.large}
-              alt={media.title.userPreferred}
-              sx={{ height: 600, objectFit: 'cover' }}
-            />
-            <CardContent>
-              <Box mb={2}>
-                {media.averageScore && (
-                  <Box display="flex" alignItems="center" gap={1} mb={1}>
-                    <Rating value={media.averageScore / 20} readOnly size="small" />
-                    <Typography variant="body2" color="text.secondary">
-                      {media.averageScore}%
+          <Stack spacing={3}>
+            <Card elevation={4} sx={{ borderRadius: 3, overflow: 'hidden' }}>
+              <CardMedia
+                component="img"
+                image={media.coverImage.extraLarge || media.coverImage.large}
+                alt={media.title.userPreferred}
+                sx={{ 
+                  height: { xs: 400, md: 600 }, 
+                  objectFit: 'cover',
+                  transition: 'transform 0.3s ease-in-out',
+                  '&:hover': {
+                    transform: 'scale(1.02)'
+                  }
+                }}
+              />
+            </Card>
+
+            <Paper elevation={2} sx={{ p: 3, borderRadius: 3 }}>
+              {/* Rating */}
+              {media.averageScore && (
+                <Box sx={{ mb: 3, textAlign: 'center' }}>
+                  <Typography variant="h4" color="primary" fontWeight="bold">
+                    {media.averageScore}%
+                  </Typography>
+                  <Rating 
+                    value={media.averageScore / 20} 
+                    readOnly 
+                    size="large"
+                    sx={{ 
+                      mt: 1,
+                      '& .MuiRating-iconFilled': { 
+                        color: theme.palette.warning.main 
+                      }
+                    }}
+                  />
+                  <Typography variant="body2" color="text.secondary">
+                    평균 평점
+                  </Typography>
+                </Box>
+              )}
+
+              <Divider sx={{ mb: 2 }} />
+
+              {/* Basic Info */}
+              <Stack spacing={2}>
+                <Box>
+                  <Typography variant="subtitle2" color="primary" fontWeight="bold">
+                    형식
+                  </Typography>
+                  <Typography variant="body2">
+                    {media.format}
+                  </Typography>
+                </Box>
+
+                <Box>
+                  <Typography variant="subtitle2" color="primary" fontWeight="bold">
+                    상태
+                  </Typography>
+                  <Chip 
+                    label={media.status} 
+                    size="small" 
+                    color={media.status === 'RELEASING' ? 'success' : 'default'}
+                    variant="outlined"
+                  />
+                </Box>
+
+                {media.episodes && (
+                  <Box>
+                    <Typography variant="subtitle2" color="primary" fontWeight="bold">
+                      에피소드
+                    </Typography>
+                    <Typography variant="body2">
+                      {media.episodes}화
                     </Typography>
                   </Box>
                 )}
-              </Box>
 
-              <Box mb={2}>
-                <Typography variant="body2" color="text.secondary" gutterBottom>
-                  <strong>형식:</strong> {media.format}
-                </Typography>
-                <Typography variant="body2" color="text.secondary" gutterBottom>
-                  <strong>상태:</strong> {media.status}
-                </Typography>
-                {media.episodes && (
-                  <Typography variant="body2" color="text.secondary" gutterBottom>
-                    <strong>에피소드:</strong> {media.episodes}화
-                  </Typography>
-                )}
                 {media.duration && (
-                  <Typography variant="body2" color="text.secondary" gutterBottom>
-                    <strong>러닝타임:</strong> {media.duration}분
-                  </Typography>
+                  <Box>
+                    <Typography variant="subtitle2" color="primary" fontWeight="bold">
+                      러닝타임
+                    </Typography>
+                    <Stack direction="row" alignItems="center" spacing={1}>
+                      <AccessTime fontSize="small" color="action" />
+                      <Typography variant="body2">
+                        {media.duration}분
+                      </Typography>
+                    </Stack>
+                  </Box>
                 )}
-                <Typography variant="body2" color="text.secondary" gutterBottom>
-                  <strong>방영일:</strong> {formatDate(media.startDate)}
-                </Typography>
-                {media.endDate?.year && (
-                  <Typography variant="body2" color="text.secondary" gutterBottom>
-                    <strong>종료일:</strong> {formatDate(media.endDate)}
-                  </Typography>
-                )}
-              </Box>
 
-              <Box mb={2}>
-                <Typography variant="body2" fontWeight="bold" gutterBottom>
+                <Box>
+                  <Typography variant="subtitle2" color="primary" fontWeight="bold">
+                    방영일
+                  </Typography>
+                  <Stack direction="row" alignItems="center" spacing={1}>
+                    <CalendarToday fontSize="small" color="action" />
+                    <Typography variant="body2">
+                      {formatDate(media.startDate)}
+                    </Typography>
+                  </Stack>
+                </Box>
+
+                {media.endDate?.year && (
+                  <Box>
+                    <Typography variant="subtitle2" color="primary" fontWeight="bold">
+                      종료일
+                    </Typography>
+                    <Stack direction="row" alignItems="center" spacing={1}>
+                      <CalendarToday fontSize="small" color="action" />
+                      <Typography variant="body2">
+                        {formatDate(media.endDate)}
+                      </Typography>
+                    </Stack>
+                  </Box>
+                )}
+              </Stack>
+
+              <Divider sx={{ my: 2 }} />
+
+              {/* Genres */}
+              <Box>
+                <Typography variant="subtitle2" color="primary" fontWeight="bold" gutterBottom>
                   장르
                 </Typography>
                 <Box display="flex" flexWrap="wrap" gap={0.5}>
                   {media.genres.map((genre: string) => (
-                    <Chip key={genre} label={genre} size="small" />
+                    <Chip 
+                      key={genre} 
+                      label={genre} 
+                      size="small" 
+                      variant="filled"
+                      sx={{
+                        backgroundColor: theme.palette.primary.light,
+                        color: theme.palette.primary.contrastText,
+                        '&:hover': {
+                          backgroundColor: theme.palette.primary.main,
+                        }
+                      }}
+                    />
                   ))}
                 </Box>
               </Box>
 
+              {/* Studios */}
               {media.studios.nodes.length > 0 && (
-                <Box mb={2}>
-                  <Typography variant="body2" fontWeight="bold" gutterBottom>
-                    제작사
-                  </Typography>
-                  {media.studios.nodes.map((studio: { id: number; name: string }) => (
-                    <Typography key={studio.id} variant="body2" color="text.secondary">
-                      {studio.name}
+                <>
+                  <Divider sx={{ my: 2 }} />
+                  <Box>
+                    <Typography variant="subtitle2" color="primary" fontWeight="bold" gutterBottom>
+                      제작사
                     </Typography>
-                  ))}
-                </Box>
+                    {media.studios.nodes.map((studio: { id: number; name: string }) => (
+                      <Chip
+                        key={studio.id}
+                        label={studio.name}
+                        size="small"
+                        variant="outlined"
+                        sx={{ mr: 0.5, mb: 0.5 }}
+                      />
+                    ))}
+                  </Box>
+                </>
               )}
 
-              {media.trailer && (
-                <Box mb={2}>
+              {/* Action Buttons */}
+              <Stack spacing={2} sx={{ mt: 3 }}>
+                {media.trailer && (
                   <Button
                     variant="contained"
                     startIcon={<PlayArrow />}
@@ -164,208 +302,327 @@ const DetailPage: React.FC = () => {
                     href={`https://www.youtube.com/watch?v=${media.trailer.id}`}
                     target="_blank"
                     rel="noopener noreferrer"
+                    sx={{
+                      borderRadius: 2,
+                      background: `linear-gradient(135deg, ${theme.palette.primary.main}, ${theme.palette.primary.dark})`,
+                      '&:hover': {
+                        transform: 'translateY(-2px)',
+                        boxShadow: theme.shadows[8]
+                      }
+                    }}
                   >
                     트레일러 보기
                   </Button>
-                </Box>
-              )}
-            </CardContent>
-          </Card>
+                )}
+                
+                <Stack direction="row" spacing={1}>
+                  <Tooltip title="관심목록에 추가">
+                    <IconButton
+                      sx={{
+                        flex: 1,
+                        border: 1,
+                        borderColor: 'divider',
+                        borderRadius: 2,
+                        '&:hover': {
+                          backgroundColor: 'error.light',
+                          color: 'error.contrastText'
+                        }
+                      }}
+                    >
+                      <Favorite />
+                    </IconButton>
+                  </Tooltip>
+                  <Tooltip title="공유하기">
+                    <IconButton
+                      sx={{
+                        flex: 1,
+                        border: 1,
+                        borderColor: 'divider',
+                        borderRadius: 2,
+                        '&:hover': {
+                          backgroundColor: 'primary.light',
+                          color: 'primary.contrastText'
+                        }
+                      }}
+                    >
+                      <Share />
+                    </IconButton>
+                  </Tooltip>
+                </Stack>
+              </Stack>
+            </Paper>
+          </Stack>
         </Grid>
 
         {/* Right Column - Main Content */}
         <Grid item xs={12} md={8}>
-          {/* Title and Description */}
-          <Box mb={3}>
-            {!media.bannerImage && (
-              <Typography variant="h4" gutterBottom fontWeight="bold">
-                {media.title.userPreferred}
-              </Typography>
-            )}
-            {media.title.english && media.title.english !== media.title.userPreferred && (
-              <Typography variant="h6" color="text.secondary" gutterBottom>
-                {media.title.english}
-              </Typography>
-            )}
-            {media.title.native && (
-              <Typography variant="h6" color="text.secondary" gutterBottom>
-                {media.title.native}
-              </Typography>
-            )}
-            
-            {media.description && (
-              <Typography
-                variant="body1"
-                sx={{ mt: 2, lineHeight: 1.7 }}
-                dangerouslySetInnerHTML={{
-                  __html: DOMPurify.sanitize(media.description),
-                }}
-              />
-            )}
-          </Box>
-
-          {/* Statistics */}
-          <Paper sx={{ p: 2, mb: 3 }}>
-            <Typography variant="h6" gutterBottom>
-              통계
-            </Typography>
-            <Grid container spacing={2}>
-              <Grid item xs={6} sm={3}>
-                <Box textAlign="center">
-                  <Typography variant="h5" color="primary">
-                    {media.averageScore || 'N/A'}
-                  </Typography>
-                  <Typography variant="body2" color="text.secondary">
-                    평균 점수
-                  </Typography>
-                </Box>
-              </Grid>
-              <Grid item xs={6} sm={3}>
-                <Box textAlign="center">
-                  <Typography variant="h5" color="primary">
-                    {media.popularity || 'N/A'}
-                  </Typography>
-                  <Typography variant="body2" color="text.secondary">
-                    인기도
-                  </Typography>
-                </Box>
-              </Grid>
-              <Grid item xs={6} sm={3}>
-                <Box textAlign="center">
-                  <Typography variant="h5" color="primary">
-                    {media.favourites || 'N/A'}
-                  </Typography>
-                  <Typography variant="body2" color="text.secondary">
-                    즐겨찾기
-                  </Typography>
-                </Box>
-              </Grid>
-              <Grid item xs={6} sm={3}>
-                <Box textAlign="center">
-                  <Typography variant="h5" color="primary">
-                    #{media.id}
-                  </Typography>
-                  <Typography variant="body2" color="text.secondary">
-                    ID
-                  </Typography>
-                </Box>
-              </Grid>
-            </Grid>
-          </Paper>
-
-          {/* Characters */}
-          {media.characters.nodes.length > 0 && (
-            <Paper sx={{ p: 2, mb: 3 }}>
-              <Typography variant="h6" gutterBottom>
-                캐릭터
-              </Typography>
-              <Grid container spacing={1}>
-                {media.characters.nodes.slice(0, 8).map((character: { id: number; name: { userPreferred: string }; image?: { medium: string } }) => (
-                  <Grid item xs={6} sm={4} md={3} key={character.id}>
-                    <Box textAlign="center">
-                      <Avatar
-                        src={character.image?.medium}
-                        sx={{ width: 80, height: 80, mx: 'auto', mb: 1 }}
-                      />
-                      <Typography variant="body2" noWrap>
-                        {character.name.userPreferred}
-                      </Typography>
-                    </Box>
-                  </Grid>
-                ))}
-              </Grid>
+          <Stack spacing={3}>
+            {/* Title and Description */}
+            <Paper elevation={2} sx={{ p: 3, borderRadius: 3 }}>
+              {!media.bannerImage && (
+                <Typography variant={isMobile ? "h5" : "h4"} gutterBottom fontWeight="bold">
+                  {media.title.userPreferred}
+                </Typography>
+              )}
+              {media.title.english && media.title.english !== media.title.userPreferred && (
+                <Typography variant="h6" color="text.secondary" gutterBottom>
+                  {media.title.english}
+                </Typography>
+              )}
+              {media.title.native && (
+                <Typography variant="h6" color="text.secondary" gutterBottom>
+                  {media.title.native}
+                </Typography>
+              )}
+              
+              {media.description && (
+                <Typography
+                  variant="body1"
+                  sx={{ mt: 2, lineHeight: 1.7 }}
+                  dangerouslySetInnerHTML={{
+                    __html: DOMPurify.sanitize(media.description),
+                  }}
+                />
+              )}
             </Paper>
-          )}
 
-          {/* Staff */}
-          {media.staff.nodes.length > 0 && (
-            <Paper sx={{ p: 2, mb: 3 }}>
-              <Typography variant="h6" gutterBottom>
-                제작진
-              </Typography>
-              <Grid container spacing={1}>
-                {media.staff.nodes.slice(0, 8).map((staff: { id: number; name: { userPreferred: string }; image?: { medium: string } }) => (
-                  <Grid item xs={6} sm={4} md={3} key={staff.id}>
-                    <Box textAlign="center">
-                      <Avatar
-                        src={staff.image?.medium}
-                        sx={{ width: 80, height: 80, mx: 'auto', mb: 1 }}
-                      />
-                      <Typography variant="body2" noWrap>
-                        {staff.name.userPreferred}
-                      </Typography>
-                    </Box>
-                  </Grid>
-                ))}
-              </Grid>
-            </Paper>
-          )}
-
-          {/* Recommendations */}
-          {media.recommendations.nodes.length > 0 && (
-            <Paper sx={{ p: 2, mb: 3 }}>
-              <Typography variant="h6" gutterBottom>
-                추천 작품
+            {/* Statistics */}
+            <Paper elevation={2} sx={{ p: 3, borderRadius: 3 }}>
+              <Typography variant="h6" gutterBottom fontWeight="bold" color="primary">
+                통계
               </Typography>
               <Grid container spacing={2}>
-                {media.recommendations.nodes.slice(0, 6).map((rec: { mediaRecommendation: { id: number; title: { userPreferred: string }; coverImage: { medium: string }; averageScore?: number } }, index: number) => (
-                  <Grid item xs={6} sm={4} md={2} key={index}>
-                    <Box 
-                      textAlign="center" 
-                      sx={{ cursor: 'pointer' }}
-                      onClick={() => navigate(`/detail/${rec.mediaRecommendation.id}`)}
-                    >
-                      <img
-                        src={rec.mediaRecommendation.coverImage.medium}
-                        alt={rec.mediaRecommendation.title.userPreferred}
-                        style={{
-                          width: '100%',
-                          height: 150,
-                          objectFit: 'cover',
-                          borderRadius: 4,
-                          marginBottom: 8,
-                        }}
-                      />
-                      <Typography variant="body2" noWrap>
-                        {rec.mediaRecommendation.title.userPreferred}
-                      </Typography>
-                      {rec.mediaRecommendation.averageScore && (
-                        <Typography variant="caption" color="text.secondary">
-                          {rec.mediaRecommendation.averageScore}%
-                        </Typography>
-                      )}
-                    </Box>
-                  </Grid>
-                ))}
+                <Grid item xs={6} sm={3}>
+                  <Paper elevation={1} sx={{ p: 2, textAlign: 'center', borderRadius: 2 }}>
+                    <Typography variant="h5" color="primary" fontWeight="bold">
+                      {media.averageScore || 'N/A'}
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary">
+                      평균 점수
+                    </Typography>
+                  </Paper>
+                </Grid>
+                <Grid item xs={6} sm={3}>
+                  <Paper elevation={1} sx={{ p: 2, textAlign: 'center', borderRadius: 2 }}>
+                    <Typography variant="h5" color="primary" fontWeight="bold">
+                      {media.popularity?.toLocaleString() || 'N/A'}
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary">
+                      인기도
+                    </Typography>
+                  </Paper>
+                </Grid>
+                <Grid item xs={6} sm={3}>
+                  <Paper elevation={1} sx={{ p: 2, textAlign: 'center', borderRadius: 2 }}>
+                    <Typography variant="h5" color="primary" fontWeight="bold">
+                      {media.favourites?.toLocaleString() || 'N/A'}
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary">
+                      즐겨찾기
+                    </Typography>
+                  </Paper>
+                </Grid>
+                <Grid item xs={6} sm={3}>
+                  <Paper elevation={1} sx={{ p: 2, textAlign: 'center', borderRadius: 2 }}>
+                    <Typography variant="h5" color="primary" fontWeight="bold">
+                      #{media.id}
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary">
+                      ID
+                    </Typography>
+                  </Paper>
+                </Grid>
               </Grid>
             </Paper>
-          )}
 
-          {/* External Links */}
-          {media.externalLinks.length > 0 && (
-            <Paper sx={{ p: 2 }}>
-              <Typography variant="h6" gutterBottom>
-                외부 링크
-              </Typography>
-              <Box display="flex" flexWrap="wrap" gap={1}>
-                {media.externalLinks.map((link: { id: number; url: string; site: string }) => (
-                  <Button
-                    key={link.id}
-                    variant="outlined"
-                    size="small"
-                    href={link.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    {link.site}
-                  </Button>
-                ))}
-              </Box>
-            </Paper>
-          )}
+            {/* Characters */}
+            {media.characters.nodes.length > 0 && (
+              <Paper elevation={2} sx={{ p: 3, borderRadius: 3 }}>
+                <Typography variant="h6" gutterBottom fontWeight="bold" color="primary">
+                  캐릭터
+                </Typography>
+                <Grid container spacing={2}>
+                  {media.characters.nodes.slice(0, isMobile ? 4 : 8).map((character: { id: number; name: { userPreferred: string }; image?: { medium: string } }) => (
+                    <Grid item xs={6} sm={4} md={3} key={character.id}>
+                      <Card 
+                        elevation={1} 
+                        sx={{ 
+                          p: 2, 
+                          textAlign: 'center', 
+                          borderRadius: 2,
+                          transition: 'all 0.2s ease-in-out',
+                          '&:hover': {
+                            transform: 'translateY(-4px)',
+                            boxShadow: theme.shadows[4]
+                          }
+                        }}
+                      >
+                        <Avatar
+                          src={character.image?.medium}
+                          sx={{ 
+                            width: { xs: 60, md: 80 }, 
+                            height: { xs: 60, md: 80 }, 
+                            mx: 'auto', 
+                            mb: 1,
+                            boxShadow: theme.shadows[2]
+                          }}
+                        />
+                        <Typography 
+                          variant="body2" 
+                          noWrap
+                          sx={{ 
+                            fontWeight: 500,
+                            overflow: 'hidden',
+                            textOverflow: 'ellipsis'
+                          }}
+                        >
+                          {character.name.userPreferred}
+                        </Typography>
+                      </Card>
+                    </Grid>
+                  ))}
+                </Grid>
+              </Paper>
+            )}
+
+            {/* Staff */}
+            {media.staff.nodes.length > 0 && (
+              <Paper elevation={2} sx={{ p: 3, borderRadius: 3 }}>
+                <Typography variant="h6" gutterBottom fontWeight="bold" color="primary">
+                  제작진
+                </Typography>
+                <Grid container spacing={2}>
+                  {media.staff.nodes.slice(0, isMobile ? 4 : 8).map((staff: { id: number; name: { userPreferred: string }; image?: { medium: string } }) => (
+                    <Grid item xs={6} sm={4} md={3} key={staff.id}>
+                      <Card 
+                        elevation={1} 
+                        sx={{ 
+                          p: 2, 
+                          textAlign: 'center', 
+                          borderRadius: 2,
+                          transition: 'all 0.2s ease-in-out',
+                          '&:hover': {
+                            transform: 'translateY(-4px)',
+                            boxShadow: theme.shadows[4]
+                          }
+                        }}
+                      >
+                        <Avatar
+                          src={staff.image?.medium}
+                          sx={{ 
+                            width: { xs: 60, md: 80 }, 
+                            height: { xs: 60, md: 80 }, 
+                            mx: 'auto', 
+                            mb: 1,
+                            boxShadow: theme.shadows[2]
+                          }}
+                        />
+                        <Typography 
+                          variant="body2" 
+                          noWrap
+                          sx={{ 
+                            fontWeight: 500,
+                            overflow: 'hidden',
+                            textOverflow: 'ellipsis'
+                          }}
+                        >
+                          {staff.name.userPreferred}
+                        </Typography>
+                      </Card>
+                    </Grid>
+                  ))}
+                </Grid>
+              </Paper>
+            )}
+
+            {/* Recommendations */}
+            {media.recommendations.nodes.length > 0 && (
+              <Paper elevation={2} sx={{ p: 3, borderRadius: 3 }}>
+                <Typography variant="h6" gutterBottom fontWeight="bold" color="primary">
+                  추천 작품
+                </Typography>
+                <Grid container spacing={2}>
+                  {media.recommendations.nodes.slice(0, isMobile ? 3 : 6).map((rec: { mediaRecommendation: { id: number; title: { userPreferred: string }; coverImage: { medium: string }; averageScore?: number } }, index: number) => (
+                    <Grid item xs={4} sm={4} md={2} key={index}>
+                      <Card
+                        elevation={1}
+                        sx={{ 
+                          cursor: 'pointer',
+                          transition: 'all 0.2s ease-in-out',
+                          '&:hover': {
+                            transform: 'translateY(-4px)',
+                            boxShadow: theme.shadows[4]
+                          }
+                        }}
+                        onClick={() => navigate(`/detail/${rec.mediaRecommendation.id}`)}
+                      >
+                        <CardMedia
+                          component="img"
+                          src={rec.mediaRecommendation.coverImage.medium}
+                          alt={rec.mediaRecommendation.title.userPreferred}
+                          sx={{
+                            height: { xs: 120, md: 150 },
+                            objectFit: 'cover',
+                          }}
+                        />
+                        <CardContent sx={{ p: 1 }}>
+                          <Typography 
+                            variant="caption" 
+                            noWrap
+                            sx={{ 
+                              display: 'block',
+                              fontWeight: 500,
+                              mb: 0.5
+                            }}
+                          >
+                            {rec.mediaRecommendation.title.userPreferred}
+                          </Typography>
+                          {rec.mediaRecommendation.averageScore && (
+                            <Typography variant="caption" color="text.secondary">
+                              ★ {rec.mediaRecommendation.averageScore}%
+                            </Typography>
+                          )}
+                        </CardContent>
+                      </Card>
+                    </Grid>
+                  ))}
+                </Grid>
+              </Paper>
+            )}
+
+            {/* External Links */}
+            {media.externalLinks.length > 0 && (
+              <Paper elevation={2} sx={{ p: 3, borderRadius: 3 }}>
+                <Typography variant="h6" gutterBottom fontWeight="bold" color="primary">
+                  외부 링크
+                </Typography>
+                <Stack direction="row" spacing={1} sx={{ flexWrap: 'wrap', gap: 1 }}>
+                  {media.externalLinks.map((link: { id: number; url: string; site: string }) => (
+                    <Button
+                      key={link.id}
+                      variant="outlined"
+                      size="small"
+                      href={link.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      sx={{
+                        borderRadius: 2,
+                        '&:hover': {
+                          transform: 'translateY(-2px)',
+                          boxShadow: theme.shadows[4]
+                        }
+                      }}
+                    >
+                      {link.site}
+                    </Button>
+                  ))}
+                </Stack>
+              </Paper>
+            )}
+          </Stack>
         </Grid>
       </Grid>
-    </Box>
+    </Container>
   );
 };
 
