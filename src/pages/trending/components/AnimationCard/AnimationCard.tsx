@@ -4,6 +4,7 @@ import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
 import DOMPurify from "dompurify";
+import { useNavigate } from "react-router";
 import { Media } from "../../types/trending.type";
 
 interface AnimationCardProps {
@@ -11,6 +12,12 @@ interface AnimationCardProps {
 }
 
 const AnimationCard = ({ media }: AnimationCardProps) => {
+  const navigate = useNavigate();
+
+  const handleDetailClick = () => {
+    navigate(`/detail/${media.id}`);
+  };
+
   return (
     <Card>
       <Box display="flex">
@@ -59,7 +66,7 @@ const AnimationCard = ({ media }: AnimationCardProps) => {
             }}
           />
           <Box display="flex" justifyContent="end" mt={3}>
-            <Link component="button" variant="body2" color="primary">
+            <Link component="button" variant="body2" color="primary" onClick={handleDetailClick}>
               자세히 보기
             </Link>
           </Box>

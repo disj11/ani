@@ -1,8 +1,11 @@
 import { Stack, Tooltip, IconButton, TextField } from "@mui/material";
-import { ThemeSwitcher } from "@toolpad/core";
+import { Brightness4, Brightness7 } from "@mui/icons-material";
 import SearchIcon from "@mui/icons-material/Search";
+import { useThemeMode } from "../commons/context/ThemeContext";
 
 export default function ToolbarActionsSearch() {
+  const { mode, toggleColorMode } = useThemeMode();
+
   return (
     <Stack direction="row">
       <Tooltip title="Search" enterDelay={1000}>
@@ -34,7 +37,11 @@ export default function ToolbarActionsSearch() {
         }}
         sx={{ display: { xs: "none", md: "inline-block" }, mr: 1 }}
       />
-      <ThemeSwitcher />
+      <Tooltip title="Toggle theme">
+        <IconButton onClick={toggleColorMode} color="inherit">
+          {mode === 'dark' ? <Brightness7 /> : <Brightness4 />}
+        </IconButton>
+      </Tooltip>
     </Stack>
   );
 }

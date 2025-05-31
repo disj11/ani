@@ -4,6 +4,7 @@ import { RouterProvider } from "react-router";
 import "./index.css";
 import router from "./routers/router.tsx";
 import { ApolloClient, ApolloProvider, InMemoryCache } from "@apollo/client";
+import { CustomThemeProvider } from "./commons/context/ThemeContext";
 
 const client = new ApolloClient({
   uri: "https://graphql.anilist.co",
@@ -12,8 +13,10 @@ const client = new ApolloClient({
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <ApolloProvider client={client}>
-      <RouterProvider router={router} />
-    </ApolloProvider>
+    <CustomThemeProvider>
+      <ApolloProvider client={client}>
+        <RouterProvider router={router} />
+      </ApolloProvider>
+    </CustomThemeProvider>
   </StrictMode>,
 );

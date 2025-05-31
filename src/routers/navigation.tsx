@@ -1,5 +1,14 @@
-import { ListAlt, TrendingUp } from "@mui/icons-material";
-import type { Navigation } from "@toolpad/core";
+import { TrendingUp } from "@mui/icons-material";
+import { ReactNode } from "react";
+
+interface NavigationItem {
+  kind?: "header";
+  title: string;
+  segment?: string;
+  icon?: ReactNode;
+}
+
+type Navigation = NavigationItem[];
 
 export const navigation: Navigation = [
   {
@@ -10,10 +19,5 @@ export const navigation: Navigation = [
     segment: "trending",
     title: "트렌드",
     icon: <TrendingUp />,
-  },
-  {
-    segment: "animations",
-    title: "목록",
-    icon: <ListAlt />,
   },
 ];

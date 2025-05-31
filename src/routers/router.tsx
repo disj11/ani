@@ -2,7 +2,7 @@ import { createBrowserRouter } from "react-router";
 import App from "../App";
 import Layout from "../layouts/Layout";
 import TrendingPage from "../pages/trending";
-import AnimationsPage from "../pages/animations";
+import DetailPage from "../pages/detail";
 import { Navigate } from "react-router";
 
 const router = createBrowserRouter([
@@ -22,8 +22,8 @@ const router = createBrowserRouter([
             Component: TrendingPage,
           },
           {
-            path: "/animations",
-            Component: AnimationsPage,
+            path: "/detail/:id",
+            Component: DetailPage,
           },
         ],
       },
