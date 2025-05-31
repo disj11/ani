@@ -1,5 +1,6 @@
 name: Build and Dploy
 on:
+  workflow_dispatch:
   push:
     branches:
       - main
