@@ -11,16 +11,10 @@ import {
   Grid,
   Paper,
   Avatar,
-  List,
-  ListItem,
-  ListItemAvatar,
-  ListItemText,
   CircularProgress,
-  Divider,
-  Button,
-  Link as MuiLink
+  Button
 } from '@mui/material';
-import { PlayArrow, Favorite, Star, CalendarToday } from '@mui/icons-material';
+import { PlayArrow } from '@mui/icons-material';
 import DOMPurify from 'dompurify';
 import { useMediaDetailQuery } from './apis/detail.api';
 
@@ -142,7 +136,7 @@ const DetailPage: React.FC = () => {
                   장르
                 </Typography>
                 <Box display="flex" flexWrap="wrap" gap={0.5}>
-                  {media.genres.map((genre) => (
+                  {media.genres.map((genre: string) => (
                     <Chip key={genre} label={genre} size="small" />
                   ))}
                 </Box>
@@ -153,7 +147,7 @@ const DetailPage: React.FC = () => {
                   <Typography variant="body2" fontWeight="bold" gutterBottom>
                     제작사
                   </Typography>
-                  {media.studios.nodes.map((studio) => (
+                  {media.studios.nodes.map((studio: { id: number; name: string }) => (
                     <Typography key={studio.id} variant="body2" color="text.secondary">
                       {studio.name}
                     </Typography>
@@ -266,7 +260,7 @@ const DetailPage: React.FC = () => {
                 캐릭터
               </Typography>
               <Grid container spacing={1}>
-                {media.characters.nodes.slice(0, 8).map((character) => (
+                {media.characters.nodes.slice(0, 8).map((character: { id: number; name: { userPreferred: string }; image?: { medium: string } }) => (
                   <Grid item xs={6} sm={4} md={3} key={character.id}>
                     <Box textAlign="center">
                       <Avatar
@@ -290,7 +284,7 @@ const DetailPage: React.FC = () => {
                 제작진
               </Typography>
               <Grid container spacing={1}>
-                {media.staff.nodes.slice(0, 8).map((staff) => (
+                {media.staff.nodes.slice(0, 8).map((staff: { id: number; name: { userPreferred: string }; image?: { medium: string } }) => (
                   <Grid item xs={6} sm={4} md={3} key={staff.id}>
                     <Box textAlign="center">
                       <Avatar
@@ -314,7 +308,7 @@ const DetailPage: React.FC = () => {
                 추천 작품
               </Typography>
               <Grid container spacing={2}>
-                {media.recommendations.nodes.slice(0, 6).map((rec, index) => (
+                {media.recommendations.nodes.slice(0, 6).map((rec: { mediaRecommendation: { id: number; title: { userPreferred: string }; coverImage: { medium: string }; averageScore?: number } }, index: number) => (
                   <Grid item xs={6} sm={4} md={2} key={index}>
                     <Box 
                       textAlign="center" 
@@ -354,7 +348,7 @@ const DetailPage: React.FC = () => {
                 외부 링크
               </Typography>
               <Box display="flex" flexWrap="wrap" gap={1}>
-                {media.externalLinks.map((link) => (
+                {media.externalLinks.map((link: { id: number; url: string; site: string }) => (
                   <Button
                     key={link.id}
                     variant="outlined"

@@ -29,7 +29,7 @@ export interface Media {
   description?: string;
   bannerImage?: string;
   status: string;
-  episodes: number;
+  episodes?: number;
   format: string;
 }
 
