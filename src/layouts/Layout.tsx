@@ -1,15 +1,15 @@
 import React, { useState } from "react";
-import { 
-  AppBar, 
-  Toolbar, 
-  Typography, 
-  Drawer, 
-  List, 
-  ListItem, 
-  ListItemButton, 
-  ListItemIcon, 
-  ListItemText, 
-  Box, 
+import {
+  AppBar,
+  Toolbar,
+  Typography,
+  Drawer,
+  List,
+  ListItem,
+  ListItemButton,
+  ListItemIcon,
+  ListItemText,
+  Box,
   Container,
   CssBaseline,
   Divider,
@@ -32,16 +32,16 @@ import {
   Card,
   CardContent,
   Backdrop,
-  Slide
+  Slide,
 } from "@mui/material";
-import { 
-  ExpandLess, 
-  ExpandMore, 
+import {
+  ExpandLess,
+  ExpandMore,
   Search as SearchIcon,
   FilterList,
   Clear,
   Menu as MenuIcon,
-  Close as CloseIcon
+  Close as CloseIcon,
 } from "@mui/icons-material";
 import { Outlet, useNavigate, useLocation } from "react-router";
 import ToolbarActionsSearch from "./ToolbarActionsSearch";
@@ -51,16 +51,34 @@ import LogoIcon from "../commons/components/LogoIcon";
 const drawerWidth = 320;
 
 const genres = [
-  "Action", "Adventure", "Comedy", "Drama", "Ecchi", "Fantasy", 
-  "Horror", "Mahou Shoujo", "Mecha", "Music", "Mystery", "Psychological", 
-  "Romance", "Sci-Fi", "Slice of Life", "Sports", "Supernatural", "Thriller"
+  "Action",
+  "Adventure",
+  "Comedy",
+  "Drama",
+  "Ecchi",
+  "Fantasy",
+  "Horror",
+  "Mahou Shoujo",
+  "Mecha",
+  "Music",
+  "Mystery",
+  "Psychological",
+  "Romance",
+  "Sci-Fi",
+  "Slice of Life",
+  "Sports",
+  "Supernatural",
+  "Thriller",
 ];
 
-const years = Array.from({ length: 30 }, (_, i) => new Date().getFullYear() - i);
+const years = Array.from(
+  { length: 30 },
+  (_, i) => new Date().getFullYear() - i,
+);
 
 export default function Layout() {
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+  const isMobile = useMediaQuery(theme.breakpoints.down("md"));
   const navigate = useNavigate();
   const location = useLocation();
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -78,17 +96,15 @@ export default function Layout() {
   };
 
   const toggleSubmenu = (segment: string) => {
-    setOpenSubmenus(prev => ({
+    setOpenSubmenus((prev) => ({
       ...prev,
-      [segment]: !prev[segment]
+      [segment]: !prev[segment],
     }));
   };
 
   const handleGenreToggle = (genre: string) => {
-    setSelectedGenres(prev => 
-      prev.includes(genre) 
-        ? prev.filter(g => g !== genre)
-        : [...prev, genre]
+    setSelectedGenres((prev) =>
+      prev.includes(genre) ? prev.filter((g) => g !== genre) : [...prev, genre],
     );
   };
 
@@ -101,13 +117,13 @@ export default function Layout() {
   const handleAdvancedSearch = () => {
     const params = new URLSearchParams();
     if (selectedGenres.length > 0) {
-      params.set('genres', selectedGenres.join(','));
+      params.set("genres", selectedGenres.join(","));
     }
     if (selectedYear) {
-      params.set('year', selectedYear.toString());
+      params.set("year", selectedYear.toString());
     }
     if (selectedStatus) {
-      params.set('status', selectedStatus);
+      params.set("status", selectedStatus);
     }
     navigate(`/search?${params.toString()}`);
   };
@@ -124,24 +140,28 @@ export default function Layout() {
   };
 
   const drawer = (
-    <Box sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
-      <Toolbar sx={{ 
-        background: `linear-gradient(135deg, ${theme.palette.primary.main}, ${theme.palette.primary.dark})`,
-        color: 'white'
-      }}>
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, width: '100%' }}>
+    <Box sx={{ height: "100%", display: "flex", flexDirection: "column" }}>
+      <Toolbar
+        sx={{
+          background: `linear-gradient(135deg, ${theme.palette.primary.main}, ${theme.palette.primary.dark})`,
+          color: "white",
+        }}
+      >
+        <Box
+          sx={{ display: "flex", alignItems: "center", gap: 1, width: "100%" }}
+        >
           <LogoIcon />
           <Typography variant="h6" noWrap component="div" sx={{ flexGrow: 1 }}>
-            Anilist
+            Ani
           </Typography>
           {isMobile && (
-            <IconButton onClick={handleDrawerToggle} sx={{ color: 'white' }}>
+            <IconButton onClick={handleDrawerToggle} sx={{ color: "white" }}>
               <CloseIcon />
             </IconButton>
           )}
         </Box>
       </Toolbar>
-      
+
       {/* Quick Search */}
       <Box sx={{ p: 2, borderBottom: `1px solid ${theme.palette.divider}` }}>
         <TextField
@@ -150,23 +170,23 @@ export default function Layout() {
           placeholder="빠른 검색..."
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
-          onKeyPress={(e) => e.key === 'Enter' && handleQuickSearch()}
+          onKeyPress={(e) => e.key === "Enter" && handleQuickSearch()}
           sx={{
-            '& .MuiOutlinedInput-root': {
+            "& .MuiOutlinedInput-root": {
               borderRadius: 3,
-              transition: 'all 0.2s ease-in-out',
-              '&:hover': {
+              transition: "all 0.2s ease-in-out",
+              "&:hover": {
                 boxShadow: theme.shadows[4],
               },
-              '&.Mui-focused': {
+              "&.Mui-focused": {
                 boxShadow: theme.shadows[6],
-              }
-            }
+              },
+            },
           }}
           InputProps={{
             startAdornment: (
               <InputAdornment position="start">
-                <SearchIcon sx={{ color: 'action.active' }} />
+                <SearchIcon sx={{ color: "action.active" }} />
               </InputAdornment>
             ),
             endAdornment: searchQuery && (
@@ -180,19 +200,22 @@ export default function Layout() {
         />
       </Box>
 
-      <Box sx={{ flex: 1, overflowY: 'auto' }}>
+      <Box sx={{ flex: 1, overflowY: "auto" }}>
         <List sx={{ px: 1, py: 2 }}>
           {navigation.map((item, index) => {
-            if (item.kind === 'header') {
+            if (item.kind === "header") {
               return (
-                <Box key={`header-${index}`} sx={{ mt: index > 0 ? 2 : 0, mb: 1 }}>
-                  <Typography 
-                    variant="overline" 
-                    sx={{ 
-                      px: 2, 
-                      color: 'text.secondary', 
-                      fontWeight: 'bold',
-                      letterSpacing: 1.2
+                <Box
+                  key={`header-${index}`}
+                  sx={{ mt: index > 0 ? 2 : 0, mb: 1 }}
+                >
+                  <Typography
+                    variant="overline"
+                    sx={{
+                      px: 2,
+                      color: "text.secondary",
+                      fontWeight: "bold",
+                      letterSpacing: 1.2,
                     }}
                   >
                     {item.title}
@@ -200,86 +223,92 @@ export default function Layout() {
                 </Box>
               );
             }
-            
-            if (item.kind === 'divider') {
+
+            if (item.kind === "divider") {
               return <Divider key={`divider-${index}`} sx={{ my: 2, mx: 2 }} />;
             }
-            
+
             const isSelected = location.pathname === `/${item.segment}`;
             const hasChildren = item.children && item.children.length > 0;
-            const isOpen = openSubmenus[item.segment || ''];
-            
+            const isOpen = openSubmenus[item.segment || ""];
+
             return (
               <React.Fragment key={item.segment}>
                 <ListItem disablePadding sx={{ mb: 0.5 }}>
-                  <ListItemButton 
+                  <ListItemButton
                     selected={isSelected}
                     onClick={() => {
                       if (hasChildren) {
                         toggleSubmenu(item.segment!);
                       } else if (item.segment) {
-                        if (item.segment === 'status') {
+                        if (item.segment === "status") {
                           toggleSubmenu(item.segment);
                         } else {
                           handleNavigate(item.segment);
                         }
                       }
                     }}
-                    sx={{ 
-                      borderRadius: 2, 
+                    sx={{
+                      borderRadius: 2,
                       mx: 1,
-                      transition: 'all 0.2s ease-in-out',
-                      '&:hover': {
-                        transform: 'translateX(4px)',
+                      transition: "all 0.2s ease-in-out",
+                      "&:hover": {
+                        transform: "translateX(4px)",
                         boxShadow: theme.shadows[2],
                       },
-                      '&.Mui-selected': {
+                      "&.Mui-selected": {
                         background: `linear-gradient(135deg, ${theme.palette.primary.main}20, ${theme.palette.primary.light}40)`,
                         borderLeft: `4px solid ${theme.palette.primary.main}`,
-                        '&:hover': {
+                        "&:hover": {
                           background: `linear-gradient(135deg, ${theme.palette.primary.main}30, ${theme.palette.primary.light}50)`,
-                        }
-                      }
+                        },
+                      },
                     }}
                   >
-                    <ListItemIcon sx={{ 
-                      minWidth: 40,
-                      color: isSelected ? 'primary.main' : 'text.secondary'
-                    }}>
+                    <ListItemIcon
+                      sx={{
+                        minWidth: 40,
+                        color: isSelected ? "primary.main" : "text.secondary",
+                      }}
+                    >
                       {item.icon}
                     </ListItemIcon>
-                    <ListItemText 
-                      primary={item.title} 
+                    <ListItemText
+                      primary={item.title}
                       sx={{
-                        '& .MuiListItemText-primary': {
+                        "& .MuiListItemText-primary": {
                           fontWeight: isSelected ? 600 : 400,
-                          color: isSelected ? 'primary.main' : 'text.primary'
-                        }
+                          color: isSelected ? "primary.main" : "text.primary",
+                        },
                       }}
                     />
                     {hasChildren && (
-                      <Box sx={{ color: 'text.secondary' }}>
+                      <Box sx={{ color: "text.secondary" }}>
                         {isOpen ? <ExpandLess /> : <ExpandMore />}
                       </Box>
                     )}
                   </ListItemButton>
                 </ListItem>
-                
+
                 {hasChildren && (
                   <Collapse in={isOpen} timeout="auto" unmountOnExit>
                     <List component="div" disablePadding>
                       {item.children!.map((child) => (
-                        <ListItem key={child.segment} disablePadding sx={{ mb: 0.5 }}>
+                        <ListItem
+                          key={child.segment}
+                          disablePadding
+                          sx={{ mb: 0.5 }}
+                        >
                           <ListItemButton
-                            sx={{ 
-                              pl: 5, 
-                              borderRadius: 2, 
+                            sx={{
+                              pl: 5,
+                              borderRadius: 2,
                               mx: 1,
-                              transition: 'all 0.2s ease-in-out',
-                              '&:hover': {
-                                transform: 'translateX(4px)',
-                                backgroundColor: 'action.hover'
-                              }
+                              transition: "all 0.2s ease-in-out",
+                              "&:hover": {
+                                transform: "translateX(4px)",
+                                backgroundColor: "action.hover",
+                              },
                             }}
                             selected={location.pathname === `/${child.segment}`}
                             onClick={() => handleNavigate(child.segment!)}
@@ -302,14 +331,16 @@ export default function Layout() {
         <Divider sx={{ my: 2 }} />
 
         {/* Enhanced Filters Section */}
-        <Card sx={{ mx: 2, mb: 2, overflow: 'visible' }} elevation={2}>
+        <Card sx={{ mx: 2, mb: 2, overflow: "visible" }} elevation={2}>
           <CardContent sx={{ p: 2 }}>
-            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 2 }}>
+            <Box sx={{ display: "flex", alignItems: "center", gap: 1, mb: 2 }}>
               <FilterList fontSize="small" color="primary" />
               <Typography variant="subtitle2" fontWeight="bold" color="primary">
                 스마트 필터
               </Typography>
-              {(selectedGenres.length > 0 || selectedYear || selectedStatus) && (
+              {(selectedGenres.length > 0 ||
+                selectedYear ||
+                selectedStatus) && (
                 <Chip
                   label="초기화"
                   size="small"
@@ -323,44 +354,47 @@ export default function Layout() {
             </Box>
 
             {/* Genre Filter */}
-            <Accordion 
-              elevation={0} 
-              sx={{ 
-                '&:before': { display: 'none' },
-                backgroundColor: 'transparent'
+            <Accordion
+              elevation={0}
+              sx={{
+                "&:before": { display: "none" },
+                backgroundColor: "transparent",
               }}
             >
-              <AccordionSummary 
-                expandIcon={<ExpandMore />} 
+              <AccordionSummary
+                expandIcon={<ExpandMore />}
                 sx={{ px: 0, minHeight: 40 }}
               >
                 <Typography variant="body2" fontWeight={500}>
-                  장르 {selectedGenres.length > 0 && (
-                    <Chip 
-                      label={selectedGenres.length} 
-                      size="small" 
-                      color="primary" 
+                  장르{" "}
+                  {selectedGenres.length > 0 && (
+                    <Chip
+                      label={selectedGenres.length}
+                      size="small"
+                      color="primary"
                       sx={{ ml: 1, height: 20 }}
                     />
                   )}
                 </Typography>
               </AccordionSummary>
               <AccordionDetails sx={{ px: 0, pt: 0 }}>
-                <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
+                <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
                   {genres.slice(0, 12).map((genre) => (
                     <Chip
                       key={genre}
                       label={genre}
                       size="small"
-                      variant={selectedGenres.includes(genre) ? "filled" : "outlined"}
+                      variant={
+                        selectedGenres.includes(genre) ? "filled" : "outlined"
+                      }
                       onClick={() => handleGenreToggle(genre)}
-                      sx={{ 
-                        fontSize: '0.7rem',
-                        transition: 'all 0.2s ease-in-out',
-                        '&:hover': {
-                          transform: 'scale(1.05)',
-                          boxShadow: theme.shadows[2]
-                        }
+                      sx={{
+                        fontSize: "0.7rem",
+                        transition: "all 0.2s ease-in-out",
+                        "&:hover": {
+                          transform: "scale(1.05)",
+                          boxShadow: theme.shadows[2],
+                        },
                       }}
                     />
                   ))}
@@ -377,9 +411,9 @@ export default function Layout() {
                 onChange={(e) => setSelectedYear(e.target.value as number)}
                 sx={{
                   borderRadius: 2,
-                  '&:hover .MuiOutlinedInput-notchedOutline': {
-                    borderColor: 'primary.main',
-                  }
+                  "&:hover .MuiOutlinedInput-notchedOutline": {
+                    borderColor: "primary.main",
+                  },
                 }}
               >
                 <MenuItem value="">전체</MenuItem>
@@ -400,9 +434,9 @@ export default function Layout() {
                 onChange={(e) => setSelectedStatus(e.target.value)}
                 sx={{
                   borderRadius: 2,
-                  '&:hover .MuiOutlinedInput-notchedOutline': {
-                    borderColor: 'primary.main',
-                  }
+                  "&:hover .MuiOutlinedInput-notchedOutline": {
+                    borderColor: "primary.main",
+                  },
                 }}
               >
                 <MenuItem value="">전체</MenuItem>
@@ -418,19 +452,21 @@ export default function Layout() {
               variant="contained"
               fullWidth
               onClick={handleAdvancedSearch}
-              disabled={selectedGenres.length === 0 && !selectedYear && !selectedStatus}
-              sx={{ 
+              disabled={
+                selectedGenres.length === 0 && !selectedYear && !selectedStatus
+              }
+              sx={{
                 mt: 2,
                 borderRadius: 2,
                 background: `linear-gradient(135deg, ${theme.palette.primary.main}, ${theme.palette.primary.dark})`,
                 boxShadow: theme.shadows[4],
-                '&:hover': {
+                "&:hover": {
                   boxShadow: theme.shadows[8],
-                  transform: 'translateY(-2px)'
+                  transform: "translateY(-2px)",
                 },
-                '&:disabled': {
-                  background: theme.palette.action.disabledBackground
-                }
+                "&:disabled": {
+                  background: theme.palette.action.disabledBackground,
+                },
               }}
             >
               필터 적용
@@ -442,17 +478,17 @@ export default function Layout() {
   );
 
   return (
-    <Box sx={{ display: 'flex' }}>
+    <Box sx={{ display: "flex" }}>
       <CssBaseline />
       <AppBar
         position="fixed"
-        sx={{ 
-          width: { md: `calc(100% - ${drawerWidth}px)` }, 
+        sx={{
+          width: { md: `calc(100% - ${drawerWidth}px)` },
           ml: { md: `${drawerWidth}px` },
           background: `linear-gradient(135deg, ${theme.palette.primary.main}, ${theme.palette.primary.dark})`,
-          backdropFilter: 'blur(10px)',
+          backdropFilter: "blur(10px)",
           borderBottom: `1px solid ${theme.palette.divider}`,
-          boxShadow: theme.shadows[4]
+          boxShadow: theme.shadows[4],
         }}
       >
         <Toolbar>
@@ -467,13 +503,18 @@ export default function Layout() {
               <MenuIcon />
             </IconButton>
           )}
-          <Typography variant="h6" noWrap component="div" sx={{ flexGrow: 1, fontWeight: 600 }}>
-            {isMobile ? 'Anilist' : ''}
+          <Typography
+            variant="h6"
+            noWrap
+            component="div"
+            sx={{ flexGrow: 1, fontWeight: 600 }}
+          >
+            {isMobile ? "Ani" : ""}
           </Typography>
           <ToolbarActionsSearch />
         </Toolbar>
       </AppBar>
-      
+
       {/* Mobile Drawer */}
       <Drawer
         variant="temporary"
@@ -483,11 +524,11 @@ export default function Layout() {
           keepMounted: true,
         }}
         sx={{
-          display: { xs: 'block', md: 'none' },
-          '& .MuiDrawer-paper': { 
-            boxSizing: 'border-box', 
+          display: { xs: "block", md: "none" },
+          "& .MuiDrawer-paper": {
+            boxSizing: "border-box",
             width: drawerWidth,
-            background: `linear-gradient(180deg, ${theme.palette.background.paper}, ${theme.palette.background.default})`
+            background: `linear-gradient(180deg, ${theme.palette.background.paper}, ${theme.palette.background.default})`,
           },
         }}
       >
@@ -498,36 +539,36 @@ export default function Layout() {
       <Drawer
         variant="permanent"
         sx={{
-          display: { xs: 'none', md: 'block' },
-          '& .MuiDrawer-paper': {
-            boxSizing: 'border-box',
+          display: { xs: "none", md: "block" },
+          "& .MuiDrawer-paper": {
+            boxSizing: "border-box",
             width: drawerWidth,
             background: `linear-gradient(180deg, ${theme.palette.background.paper}, ${theme.palette.background.default})`,
             borderRight: `1px solid ${theme.palette.divider}`,
-            boxShadow: theme.shadows[2]
+            boxShadow: theme.shadows[2],
           },
         }}
       >
         {drawer}
       </Drawer>
-      
+
       <Box
         component="main"
-        sx={{ 
-          flexGrow: 1, 
-          bgcolor: 'background.default',
-          minHeight: '100vh',
+        sx={{
+          flexGrow: 1,
+          bgcolor: "background.default",
+          minHeight: "100vh",
           background: `linear-gradient(135deg, ${theme.palette.background.default}, ${theme.palette.background.paper})`,
           p: { xs: 2, sm: 3 },
-          transition: 'margin 0.3s ease-in-out'
+          transition: "margin 0.3s ease-in-out",
         }}
       >
         <Toolbar />
-        <Container 
-          maxWidth="xl" 
-          sx={{ 
+        <Container
+          maxWidth="xl"
+          sx={{
             mt: { xs: 2, sm: 3 },
-            px: { xs: 1, sm: 2, md: 3 }
+            px: { xs: 1, sm: 2, md: 3 },
           }}
         >
           <Fade in timeout={300}>
