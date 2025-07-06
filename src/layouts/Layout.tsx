@@ -450,7 +450,7 @@ export default function Layout() {
                   },
                 }}
               >
-                <MenuItem value="">전체</MenuItem>
+                <MenuItem value="">All</MenuItem>
                 <MenuItem value="RELEASING">Airing</MenuItem>
                 <MenuItem value="FINISHED">Completed</MenuItem>
                 <MenuItem value="NOT_YET_RELEASED">Upcoming</MenuItem>

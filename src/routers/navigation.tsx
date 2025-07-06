@@ -1,14 +1,14 @@
-import { 
-  TrendingUp, 
-  Search, 
-  Category, 
-  DateRange, 
-  Star, 
-  PlayArrow, 
-  CheckCircle, 
+import {
+  TrendingUp,
+  Search,
+  Category,
+  DateRange,
+  Star,
+  PlayArrow,
+  CheckCircle,
   Schedule,
   NewReleases,
-  Whatshot
+  Whatshot,
 } from "@mui/icons-material";
 import { ReactNode } from "react";
 
@@ -31,6 +31,11 @@ export const navigation: Navigation = [
     segment: "trending",
     title: "Trending",
     icon: <TrendingUp />,
+  },
+  {
+    segment: "schedule",
+    title: "Weekly Schedul",
+    icon: <Schedule />,
   },
   {
     segment: "search",

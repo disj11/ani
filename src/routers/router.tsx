@@ -7,6 +7,7 @@ import SearchPage from "../pages/search";
 import PopularPage from "../pages/popular";
 import NewReleasesPage from "../pages/new-releases";
 import { Navigate } from "react-router";
+import SchedulePage from "../pages/schedule";
 
 const router = createBrowserRouter(
   [
@@ -48,6 +49,10 @@ const router = createBrowserRouter(
             {
               path: "/year",
               Component: SearchPage,
+            },
+            {
+              path: "/schedule",
+              Component: SchedulePage,
             },
             {
               path: "/status/airing",
