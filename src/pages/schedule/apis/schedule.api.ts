@@ -1,45 +1,18 @@
 import { useQuery, gql } from "@apollo/client";
-
-export interface AiringScheduleNode {
-  airingAt: number;
-  episode: number;
-}
-
-export interface AiringAnime {
-  id: number;
-  title: {
-    userPreferred: string;
-  };
-  coverImage: {
-    large: string;
-  };
-  averageScore?: number;
-  genres: string[];
-  description?: string;
-  bannerImage?: string;
-  status: string;
-  episodes?: number;
-  format: string;
-  airingSchedule: {
-    nodes: AiringScheduleNode[];
-  };
-}
-
-export interface AiringAnimeResponse {
-  Page: {
-    media: AiringAnime[];
-  };
-}
-
-export interface AiringAnimeVariables {
-  page: number;
-  perPage: number;
-}
+import {
+  AiringAnimeResponse,
+  AiringAnimeVariables,
+} from "../types/schedule.type";
 
 const GET_AIRING_ANIME = gql`
-  query GetAiringAnime($page: Int, $perPage: Int) {
+  query GetAiringAnime($page: Int, $perPage: Int, $isAdult: Boolean = false) {
     Page(page: $page, perPage: $perPage) {
-      media(type: ANIME, status: RELEASING, sort: [POPULARITY_DESC]) {
+      media(
+        type: ANIME
+        status: RELEASING
+        sort: [POPULARITY_DESC]
+        isAdult: $isAdult
+      ) {
         id
         title {
           userPreferred
@@ -65,7 +38,9 @@ const GET_AIRING_ANIME = gql`
   }
 `;
 
-export const useAiringAnimeScheduleQuery = (variables: AiringAnimeVariables) => {
+export const useAiringAnimeScheduleQuery = (
+  variables: AiringAnimeVariables,
+) => {
   return useQuery<AiringAnimeResponse>(GET_AIRING_ANIME, {
     variables,
     fetchPolicy: "cache-and-network",
