@@ -190,7 +190,7 @@ const SchedulePage: React.FC = () => {
           <Box>
             {weekdayMap[tab] && weekdayMap[tab].length > 0 ? (
               <Grid container spacing={3}>
-                {weekdayMap[tab].map((anime, idx) => (
+                {weekdayMap[tab].map((anime) => (
                   <Grid item xs={12} key={anime.id}>
                     <AnimationCard media={anime} />
                   </Grid>
