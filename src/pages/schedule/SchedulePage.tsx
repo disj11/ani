@@ -18,7 +18,8 @@ import {
 } from "@mui/material";
 import { CalendarToday, Refresh } from "@mui/icons-material";
 import AnimationCard from "../trending/components/AnimationCard/AnimationCard";
-import { useAiringAnimeScheduleQuery, AiringAnime } from "./apis/schedule.api";
+import { useAiringAnimeScheduleQuery } from "./apis/schedule.api";
+import { AiringAnime } from "./types/schedule.type";
 
 // Weekday mapping (0: Sunday ~ 6: Saturday)
 const WEEKDAYS = [
