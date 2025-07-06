@@ -604,9 +604,14 @@ this in the docs: http://dev.apollodata.com/core/fragments.html#unique-names`):l
     }
   }
 `,iW=e=>ul(oW,{variables:e,fetchPolicy:"cache-and-network"}),y1=[{value:"WINTER",label:"Winter"},{value:"SPRING",label:"Spring"},{value:"SUMMER",label:"Summer"},{value:"FALL",label:"Fall"}],aW=()=>{var v;const[e,t]=k.useState(1),[n,r]=k.useState(""),[o,s]=k.useState(new Date().getFullYear()),{data:l,loading:u,error:d}=iW({page:e,perPage:20,season:n||void 0,seasonYear:o}),f=x=>{r(x.target.value),t(1)},h=x=>{s(x.target.value),t(1)},m=(x,S)=>{t(S),window.scrollTo({top:0,behavior:"smooth"})},g=Array.from({length:5},(x,S)=>new Date().getFullYear()-S);return y.jsxs(et,{children:[y.jsx(_e,{variant:"h4",gutterBottom:!0,fontWeight:"bold",children:"New Anime Releases"}),y.jsx(Yt,{sx:{p:2,mb:3},children:y.jsxs(et,{sx:{display:"flex",gap:2,alignItems:"center",flexWrap:"wrap"},children:[y.jsxs(Bo,{size:"small",sx:{minWidth:120},children:[y.jsx(Wo,{children:"Year"}),y.jsx(ko,{value:o,label:"Year",onChange:h,children:g.map(x=>y.jsx(Bn,{value:x,children:x},x))})]}),y.jsxs(Bo,{size:"small",sx:{minWidth:120},children:[y.jsx(Wo,{children:"Season"}),y.jsxs(ko,{value:n,label:"Season",onChange:f,children:[y.jsx(Bn,{value:"",children:"All"}),y1.map(x=>y.jsx(Bn,{value:x.value,children:x.label},x.value))]})]}),y.jsx(Ar,{label:"Show Airing Only",color:"primary",variant:"outlined",size:"small"})]})}),u&&y.jsx(et,{display:"flex",justifyContent:"center",py:4,children:y.jsx(ol,{})}),d&&y.jsx(_e,{color:"error",textAlign:"center",children:"An error occurred while fetching data."}),l&&y.jsxs(y.Fragment,{children:[y.jsx(et,{mb:2,children:y.jsxs(_e,{variant:"h6",children:[o," ",n?(v=y1.find(x=>x.value===n))==null?void 0:v.label:"All"," ",": ",l.Page.pageInfo.total," items"]})}),y.jsx(rn,{container:!0,spacing:3,children:l.Page.media.map(x=>y.jsx(rn,{item:!0,xs:12,children:y.jsx(hc,{media:x})},x.id))}),l.Page.pageInfo.lastPage>1&&y.jsx(et,{display:"flex",justifyContent:"center",mt:4,children:y.jsx(zy,{count:l.Page.pageInfo.lastPage,page:e,onChange:m,color:"primary",size:"large"})})]})]})},sW=lo`
-  query GetAiringAnime($page: Int, $perPage: Int) {
+  query GetAiringAnime($page: Int, $perPage: Int, $isAdult: Boolean = false) {
     Page(page: $page, perPage: $perPage) {
-      media(type: ANIME, status: RELEASING, sort: [POPULARITY_DESC]) {
+      media(
+        type: ANIME
+        status: RELEASING
+        sort: [POPULARITY_DESC]
+        isAdult: $isAdult
+      ) {
         id
         title {
           userPreferred
