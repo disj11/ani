@@ -15,8 +15,16 @@ import {
   Container,
   Tooltip,
   IconButton,
+  Skeleton,
+  Card,
+  Button,
 } from "@mui/material";
-import { CalendarToday, Refresh } from "@mui/icons-material";
+import {
+  CalendarToday,
+  Refresh,
+  AccessTime,
+  ErrorOutline,
+} from "@mui/icons-material";
 import AnimationCard from "../trending/components/AnimationCard/AnimationCard";
 import { useAiringAnimeScheduleQuery } from "./apis/schedule.api";
 import { AiringAnime } from "./types/schedule.type";
@@ -56,9 +64,141 @@ function groupByWeekday(animeList: AiringAnime[]) {
   return result;
 }
 
+const SkeletonLoader: React.FC = () => {
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("md"));
+
+  return (
+    <Grid container spacing={3}>
+      {Array.from({ length: 6 }).map((_, index) => (
+        <Grid item xs={12} md={12} lg={6} key={`skeleton-${index}`}>
+          <Card elevation={2} sx={{ borderRadius: 3, overflow: "hidden" }}>
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: { xs: "column", sm: "row" },
+              }}
+            >
+              <Skeleton
+                variant="rectangular"
+                width={isMobile ? "100%" : 220}
+                height={isMobile ? 200 : 300}
+                animation="wave"
+              />
+              <Box sx={{ p: 2, flex: 1 }}>
+                <Skeleton
+                  variant="text"
+                  height={32}
+                  width="80%"
+                  sx={{ mb: 1 }}
+                />
+                <Skeleton
+                  variant="text"
+                  height={24}
+                  width="60%"
+                  sx={{ mb: 2 }}
+                />
+                <Skeleton variant="text" height={16} sx={{ mb: 1 }} />
+                <Skeleton variant="text" height={16} sx={{ mb: 1 }} />
+                <Skeleton variant="text" height={16} width="40%" />
+              </Box>
+            </Box>
+          </Card>
+        </Grid>
+      ))}
+    </Grid>
+  );
+};
+
+const EmptyState: React.FC<{ weekday: string }> = ({ weekday }) => {
+  const theme = useTheme();
+
+  return (
+    <Fade in>
+      <Paper
+        elevation={2}
+        sx={{
+          p: { xs: 4, md: 6 },
+          textAlign: "center",
+          borderRadius: 3,
+          background: `linear-gradient(135deg, ${theme.palette.background.paper}, ${theme.palette.background.default})`,
+        }}
+      >
+        <CalendarToday
+          sx={{
+            fontSize: { xs: 48, md: 64 },
+            color: "text.secondary",
+            mb: 2,
+            opacity: 0.5,
+          }}
+        />
+        <Typography variant="h6" color="text.secondary" gutterBottom>
+          No anime airing on {weekday}
+        </Typography>
+        <Typography
+          variant="body2"
+          color="text.secondary"
+          sx={{ opacity: 0.7 }}
+        >
+          Check back later or try a different day
+        </Typography>
+      </Paper>
+    </Fade>
+  );
+};
+
+const ErrorState: React.FC<{ onRetry: () => void }> = ({ onRetry }) => {
+  const theme = useTheme();
+
+  return (
+    <Fade in>
+      <Paper
+        elevation={2}
+        sx={{
+          p: { xs: 4, md: 6 },
+          textAlign: "center",
+          borderRadius: 3,
+          background: `linear-gradient(135deg, ${theme.palette.background.paper}, ${theme.palette.background.default})`,
+        }}
+      >
+        <ErrorOutline
+          sx={{
+            fontSize: { xs: 48, md: 64 },
+            color: "error.main",
+            mb: 2,
+            opacity: 0.8,
+          }}
+        />
+        <Typography color="error" variant="h6" gutterBottom>
+          Failed to load schedule data
+        </Typography>
+        <Typography color="text.secondary" sx={{ mb: 3 }}>
+          Please check your connection and try again
+        </Typography>
+        <Button
+          variant="contained"
+          onClick={onRetry}
+          startIcon={<Refresh />}
+          sx={{
+            borderRadius: 2,
+            background: `linear-gradient(135deg, ${theme.palette.primary.main}, ${theme.palette.primary.dark})`,
+            "&:hover": {
+              transform: "translateY(-2px)",
+              boxShadow: theme.shadows[8],
+            },
+          }}
+        >
+          Try Again
+        </Button>
+      </Paper>
+    </Fade>
+  );
+};
+
 const SchedulePage: React.FC = () => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
+  const isTablet = useMediaQuery(theme.breakpoints.down("lg"));
   const [tab, setTab] = useState<number>(new Date().getDay()); // 오늘 요일로 초기화
 
   // 한 번에 100개까지 불러옴 (방영중 애니는 100개 내외)
@@ -78,131 +218,295 @@ const SchedulePage: React.FC = () => {
     setTab(newValue);
   };
 
+  // 현재 시간 표시
+  const getCurrentTime = () => {
+    return new Date().toLocaleTimeString([], {
+      hour: "2-digit",
+      minute: "2-digit",
+    });
+  };
+
+  const getSelectedWeekdayName = () => {
+    const weekday = WEEKDAYS.find((w) => w.value === tab);
+    return weekday ? weekday.label : "Unknown";
+  };
+
   return (
     <Container maxWidth="xl">
       {/* Header */}
-      <Paper
-        elevation={4}
-        sx={{
-          p: { xs: 3, md: 4 },
-          mb: 4,
-          borderRadius: 4,
-          background: `linear-gradient(135deg, ${theme.palette.info.light}, ${theme.palette.primary.light})`,
-          color: "white",
-        }}
-      >
-        <Stack direction="row" alignItems="center" spacing={2}>
-          <CalendarToday fontSize="large" />
-          <Box flex={1}>
-            <Typography
-              variant={isMobile ? "h5" : "h4"}
-              fontWeight="bold"
-              gutterBottom
-              sx={{ color: "white" }}
-            >
-              Weekly Anime Schedule
-            </Typography>
-            <Typography variant="body1" sx={{ opacity: 0.9 }}>
-              Check out currently airing anime by weekday!
-            </Typography>
-          </Box>
-          <Tooltip title="Refresh">
-            <IconButton
-              onClick={() => refetch()}
-              sx={{
-                color: "white",
-                border: "1px solid rgba(255,255,255,0.3)",
-                ml: 2,
-              }}
-            >
-              <Refresh />
-            </IconButton>
-          </Tooltip>
-        </Stack>
-      </Paper>
-
-      {/* Weekday Tabs */}
-      <Paper
-        elevation={2}
-        sx={{
-          mb: 4,
-          borderRadius: 3,
-          background: theme.palette.background.paper,
-        }}
-      >
-        <Tabs
-          value={tab}
-          onChange={handleTabChange}
-          variant={isMobile ? "scrollable" : "standard"}
-          scrollButtons={isMobile ? "auto" : false}
-          allowScrollButtonsMobile
-          centered={!isMobile}
+      <Fade in timeout={300}>
+        <Paper
+          elevation={4}
           sx={{
-            "& .MuiTab-root": {
-              fontWeight: 600,
-              fontSize: isMobile ? "1rem" : "1.1rem",
-              minWidth: 60,
-            },
+            p: { xs: 3, md: 4 },
+            mb: 4,
+            borderRadius: 4,
+            background: `linear-gradient(135deg, ${theme.palette.info.light}, ${theme.palette.primary.light})`,
+            color: "white",
+            position: "relative",
+            overflow: "hidden",
           }}
         >
-          {WEEKDAY_ORDER.map((weekday) => (
-            <Tab
-              key={weekday}
-              label={
-                <Stack direction="row" alignItems="center" spacing={1}>
-                  <span>{WEEKDAYS[weekday].label}</span>
-                  {weekdayMap[weekday]?.length > 0 && (
-                    <Chip
-                      label={weekdayMap[weekday].length}
-                      size="small"
-                      color="primary"
-                      sx={{
-                        fontWeight: "bold",
-                        height: 20,
-                        fontSize: "0.8rem",
-                        ml: 0.5,
-                      }}
-                    />
-                  )}
-                </Stack>
-              }
-              value={weekday}
-            />
-          ))}
-        </Tabs>
-      </Paper>
+          <Box
+            sx={{
+              position: "absolute",
+              top: -20,
+              right: -20,
+              width: { xs: 80, md: 120 },
+              height: { xs: 80, md: 120 },
+              borderRadius: "50%",
+              background: "rgba(255,255,255,0.1)",
+              display: { xs: "none", sm: "block" },
+            }}
+          />
+
+          <Stack
+            direction={{ xs: "column", sm: "row" }}
+            alignItems={{ xs: "flex-start", sm: "center" }}
+            spacing={2}
+            sx={{ position: "relative", zIndex: 1 }}
+          >
+            <Box
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                width: { xs: 48, md: 64 },
+                height: { xs: 48, md: 64 },
+                borderRadius: 3,
+                backgroundColor: "rgba(255,255,255,0.2)",
+                backdropFilter: "blur(10px)",
+                mb: { xs: 1, sm: 0 },
+              }}
+            >
+              <CalendarToday fontSize={isMobile ? "medium" : "large"} />
+            </Box>
+
+            <Box flex={1}>
+              <Typography
+                variant={isMobile ? "h5" : "h4"}
+                fontWeight="bold"
+                gutterBottom
+                sx={{ color: "white" }}
+              >
+                Weekly Anime Schedule
+              </Typography>
+              <Typography
+                variant="body1"
+                sx={{
+                  opacity: 0.9,
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 1,
+                  flexWrap: "wrap",
+                }}
+              >
+                <span>Check out currently airing anime by weekday!</span>
+                <Chip
+                  icon={<AccessTime fontSize="small" />}
+                  label={`Current time: ${getCurrentTime()}`}
+                  size="small"
+                  sx={{
+                    backgroundColor: "rgba(255,255,255,0.2)",
+                    color: "white",
+                    fontWeight: "bold",
+                    "& .MuiChip-icon": {
+                      color: "white",
+                    },
+                  }}
+                />
+              </Typography>
+            </Box>
+
+            <Tooltip title="Refresh schedule data">
+              <IconButton
+                onClick={() => refetch()}
+                disabled={loading}
+                sx={{
+                  color: "white",
+                  border: "1px solid rgba(255,255,255,0.3)",
+                  borderRadius: 2,
+                  padding: { xs: 1, sm: 1.5 },
+                  "&:hover": {
+                    backgroundColor: "rgba(255,255,255,0.1)",
+                    transform: "scale(1.05)",
+                  },
+                  "&:disabled": {
+                    opacity: 0.5,
+                  },
+                }}
+              >
+                <Refresh />
+              </IconButton>
+            </Tooltip>
+          </Stack>
+        </Paper>
+      </Fade>
+
+      {/* Weekday Tabs */}
+      <Fade in timeout={500}>
+        <Paper
+          elevation={2}
+          sx={{
+            mb: 4,
+            borderRadius: 3,
+            background: theme.palette.background.paper,
+            overflow: "hidden",
+          }}
+        >
+          <Tabs
+            value={tab}
+            onChange={handleTabChange}
+            variant={isMobile ? "scrollable" : "standard"}
+            scrollButtons={isMobile ? "auto" : false}
+            allowScrollButtonsMobile
+            centered={!isMobile}
+            sx={{
+              "& .MuiTab-root": {
+                fontWeight: 600,
+                fontSize: isMobile ? "0.9rem" : "1.1rem",
+                minWidth: { xs: 80, sm: 100 },
+                padding: { xs: "12px 8px", sm: "12px 16px" },
+                transition: "all 0.3s ease-in-out",
+                "&:hover": {
+                  backgroundColor: "action.hover",
+                },
+              },
+              "& .MuiTab-selected": {
+                color: "primary.main",
+                fontWeight: 700,
+              },
+              "& .MuiTabs-indicator": {
+                height: 3,
+                borderRadius: "3px 3px 0 0",
+              },
+            }}
+          >
+            {WEEKDAY_ORDER.map((weekday) => (
+              <Tab
+                key={weekday}
+                label={
+                  <Stack
+                    direction={isMobile ? "column" : "row"}
+                    alignItems="center"
+                    spacing={isMobile ? 0.5 : 1}
+                  >
+                    <Typography
+                      variant={isMobile ? "body2" : "body1"}
+                      fontWeight="inherit"
+                    >
+                      {WEEKDAYS[weekday].label}
+                    </Typography>
+                    {weekdayMap[weekday]?.length > 0 && (
+                      <Chip
+                        label={weekdayMap[weekday].length}
+                        size="small"
+                        color="primary"
+                        sx={{
+                          fontWeight: "bold",
+                          height: { xs: 16, sm: 20 },
+                          fontSize: { xs: "0.7rem", sm: "0.8rem" },
+                          minWidth: { xs: 16, sm: 20 },
+                          "& .MuiChip-label": {
+                            px: { xs: 0.5, sm: 1 },
+                          },
+                        }}
+                      />
+                    )}
+                  </Stack>
+                }
+                value={weekday}
+              />
+            ))}
+          </Tabs>
+        </Paper>
+      </Fade>
 
       {/* Main Content */}
       {loading ? (
-        <Box display="flex" justifyContent="center" py={8}>
-          <CircularProgress size={60} />
-        </Box>
+        <Fade in timeout={300}>
+          <Box>
+            <Paper elevation={1} sx={{ p: 3, mb: 3, borderRadius: 3 }}>
+              <Stack direction="row" alignItems="center" spacing={2}>
+                <CircularProgress size={24} />
+                <Typography variant="h6" color="text.secondary">
+                  Loading {getSelectedWeekdayName()}'s schedule...
+                </Typography>
+              </Stack>
+            </Paper>
+            <SkeletonLoader />
+          </Box>
+        </Fade>
       ) : error ? (
-        <Paper sx={{ p: 4, textAlign: "center", borderRadius: 3 }}>
-          <Typography color="error" variant="h6" gutterBottom>
-            Failed to load data.
-          </Typography>
-          <Typography color="text.secondary">
-            Please try again later.
-          </Typography>
-        </Paper>
+        <ErrorState onRetry={() => refetch()} />
       ) : (
-        <Fade in>
+        <Fade in timeout={300}>
           <Box>
             {weekdayMap[tab] && weekdayMap[tab].length > 0 ? (
-              <Grid container spacing={3}>
-                {weekdayMap[tab].map((anime) => (
-                  <Grid item xs={12} key={anime.id}>
-                    <AnimationCard media={anime} />
-                  </Grid>
-                ))}
-              </Grid>
+              <>
+                {/* Results Summary */}
+                <Paper
+                  elevation={1}
+                  sx={{
+                    p: { xs: 2, md: 3 },
+                    mb: 3,
+                    borderRadius: 3,
+                    background: `linear-gradient(135deg, ${theme.palette.background.paper}, ${theme.palette.background.default})`,
+                  }}
+                >
+                  <Stack
+                    direction={{ xs: "column", sm: "row" }}
+                    justifyContent="space-between"
+                    alignItems={{ xs: "flex-start", sm: "center" }}
+                    spacing={2}
+                  >
+                    <Typography variant="h6" fontWeight="bold">
+                      {getSelectedWeekdayName()}'s Schedule:{" "}
+                      {weekdayMap[tab].length} anime
+                    </Typography>
+                    <Stack direction="row" spacing={1}>
+                      <Chip
+                        label={`Updated: ${getCurrentTime()}`}
+                        size="small"
+                        variant="outlined"
+                        sx={{ fontSize: "0.7rem" }}
+                      />
+                      {weekdayMap[tab].length > 0 && (
+                        <Chip
+                          label="Live"
+                          size="small"
+                          color="success"
+                          sx={{
+                            fontSize: "0.7rem",
+                            fontWeight: "bold",
+                          }}
+                        />
+                      )}
+                    </Stack>
+                  </Stack>
+                </Paper>
+
+                {/* Anime Cards */}
+                <Grid container spacing={3}>
+                  {weekdayMap[tab].map((anime, index) => (
+                    <Grid
+                      item
+                      xs={12}
+                      md={12}
+                      lg={isTablet ? 12 : 6}
+                      key={anime.id}
+                    >
+                      <Fade in timeout={300 + index * 100}>
+                        <Box>
+                          <AnimationCard media={anime} />
+                        </Box>
+                      </Fade>
+                    </Grid>
+                  ))}
+                </Grid>
+              </>
             ) : (
-              <Paper sx={{ p: 6, textAlign: "center", borderRadius: 3 }}>
-                <Typography variant="h6" color="text.secondary">
-                  No anime airing on this day.
-                </Typography>
-              </Paper>
+              <EmptyState weekday={getSelectedWeekdayName()} />
             )}
           </Box>
         </Fade>
