@@ -13,11 +13,15 @@ import {
   Tab,
   Paper,
   SelectChangeEvent,
+  Chip,
 } from "@mui/material";
 import { useLocation } from "react-router";
 import AnimationCard from "../trending/components/AnimationCard/AnimationCard";
 import { usePopularAnimeQuery } from "./apis/popular.api";
 import { Media } from "./types/popular.type";
+import PageHeader from "../../commons/components/PageHeader";
+import { Whatshot, Star } from "@mui/icons-material";
+import SectionHeader from "../../commons/components/SectionHeader";
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -97,9 +101,17 @@ const PopularPage: React.FC = () => {
 
   return (
     <Box>
-      <Typography variant="h4" gutterBottom fontWeight="bold">
-        {getPageTitle()}
-      </Typography>
+      <PageHeader
+        title={getPageTitle()}
+        subtitle={
+          tabValue === 0 ? "Most popular anime rankings" :
+          tabValue === 1 ? "Top Rated Rankings" :
+          tabValue === 2 ? "Trending Rankings" :
+          "Favorites Rankings"
+        }
+        icon={tabValue === 1 ? <Star /> : <Whatshot />}
+        background={`linear-gradient(135deg, #ff9800, #f44336)`}
+      />
 
       <Paper sx={{ mb: 3 }}>
         <Box sx={{ borderBottom: 1, borderColor: "divider", px: 2 }}>
@@ -131,27 +143,39 @@ const PopularPage: React.FC = () => {
       </Paper>
 
       <TabPanel value={tabValue} index={0}>
-        <Typography variant="h6" gutterBottom>
-          Popularity Rankings {selectedYear && `(${selectedYear})`}
-        </Typography>
+        <SectionHeader
+          title="Popularity Rankings"
+          subtitle="Most popular anime rankings"
+          icon={<Whatshot />}
+          right={selectedYear !== "all" ? <Chip label={selectedYear} sx={{ backgroundColor: "rgba(255,255,255,0.2)", color: "white" }} /> : undefined}
+        />
       </TabPanel>
 
       <TabPanel value={tabValue} index={1}>
-        <Typography variant="h6" gutterBottom>
-          Score Rankings {selectedYear && `(${selectedYear})`}
-        </Typography>
+        <SectionHeader
+          title="Score Rankings"
+          subtitle="Top Rated Rankings"
+          icon={<Star />}
+          right={selectedYear !== "all" ? <Chip label={selectedYear} sx={{ backgroundColor: "rgba(255,255,255,0.2)", color: "white" }} /> : undefined}
+        />
       </TabPanel>
 
       <TabPanel value={tabValue} index={2}>
-        <Typography variant="h6" gutterBottom>
-          Trending Rankings {selectedYear && `(${selectedYear})`}
-        </Typography>
+        <SectionHeader
+          title="Trending Rankings"
+          subtitle="Trending anime rankings"
+          icon={<Whatshot />}
+          right={selectedYear !== "all" ? <Chip label={selectedYear} sx={{ backgroundColor: "rgba(255,255,255,0.2)", color: "white" }} /> : undefined}
+        />
       </TabPanel>
 
       <TabPanel value={tabValue} index={3}>
-        <Typography variant="h6" gutterBottom>
-          Favorites Rankings {selectedYear && `(${selectedYear})`}
-        </Typography>
+        <SectionHeader
+          title="Favorites Rankings"
+          subtitle="Favorites anime rankings"
+          icon={<Star />}
+          right={selectedYear !== "all" ? <Chip label={selectedYear} sx={{ backgroundColor: "rgba(255,255,255,0.2)", color: "white" }} /> : undefined}
+        />
       </TabPanel>
 
       {loading && (

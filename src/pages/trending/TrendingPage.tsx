@@ -5,17 +5,17 @@ import useTrendSearchParamState from "./stores/trendSearchParamState";
 import { Media } from "./types/trending.type";
 import {
   Box,
-  Typography,
   Container,
   Paper,
   Fade,
   useTheme,
   useMediaQuery,
   Skeleton,
-  Stack,
   Chip,
 } from "@mui/material";
 import { TrendingUp, Schedule, Star, Whatshot } from "@mui/icons-material";
+import PageHeader from "../../commons/components/PageHeader";
+import SectionHeader from "../../commons/components/SectionHeader";
 
 const Animations = ({
   media,
@@ -92,7 +92,6 @@ const TrendingPage = () => {
   const { searchParams } = useTrendSearchParamState();
   const { data, loading } = useTrendingQuery(searchParams);
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down("md"));
 
   const sections = [
     {
@@ -160,121 +159,22 @@ const TrendingPage = () => {
   return (
     <Container maxWidth="xl">
       {/* Hero Section */}
-      <Paper
-        elevation={4}
-        sx={{
-          p: { xs: 3, md: 4 },
-          mb: 4,
-          borderRadius: 4,
-          background: `linear-gradient(135deg, ${theme.palette.primary.main}, ${theme.palette.primary.dark})`,
-          color: "white",
-          position: "relative",
-          overflow: "hidden",
-        }}
-      >
-        <Box
-          sx={{
-            position: "absolute",
-            top: -20,
-            right: -20,
-            width: 100,
-            height: 100,
-            borderRadius: "50%",
-            background: "rgba(255,255,255,0.1)",
-            display: { xs: "none", md: "block" },
-          }}
-        />
-        <Typography
-          variant={isMobile ? "h4" : "h3"}
-          fontWeight="bold"
-          gutterBottom
-          sx={{ position: "relative", zIndex: 1 }}
-        >
-          Trending Anime
-        </Typography>
-        <Typography
-          variant={isMobile ? "body1" : "h6"}
-          sx={{
-            opacity: 0.9,
-            position: "relative",
-            zIndex: 1,
-            maxWidth: "600px",
-          }}
-        >
-          Discover the most popular anime right now and find new works
-        </Typography>
-      </Paper>
-
+      <PageHeader
+        title="Trending Anime"
+        subtitle="Discover the most popular anime right now and find new works"
+        icon={<Whatshot />}
+        background={`linear-gradient(135deg, ${theme.palette.primary.main}, ${theme.palette.primary.dark})`}
+      />
       {/* Sections */}
       {sections.map((section, sectionIndex) => (
         <Fade in timeout={300 + sectionIndex * 200} key={section.title}>
           <Box sx={{ mb: 6 }}>
-            <Paper
-              elevation={2}
-              sx={{
-                p: 3,
-                mb: 3,
-                borderRadius: 3,
-                background: section.gradient,
-                color: "white",
-                position: "relative",
-                overflow: "hidden",
-              }}
-            >
-              <Stack
-                direction="row"
-                alignItems="center"
-                spacing={2}
-                sx={{ position: "relative", zIndex: 1 }}
-              >
-                <Box
-                  sx={{
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    width: 48,
-                    height: 48,
-                    borderRadius: 2,
-                    backgroundColor: "rgba(255,255,255,0.2)",
-                    backdropFilter: "blur(10px)",
-                  }}
-                >
-                  {section.icon}
-                </Box>
-                <Box sx={{ flex: 1 }}>
-                  <Typography
-                    variant={isMobile ? "h6" : "h5"}
-                    fontWeight="bold"
-                    gutterBottom
-                  >
-                    {section.title}
-                  </Typography>
-                  <Typography variant="body2" sx={{ opacity: 0.9 }}>
-                    {section.subtitle}
-                  </Typography>
-                </Box>
-                <Chip
-                  label={`${section.data.length} items`}
-                  sx={{
-                    backgroundColor: "rgba(255,255,255,0.2)",
-                    color: "white",
-                    fontWeight: "bold",
-                  }}
-                />
-              </Stack>
-              <Box
-                sx={{
-                  position: "absolute",
-                  bottom: -30,
-                  right: -30,
-                  width: 80,
-                  height: 80,
-                  borderRadius: "50%",
-                  background: "rgba(255,255,255,0.1)",
-                  display: { xs: "none", sm: "block" },
-                }}
-              />
-            </Paper>
+            <SectionHeader
+              title={section.title}
+              subtitle={section.subtitle}
+              icon={section.icon}
+              right={<Chip label={`${section.data.length} items`} sx={{ backgroundColor: "rgba(255,255,255,0.2)", color: "white", fontWeight: "bold" }} />}
+            />
             <Animations media={section.data} loading={loading} />
           </Box>
         </Fade>

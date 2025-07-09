@@ -13,8 +13,6 @@ import {
   Stack,
   Chip,
   Container,
-  Tooltip,
-  IconButton,
   Skeleton,
   Card,
   Button,
@@ -28,6 +26,8 @@ import {
 import AnimationCard from "../trending/components/AnimationCard/AnimationCard";
 import { useAiringAnimeScheduleQuery } from "./apis/schedule.api";
 import { AiringAnime } from "./types/schedule.type";
+import PageHeader from "../../commons/components/PageHeader";
+import SectionHeader from "../../commons/components/SectionHeader";
 
 // Weekday mapping (0: Sunday ~ 6: Saturday)
 const WEEKDAYS = [
@@ -234,114 +234,28 @@ const SchedulePage: React.FC = () => {
   return (
     <Container maxWidth="xl">
       {/* Header */}
-      <Fade in timeout={300}>
-        <Paper
-          elevation={4}
-          sx={{
-            p: { xs: 3, md: 4 },
-            mb: 4,
-            borderRadius: 4,
-            background: `linear-gradient(135deg, ${theme.palette.info.light}, ${theme.palette.primary.light})`,
-            color: "white",
-            position: "relative",
-            overflow: "hidden",
-          }}
-        >
-          <Box
+      <PageHeader
+        title="Weekly Anime Schedule"
+        subtitle="Check out currently airing anime by weekday!"
+        icon={<CalendarToday fontSize={isMobile ? "medium" : "large"} />}
+        background={`linear-gradient(135deg, ${theme.palette.info.light}, ${theme.palette.primary.light})`}
+      >
+        <Box sx={{ mt: 1 }}>
+          <Chip
+            icon={<AccessTime fontSize="small" />}
+            label={`Current time: ${getCurrentTime()}`}
+            size="small"
             sx={{
-              position: "absolute",
-              top: -20,
-              right: -20,
-              width: { xs: 80, md: 120 },
-              height: { xs: 80, md: 120 },
-              borderRadius: "50%",
-              background: "rgba(255,255,255,0.1)",
-              display: { xs: "none", sm: "block" },
+              backgroundColor: "rgba(255,255,255,0.2)",
+              color: "white",
+              fontWeight: "bold",
+              "& .MuiChip-icon": {
+                color: "white",
+              },
             }}
           />
-
-          <Stack
-            direction={{ xs: "column", sm: "row" }}
-            alignItems={{ xs: "flex-start", sm: "center" }}
-            spacing={2}
-            sx={{ position: "relative", zIndex: 1 }}
-          >
-            <Box
-              sx={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                width: { xs: 48, md: 64 },
-                height: { xs: 48, md: 64 },
-                borderRadius: 3,
-                backgroundColor: "rgba(255,255,255,0.2)",
-                backdropFilter: "blur(10px)",
-                mb: { xs: 1, sm: 0 },
-              }}
-            >
-              <CalendarToday fontSize={isMobile ? "medium" : "large"} />
-            </Box>
-
-            <Box flex={1}>
-              <Typography
-                variant={isMobile ? "h5" : "h4"}
-                fontWeight="bold"
-                gutterBottom
-                sx={{ color: "white" }}
-              >
-                Weekly Anime Schedule
-              </Typography>
-              <Typography
-                variant="body1"
-                sx={{
-                  opacity: 0.9,
-                  display: "flex",
-                  alignItems: "center",
-                  gap: 1,
-                  flexWrap: "wrap",
-                }}
-              >
-                <span>Check out currently airing anime by weekday!</span>
-                <Chip
-                  icon={<AccessTime fontSize="small" />}
-                  label={`Current time: ${getCurrentTime()}`}
-                  size="small"
-                  sx={{
-                    backgroundColor: "rgba(255,255,255,0.2)",
-                    color: "white",
-                    fontWeight: "bold",
-                    "& .MuiChip-icon": {
-                      color: "white",
-                    },
-                  }}
-                />
-              </Typography>
-            </Box>
-
-            <Tooltip title="Refresh schedule data">
-              <IconButton
-                onClick={() => refetch()}
-                disabled={loading}
-                sx={{
-                  color: "white",
-                  border: "1px solid rgba(255,255,255,0.3)",
-                  borderRadius: 2,
-                  padding: { xs: 1, sm: 1.5 },
-                  "&:hover": {
-                    backgroundColor: "rgba(255,255,255,0.1)",
-                    transform: "scale(1.05)",
-                  },
-                  "&:disabled": {
-                    opacity: 0.5,
-                  },
-                }}
-              >
-                <Refresh />
-              </IconButton>
-            </Tooltip>
-          </Stack>
-        </Paper>
-      </Fade>
+        </Box>
+      </PageHeader>
 
       {/* Weekday Tabs */}
       <Fade in timeout={500}>
@@ -445,25 +359,11 @@ const SchedulePage: React.FC = () => {
             {weekdayMap[tab] && weekdayMap[tab].length > 0 ? (
               <>
                 {/* Results Summary */}
-                <Paper
-                  elevation={1}
-                  sx={{
-                    p: { xs: 2, md: 3 },
-                    mb: 3,
-                    borderRadius: 3,
-                    background: `linear-gradient(135deg, ${theme.palette.background.paper}, ${theme.palette.background.default})`,
-                  }}
-                >
-                  <Stack
-                    direction={{ xs: "column", sm: "row" }}
-                    justifyContent="space-between"
-                    alignItems={{ xs: "flex-start", sm: "center" }}
-                    spacing={2}
-                  >
-                    <Typography variant="h6" fontWeight="bold">
-                      {getSelectedWeekdayName()}'s Schedule:{" "}
-                      {weekdayMap[tab].length} anime
-                    </Typography>
+                <SectionHeader
+                  title={`${getSelectedWeekdayName()}'s Schedule`}
+                  subtitle={`Airing anime: ${weekdayMap[tab].length}`}
+                  icon={<CalendarToday />}
+                  right={
                     <Stack direction="row" spacing={1}>
                       <Chip
                         label={`Updated: ${getCurrentTime()}`}
@@ -483,8 +383,8 @@ const SchedulePage: React.FC = () => {
                         />
                       )}
                     </Stack>
-                  </Stack>
-                </Paper>
+                  }
+                />
 
                 {/* Anime Cards */}
                 <Grid container spacing={3}>

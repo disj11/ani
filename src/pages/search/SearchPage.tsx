@@ -42,6 +42,7 @@ import {
 } from "@mui/icons-material";
 import AnimationCard from "../trending/components/AnimationCard/AnimationCard";
 import { useSearchAnimeQuery } from "./apis/search.api";
+import PageHeader from "../../commons/components/PageHeader";
 
 const genres = [
   "Action",
@@ -548,27 +549,12 @@ const SearchPage: React.FC = () => {
   return (
     <Container maxWidth="xl">
       {/* Header */}
-      <Paper
-        elevation={4}
-        sx={{
-          p: { xs: 3, md: 4 },
-          mb: 4,
-          borderRadius: 4,
-          background: `linear-gradient(135deg, ${theme.palette.primary.main}, ${theme.palette.primary.dark})`,
-          color: "white",
-        }}
-      >
-        <Typography
-          variant={isMobile ? "h5" : "h4"}
-          fontWeight="bold"
-          gutterBottom
-        >
-          {getPageTitle()}
-        </Typography>
-        <Typography variant="body1" sx={{ opacity: 0.9 }}>
-          Search for animations based on your desired criteria
-        </Typography>
-      </Paper>
+      <PageHeader
+        title={getPageTitle()}
+        subtitle="Search for animations based on your desired criteria"
+        icon={<SearchIcon />}
+        background={`linear-gradient(135deg, ${theme.palette.primary.main}, ${theme.palette.primary.dark})`}
+      />
 
       <Grid container spacing={3}>
         {/* Desktop Filters */}

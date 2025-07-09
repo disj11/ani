@@ -16,6 +16,9 @@ import {
 import AnimationCard from "../trending/components/AnimationCard/AnimationCard";
 import { useNewReleasesQuery } from "./apis/new-releases.api";
 import { Media } from "./types/new-releases.type";
+import PageHeader from "../../commons/components/PageHeader";
+import { Schedule } from "@mui/icons-material";
+import SectionHeader from "../../commons/components/SectionHeader";
 
 const seasons = [
   { value: "WINTER", label: "Winter" },
@@ -58,9 +61,12 @@ const NewReleasesPage: React.FC = () => {
 
   return (
     <Box>
-      <Typography variant="h4" gutterBottom fontWeight="bold">
-        New Anime Releases
-      </Typography>
+      <PageHeader
+        title="New Anime Releases"
+        subtitle="Check out the latest airing anime"
+        icon={<Schedule />}
+        background={`linear-gradient(135deg, #2196f3, #21cbf3)`}
+      />
 
       <Paper sx={{ p: 2, mb: 3 }}>
         <Box
@@ -110,6 +116,13 @@ const NewReleasesPage: React.FC = () => {
           />
         </Box>
       </Paper>
+
+      <SectionHeader
+        title="Latest Airing Anime"
+        subtitle={`Check out the latest anime for ${selectedYear}${selectedSeason !== "all" ? ` - ${seasons.find(s => s.value === selectedSeason)?.label}` : ""}`}
+        icon={<Schedule />}
+        right={<Chip label={`${data?.Page?.pageInfo?.total || 0} items`} sx={{ backgroundColor: "rgba(255,255,255,0.2)", color: "white" }} />}
+      />
 
       {loading && (
         <Box display="flex" justifyContent="center" py={4}>
