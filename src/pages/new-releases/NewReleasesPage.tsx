@@ -15,6 +15,7 @@ import {
 } from "@mui/material";
 import AnimationCard from "../trending/components/AnimationCard/AnimationCard";
 import { useNewReleasesQuery } from "./apis/new-releases.api";
+import { Media } from "./types/new-releases.type";
 
 const seasons = [
   { value: "WINTER", label: "Winter" },
@@ -25,18 +26,18 @@ const seasons = [
 
 const NewReleasesPage: React.FC = () => {
   const [page, setPage] = useState(1);
-  const [selectedSeason, setSelectedSeason] = useState("");
+  const [selectedSeason, setSelectedSeason] = useState("all");
   const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
 
   const { data, loading, error } = useNewReleasesQuery({
     page,
     perPage: 20,
-    season: selectedSeason || undefined,
+    season: selectedSeason !== "all" ? selectedSeason : undefined,
     seasonYear: selectedYear,
   });
 
   const handleSeasonChange = (event: SelectChangeEvent<string>) => {
-    setSelectedSeason(event.target.value as string);
+    setSelectedSeason(event.target.value);
     setPage(1);
   };
 
@@ -92,7 +93,7 @@ const NewReleasesPage: React.FC = () => {
               label="Season"
               onChange={handleSeasonChange}
             >
-              <MenuItem value="">All</MenuItem>
+              <MenuItem value="all">All</MenuItem>
               {seasons.map((season) => (
                 <MenuItem key={season.value} value={season.value}>
                   {season.label}
@@ -135,24 +136,11 @@ const NewReleasesPage: React.FC = () => {
           </Box>
 
           <Grid container spacing={3}>
-            {data.Page.media.map(
-              (anime: {
-                id: number;
-                title: { userPreferred: string };
-                coverImage: { large: string };
-                averageScore?: number;
-                genres: string[];
-                description?: string;
-                bannerImage?: string;
-                status: string;
-                episodes?: number;
-                format: string;
-              }) => (
-                <Grid item xs={12} key={anime.id}>
-                  <AnimationCard media={anime} />
-                </Grid>
-              ),
-            )}
+            {data.Page.media.map((anime: Media) => (
+              <Grid item xs={12} sm={6} key={anime.id}>
+                <AnimationCard media={anime} />
+              </Grid>
+            ))}
           </Grid>
 
           {data.Page.pageInfo.lastPage > 1 && (

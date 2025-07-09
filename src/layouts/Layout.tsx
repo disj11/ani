@@ -13,30 +13,17 @@ import {
   Container,
   CssBaseline,
   Divider,
-  Collapse,
   TextField,
   InputAdornment,
   IconButton,
-  Chip,
-  FormControl,
-  InputLabel,
-  Select,
-  MenuItem,
-  Accordion,
-  AccordionSummary,
-  AccordionDetails,
-  Button,
   useTheme,
   useMediaQuery,
   Fade,
-  Card,
-  CardContent,
 } from "@mui/material";
 import {
   ExpandLess,
   ExpandMore,
   Search as SearchIcon,
-  FilterList,
   Clear,
   Menu as MenuIcon,
   Close as CloseIcon,
@@ -48,32 +35,6 @@ import LogoIcon from "../commons/components/LogoIcon";
 
 const drawerWidth = 320;
 
-const genres = [
-  "Action",
-  "Adventure",
-  "Comedy",
-  "Drama",
-  "Ecchi",
-  "Fantasy",
-  "Horror",
-  "Mahou Shoujo",
-  "Mecha",
-  "Music",
-  "Mystery",
-  "Psychological",
-  "Romance",
-  "Sci-Fi",
-  "Slice of Life",
-  "Sports",
-  "Supernatural",
-  "Thriller",
-];
-
-const years = Array.from(
-  { length: 30 },
-  (_, i) => new Date().getFullYear() - i,
-);
-
 export default function Layout() {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
@@ -82,9 +43,6 @@ export default function Layout() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [openSubmenus, setOpenSubmenus] = useState<Record<string, boolean>>({});
   const [searchQuery, setSearchQuery] = useState("");
-  const [selectedGenres, setSelectedGenres] = useState<string[]>([]);
-  const [selectedYear, setSelectedYear] = useState<number | "">("");
-  const [selectedStatus, setSelectedStatus] = useState("");
 
   const handleNavigate = (segment: string) => {
     navigate(`/${segment}`);
@@ -100,37 +58,10 @@ export default function Layout() {
     }));
   };
 
-  const handleGenreToggle = (genre: string) => {
-    setSelectedGenres((prev) =>
-      prev.includes(genre) ? prev.filter((g) => g !== genre) : [...prev, genre],
-    );
-  };
-
   const handleQuickSearch = () => {
     if (searchQuery.trim()) {
       navigate(`/search?q=${encodeURIComponent(searchQuery.trim())}`);
     }
-  };
-
-  const handleAdvancedSearch = () => {
-    const params = new URLSearchParams();
-    if (selectedGenres.length > 0) {
-      params.set("genres", selectedGenres.join(","));
-    }
-    if (selectedYear) {
-      params.set("year", selectedYear.toString());
-    }
-    if (selectedStatus) {
-      params.set("status", selectedStatus);
-    }
-    navigate(`/search?${params.toString()}`);
-  };
-
-  const clearFilters = () => {
-    setSelectedGenres([]);
-    setSelectedYear("");
-    setSelectedStatus("");
-    setSearchQuery("");
   };
 
   const handleDrawerToggle = () => {
@@ -239,11 +170,7 @@ export default function Layout() {
                       if (hasChildren) {
                         toggleSubmenu(item.segment!);
                       } else if (item.segment) {
-                        if (item.segment === "status") {
-                          toggleSubmenu(item.segment);
-                        } else {
-                          handleNavigate(item.segment);
-                        }
+                        handleNavigate(item.segment);
                       }
                     }}
                     sx={{
@@ -287,209 +214,10 @@ export default function Layout() {
                     )}
                   </ListItemButton>
                 </ListItem>
-
-                {hasChildren && (
-                  <Collapse in={isOpen} timeout="auto" unmountOnExit>
-                    <List component="div" disablePadding>
-                      {item.children!.map((child) => (
-                        <ListItem
-                          key={child.segment}
-                          disablePadding
-                          sx={{ mb: 0.5 }}
-                        >
-                          <ListItemButton
-                            sx={{
-                              pl: 5,
-                              borderRadius: 2,
-                              mx: 1,
-                              transition: "all 0.2s ease-in-out",
-                              "&:hover": {
-                                transform: "translateX(4px)",
-                                backgroundColor: "action.hover",
-                              },
-                            }}
-                            selected={location.pathname === `/${child.segment}`}
-                            onClick={() => handleNavigate(child.segment!)}
-                          >
-                            <ListItemIcon sx={{ minWidth: 36 }}>
-                              {child.icon}
-                            </ListItemIcon>
-                            <ListItemText primary={child.title} />
-                          </ListItemButton>
-                        </ListItem>
-                      ))}
-                    </List>
-                  </Collapse>
-                )}
               </React.Fragment>
             );
           })}
         </List>
-
-        <Divider sx={{ my: 2 }} />
-
-        {/* Enhanced Filters Section */}
-        <Card sx={{ mx: 2, mb: 2, overflow: "visible" }} elevation={2}>
-          <CardContent sx={{ p: 2 }}>
-            <Box sx={{ display: "flex", alignItems: "center", gap: 1, mb: 2 }}>
-              <FilterList fontSize="small" color="primary" />
-              <Typography variant="subtitle2" fontWeight="bold" color="primary">
-                Smart Filter
-              </Typography>
-              {(selectedGenres.length > 0 ||
-                selectedYear ||
-                selectedStatus) && (
-                <Chip
-                  label="Reset"
-                  size="small"
-                  variant="outlined"
-                  color="secondary"
-                  deleteIcon={<Clear />}
-                  onDelete={clearFilters}
-                  onClick={clearFilters}
-                  sx={{
-                    height: 22,
-                    fontSize: "0.7rem",
-                    fontWeight: 500,
-                    borderRadius: 11,
-                    "& .MuiChip-label": {
-                      px: 1,
-                      py: 0,
-                    },
-                    "& .MuiChip-deleteIcon": {
-                      fontSize: "0.8rem",
-                    },
-                  }}
-                />
-              )}
-            </Box>
-
-            {/* Genre Filter */}
-            <Accordion
-              elevation={0}
-              sx={{
-                "&:before": { display: "none" },
-                backgroundColor: "transparent",
-              }}
-            >
-              <AccordionSummary
-                expandIcon={<ExpandMore />}
-                sx={{ px: 0, minHeight: 40 }}
-              >
-                <Typography variant="body2" fontWeight={500} sx={{ ml: 2 }}>
-                  Genre{" "}
-                  {selectedGenres.length > 0 && (
-                    <Chip
-                      label={selectedGenres.length}
-                      size="small"
-                      color="primary"
-                      sx={{ ml: 1, height: 20 }}
-                    />
-                  )}
-                </Typography>
-              </AccordionSummary>
-              <AccordionDetails sx={{ px: 2, pt: 0 }}>
-                <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
-                  {genres.slice(0, 12).map((genre) => (
-                    <Chip
-                      key={genre}
-                      label={genre}
-                      size="small"
-                      variant={
-                        selectedGenres.includes(genre) ? "filled" : "outlined"
-                      }
-                      onClick={() => handleGenreToggle(genre)}
-                      sx={{
-                        fontSize: "0.7rem",
-                        transition: "all 0.2s ease-in-out",
-                        "&:hover": {
-                          transform: "scale(1.05)",
-                          boxShadow: theme.shadows[2],
-                        },
-                      }}
-                    />
-                  ))}
-                </Box>
-              </AccordionDetails>
-            </Accordion>
-
-            {/* Year Filter */}
-            <FormControl fullWidth size="small" sx={{ mt: 2 }}>
-              <InputLabel>Year</InputLabel>
-              <Select
-                value={selectedYear}
-                label="Year"
-                onChange={(e) => setSelectedYear(e.target.value as number)}
-                sx={{
-                  borderRadius: 2,
-                  "&:hover .MuiOutlinedInput-notchedOutline": {
-                    borderColor: "primary.main",
-                  },
-                }}
-              >
-                <MenuItem value="">All</MenuItem>
-                {years.slice(0, 10).map((year) => (
-                  <MenuItem key={year} value={year}>
-                    {year}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-
-            {/* Status Filter */}
-            <FormControl fullWidth size="small" sx={{ mt: 2 }}>
-              <InputLabel>Status</InputLabel>
-              <Select
-                value={selectedStatus}
-                label="Status"
-                onChange={(e) => setSelectedStatus(e.target.value)}
-                sx={{
-                  borderRadius: 2,
-                  "&:hover .MuiOutlinedInput-notchedOutline": {
-                    borderColor: "primary.main",
-                  },
-                }}
-              >
-                <MenuItem value="">All</MenuItem>
-                <MenuItem value="RELEASING">Airing</MenuItem>
-                <MenuItem value="FINISHED">Completed</MenuItem>
-                <MenuItem value="NOT_YET_RELEASED">Upcoming</MenuItem>
-                <MenuItem value="CANCELLED">Cancelled</MenuItem>
-              </Select>
-            </FormControl>
-
-            {/* Apply Filters Button */}
-            <Button
-              variant="contained"
-              size="small"
-              onClick={handleAdvancedSearch}
-              disabled={
-                selectedGenres.length === 0 && !selectedYear && !selectedStatus
-              }
-              sx={{
-                mt: 2,
-                px: 3,
-                py: 1,
-                borderRadius: 20,
-                fontSize: "0.8rem",
-                fontWeight: 500,
-                textTransform: "none",
-                background: `linear-gradient(135deg, ${theme.palette.primary.main}, ${theme.palette.primary.dark})`,
-                boxShadow: "none",
-                minHeight: 32,
-                "&:hover": {
-                  boxShadow: theme.shadows[2],
-                  transform: "translateY(-1px)",
-                },
-                "&:disabled": {
-                  background: theme.palette.action.disabledBackground,
-                },
-              }}
-            >
-              Apply Filters
-            </Button>
-          </CardContent>
-        </Card>
       </Box>
     </Box>
   );

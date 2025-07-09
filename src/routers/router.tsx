@@ -43,36 +43,8 @@ const router = createBrowserRouter(
               Component: NewReleasesPage,
             },
             {
-              path: "/genre",
-              Component: SearchPage,
-            },
-            {
-              path: "/year",
-              Component: SearchPage,
-            },
-            {
               path: "/schedule",
               Component: SchedulePage,
-            },
-            {
-              path: "/status/airing",
-              Component: SearchPage,
-            },
-            {
-              path: "/status/finished",
-              Component: SearchPage,
-            },
-            {
-              path: "/status/upcoming",
-              Component: SearchPage,
-            },
-            {
-              path: "/top-rated",
-              Component: PopularPage,
-            },
-            {
-              path: "/animations",
-              Component: SearchPage,
             },
           ],
         },

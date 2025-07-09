@@ -17,6 +17,7 @@ import {
 import { useLocation } from "react-router";
 import AnimationCard from "../trending/components/AnimationCard/AnimationCard";
 import { usePopularAnimeQuery } from "./apis/popular.api";
+import { Media } from "./types/popular.type";
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -42,7 +43,7 @@ function TabPanel(props: TabPanelProps) {
 const PopularPage: React.FC = () => {
   const location = useLocation();
   const [tabValue, setTabValue] = useState(0);
-  const [selectedYear, setSelectedYear] = useState<number | "">("");
+  const [selectedYear, setSelectedYear] = useState<number | "all">("all");
   const [page, setPage] = useState(1);
 
   const sortOptions = [
@@ -62,7 +63,7 @@ const PopularPage: React.FC = () => {
     sort: [sortOptions[tabValue]],
     page,
     perPage: 20,
-    year: selectedYear || undefined,
+    year: selectedYear !== "all" ? selectedYear : undefined,
   });
 
   const handleTabChange = (_event: React.SyntheticEvent, newValue: number) => {
@@ -70,8 +71,9 @@ const PopularPage: React.FC = () => {
     setPage(1);
   };
 
-  const handleYearChange = (event: SelectChangeEvent<number>) => {
-    setSelectedYear(event.target.value as number);
+  const handleYearChange = (event: SelectChangeEvent<number | string>) => {
+    const value = event.target.value;
+    setSelectedYear(value === "all" ? "all" : Number(value));
     setPage(1);
   };
 
@@ -117,7 +119,7 @@ const PopularPage: React.FC = () => {
               label="Year"
               onChange={handleYearChange}
             >
-              <MenuItem value="">All</MenuItem>
+              <MenuItem value="all">All</MenuItem>
               {years.map((year) => (
                 <MenuItem key={year} value={year}>
                   {year}
@@ -167,39 +169,23 @@ const PopularPage: React.FC = () => {
       {data && (
         <>
           <Grid container spacing={3}>
-            {data.Page.media.map(
-              (
-                anime: {
-                  id: number;
-                  title: { userPreferred: string };
-                  coverImage: { large: string };
-                  averageScore?: number;
-                  genres: string[];
-                  description?: string;
-                  bannerImage?: string;
-                  status: string;
-                  episodes?: number;
-                  format: string;
-                },
-                index: number,
-              ) => (
-                <Grid item xs={12} key={anime.id}>
-                  <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
-                    <Typography
-                      variant="h4"
-                      color="primary"
-                      fontWeight="bold"
-                      sx={{ minWidth: 60, textAlign: "center" }}
-                    >
-                      #{(page - 1) * 20 + index + 1}
-                    </Typography>
-                    <Box sx={{ flex: 1 }}>
-                      <AnimationCard media={anime} />
-                    </Box>
+            {data.Page.media.map((anime: Media, index: number) => (
+              <Grid item xs={12} sm={6} key={anime.id}>
+                <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
+                  <Typography
+                    variant="h4"
+                    color="primary"
+                    fontWeight="bold"
+                    sx={{ minWidth: 60, textAlign: "center" }}
+                  >
+                    #{(page - 1) * 20 + index + 1}
+                  </Typography>
+                  <Box sx={{ flex: 1 }}>
+                    <AnimationCard media={anime} />
                   </Box>
-                </Grid>
-              ),
-            )}
+                </Box>
+              </Grid>
+            ))}
           </Grid>
 
           {data.Page.pageInfo.lastPage > 1 && (

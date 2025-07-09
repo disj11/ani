@@ -96,9 +96,9 @@ const SearchPage: React.FC = () => {
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState(searchParams.get("q") || "");
   const [selectedGenres, setSelectedGenres] = useState<string[]>([]);
-  const [selectedYear, setSelectedYear] = useState<number | "">("");
-  const [selectedStatus, setSelectedStatus] = useState("");
-  const [selectedFormat, setSelectedFormat] = useState("");
+  const [selectedYear, setSelectedYear] = useState<number | "all">("all");
+  const [selectedStatus, setSelectedStatus] = useState("all");
+  const [selectedFormat, setSelectedFormat] = useState("all");
   const [sortBy, setSortBy] = useState("POPULARITY_DESC");
   const [scoreRange, setScoreRange] = useState<number[]>([0, 100]);
   const [episodeRange, setEpisodeRange] = useState<number[]>([1, 50]);
@@ -108,9 +108,9 @@ const SearchPage: React.FC = () => {
   const { data, loading, error, refetch } = useSearchAnimeQuery({
     search: searchQuery || undefined,
     genre: selectedGenres.length > 0 ? selectedGenres : undefined,
-    year: selectedYear || undefined,
-    status: selectedStatus || undefined,
-    format: selectedFormat || undefined,
+    year: selectedYear !== "all" ? selectedYear : undefined,
+    status: selectedStatus !== "all" ? selectedStatus : undefined,
+    format: selectedFormat !== "all" ? selectedFormat : undefined,
     sort: [sortBy],
     page,
     perPage: 20,
@@ -210,9 +210,9 @@ const SearchPage: React.FC = () => {
   const clearFilters = () => {
     setSearchQuery("");
     setSelectedGenres([]);
-    setSelectedYear("");
-    setSelectedStatus("");
-    setSelectedFormat("");
+    setSelectedYear("all");
+    setSelectedStatus("all");
+    setSelectedFormat("all");
     setScoreRange([0, 100]);
     setEpisodeRange([1, 50]);
     setUseEpisodeFilter(false);
@@ -226,9 +226,9 @@ const SearchPage: React.FC = () => {
     if (searchQuery) params.set("q", searchQuery);
     if (selectedGenres.length > 0)
       params.set("genres", selectedGenres.join(","));
-    if (selectedYear) params.set("year", selectedYear.toString());
-    if (selectedStatus) params.set("status", selectedStatus);
-    if (selectedFormat) params.set("format", selectedFormat);
+    if (selectedYear !== "all") params.set("year", selectedYear.toString());
+    if (selectedStatus !== "all") params.set("status", selectedStatus);
+    if (selectedFormat !== "all") params.set("format", selectedFormat);
     setSearchParams(params);
   };
 
@@ -306,7 +306,7 @@ const SearchPage: React.FC = () => {
           <InputLabel>Sort Criteria</InputLabel>
           <Select
             value={sortBy}
-            label="정렬 기준"
+            label="Sort Criteria"
             onChange={(e) => setSortBy(e.target.value)}
             sx={{ borderRadius: 2 }}
           >
@@ -383,11 +383,11 @@ const SearchPage: React.FC = () => {
           <InputLabel>Year</InputLabel>
           <Select
             value={selectedYear}
-            label="연도"
-            onChange={(e) => setSelectedYear(e.target.value as number)}
+            label="Year"
+            onChange={(e) => setSelectedYear(e.target.value as number | "all")}
             sx={{ borderRadius: 2 }}
           >
-            <MenuItem value="">전체</MenuItem>
+            <MenuItem value="all">All</MenuItem>
             {years.map((year) => (
               <MenuItem key={year} value={year}>
                 {year}
@@ -401,11 +401,11 @@ const SearchPage: React.FC = () => {
           <InputLabel>Status</InputLabel>
           <Select
             value={selectedStatus}
-            label="상태"
+            label="Status"
             onChange={(e) => setSelectedStatus(e.target.value)}
             sx={{ borderRadius: 2 }}
           >
-            <MenuItem value="">전체</MenuItem>
+            <MenuItem value="all">All</MenuItem>
             {statuses.map((status) => (
               <MenuItem key={status.value} value={status.value}>
                 {status.label}
@@ -419,11 +419,11 @@ const SearchPage: React.FC = () => {
           <InputLabel>Format</InputLabel>
           <Select
             value={selectedFormat}
-            label="형식"
+            label="Format"
             onChange={(e) => setSelectedFormat(e.target.value)}
             sx={{ borderRadius: 2 }}
           >
-            <MenuItem value="">전체</MenuItem>
+            <MenuItem value="all">All</MenuItem>
             {formats.map((format) => (
               <MenuItem key={format.value} value={format.value}>
                 {format.label}
