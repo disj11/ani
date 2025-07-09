@@ -62,6 +62,6 @@ const SEARCH_ANIME = gql`
 export const useSearchAnimeQuery = (variables: SearchAnimeVariables) => {
   return useQuery<SearchAnimeResponse>(SEARCH_ANIME, {
     variables,
-    fetchPolicy: "cache-and-network",
+    fetchPolicy: "cache-first",
   });
 };

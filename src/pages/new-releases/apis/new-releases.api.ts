@@ -55,6 +55,6 @@ const GET_NEW_RELEASES = gql`
 export const useNewReleasesQuery = (variables: NewReleasesVariables) => {
   return useQuery<NewReleasesResponse>(GET_NEW_RELEASES, {
     variables,
-    fetchPolicy: "cache-and-network",
+    fetchPolicy: "cache-first",
   });
 };

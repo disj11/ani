@@ -43,6 +43,6 @@ export const useAiringAnimeScheduleQuery = (
 ) => {
   return useQuery<AiringAnimeResponse>(GET_AIRING_ANIME, {
     variables,
-    fetchPolicy: "cache-and-network",
+    fetchPolicy: "cache-first",
   });
 };

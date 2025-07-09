@@ -46,6 +46,6 @@ export const usePopularAnimeQuery = (variables: {
 }) => {
   return useQuery<PopularAnimeResponse>(GET_POPULAR_ANIME, {
     variables,
-    fetchPolicy: "cache-and-network",
+    fetchPolicy: "cache-first",
   });
 };

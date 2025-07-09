@@ -72,6 +72,6 @@ const TREND = gql`
 export const useTrendingQuery = (searchParams: TrendingSearchParams) => {
   return useQuery<TrendingResponse>(TREND, {
     variables: searchParams,
-    fetchPolicy: "cache-and-network",
+    fetchPolicy: "cache-first",
   });
 };
