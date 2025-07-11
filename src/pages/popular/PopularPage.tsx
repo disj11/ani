@@ -119,7 +119,7 @@ const PopularPage: React.FC = () => {
         background={`linear-gradient(135deg, #ff9800, #f44336)`}
       />
 
-      <Paper sx={{ mb: theme.spacing(3) }}>
+      <Paper>
         <Box
           sx={{
             borderBottom: 1,
