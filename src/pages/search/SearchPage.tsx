@@ -261,8 +261,8 @@ const SearchPage: React.FC = () => {
 
   const renderFilters = () => (
     <Card elevation={3} sx={{ borderRadius: 3, overflow: "hidden" }}>
-      <CardContent sx={{ p: 3 }}>
-        <Box sx={{ display: "flex", alignItems: "center", gap: 1, mb: 3 }}>
+      <CardContent sx={{ p: theme.spacing(3) }}>
+        <Box sx={{ display: "flex", alignItems: "center", gap: theme.spacing(1), mb: theme.spacing(3) }}>
           <FilterList color="primary" />
           <Typography variant="h6" fontWeight="bold" color="primary">
             Search Filters
@@ -285,7 +285,7 @@ const SearchPage: React.FC = () => {
           onChange={(e) => setSearchQuery(e.target.value)}
           onKeyPress={(e) => e.key === "Enter" && handleSearch()}
           sx={{
-            mb: 3,
+            mb: theme.spacing(3),
             "& .MuiOutlinedInput-root": {
               borderRadius: 2,
               "&:hover": {
@@ -303,7 +303,7 @@ const SearchPage: React.FC = () => {
         />
 
         {/* Sort */}
-        <FormControl fullWidth sx={{ mb: 3 }}>
+        <FormControl fullWidth sx={{ mb: theme.spacing(3) }}>
           <InputLabel>Sort Criteria</InputLabel>
           <Select
             value={sortBy}
@@ -323,7 +323,7 @@ const SearchPage: React.FC = () => {
         <Accordion
           elevation={0}
           sx={{
-            mb: 3,
+            mb: theme.spacing(3),
             "&:before": { display: "none" },
             backgroundColor: "transparent",
           }}
@@ -348,7 +348,7 @@ const SearchPage: React.FC = () => {
             </Typography>
           </AccordionSummary>
           <AccordionDetails>
-            <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
+            <Box sx={{ display: "flex", flexWrap: "wrap", gap: theme.spacing(0.5) }}>
               {genres.map((genre) => (
                 <Chip
                   key={genre}
@@ -380,7 +380,7 @@ const SearchPage: React.FC = () => {
         </Accordion>
 
         {/* Year */}
-        <FormControl fullWidth sx={{ mb: 2 }}>
+        <FormControl fullWidth sx={{ mb: theme.spacing(2) }}>
           <InputLabel>Year</InputLabel>
           <Select
             value={selectedYear}
@@ -398,7 +398,7 @@ const SearchPage: React.FC = () => {
         </FormControl>
 
         {/* Status */}
-        <FormControl fullWidth sx={{ mb: 2 }}>
+        <FormControl fullWidth sx={{ mb: theme.spacing(2) }}>
           <InputLabel>Status</InputLabel>
           <Select
             value={selectedStatus}
@@ -416,7 +416,7 @@ const SearchPage: React.FC = () => {
         </FormControl>
 
         {/* Format */}
-        <FormControl fullWidth sx={{ mb: 2 }}>
+        <FormControl fullWidth sx={{ mb: theme.spacing(2) }}>
           <InputLabel>Format</InputLabel>
           <Select
             value={selectedFormat}
@@ -433,10 +433,10 @@ const SearchPage: React.FC = () => {
           </Select>
         </FormControl>
 
-        <Divider sx={{ my: 2 }} />
+        <Divider sx={{ my: theme.spacing(2) }} />
 
         {/* Score Range */}
-        <Box sx={{ mb: 3 }}>
+        <Box sx={{ mb: theme.spacing(3) }}>
           <Typography gutterBottom fontWeight={500} color="primary">
             Score Range
           </Typography>
@@ -468,10 +468,10 @@ const SearchPage: React.FC = () => {
             />
           }
           label="Episode Count Filter"
-          sx={{ mb: 1 }}
+          sx={{ mb: theme.spacing(1) }}
         />
         {useEpisodeFilter && (
-          <Box sx={{ mb: 3 }}>
+          <Box sx={{ mb: theme.spacing(3) }}>
             <Typography gutterBottom fontWeight={500} color="primary">
               Episode Count
             </Typography>
@@ -496,7 +496,7 @@ const SearchPage: React.FC = () => {
           </Box>
         )}
 
-        <Stack direction="row" spacing={1} justifyContent="center">
+        <Stack direction="row" spacing={theme.spacing(1)} justifyContent="center">
           <Button
             variant="contained"
             onClick={handleSearch}
@@ -572,7 +572,7 @@ const SearchPage: React.FC = () => {
               fullWidth
               startIcon={<Tune />}
               onClick={() => setMobileFiltersOpen(true)}
-              sx={{ mb: 2, borderRadius: 2 }}
+              sx={{ mb: theme.spacing(2), borderRadius: 2 }}
             >
               Filter Settings
             </Button>
@@ -623,7 +623,7 @@ const SearchPage: React.FC = () => {
           )}
 
           {error && (
-            <Paper sx={{ p: 4, textAlign: "center", borderRadius: 3 }}>
+            <Paper sx={{ p: theme.spacing(4), textAlign: "center", borderRadius: 3 }}>
               <Typography color="error" variant="h6" gutterBottom>
                 An error occurred during the search.
               </Typography>
@@ -635,12 +635,12 @@ const SearchPage: React.FC = () => {
 
           {data && (
             <>
-              <Paper elevation={1} sx={{ p: 3, mb: 3, borderRadius: 3 }}>
+              <Paper elevation={1} sx={{ p: theme.spacing(3), mb: theme.spacing(3), borderRadius: 3 }}>
                 <Stack
                   direction={{ xs: "column", sm: "row" }}
                   justifyContent="space-between"
                   alignItems={{ xs: "flex-start", sm: "center" }}
-                  spacing={2}
+                  spacing={theme.spacing(2)}
                 >
                   <Typography variant="h6" fontWeight="bold">
                     Search Results: {data.Page.pageInfo.total.toLocaleString()} items
@@ -651,7 +651,7 @@ const SearchPage: React.FC = () => {
                 </Stack>
               </Paper>
 
-              <Grid container spacing={3}>
+              <Grid container spacing={theme.spacing(3)}>
                 {data.Page.media.map(
                   (
                     anime: {
@@ -680,7 +680,7 @@ const SearchPage: React.FC = () => {
               </Grid>
 
               {data.Page.pageInfo.lastPage > 1 && (
-                <Box display="flex" justifyContent="center" mt={4}>
+                <Box display="flex" justifyContent="center" mt={theme.spacing(4)}>
                   <Pagination
                     count={data.Page.pageInfo.lastPage}
                     page={page}
@@ -714,7 +714,7 @@ const SearchPage: React.FC = () => {
           },
         }}
       >
-        <Box sx={{ p: 2, maxHeight: "90vh", overflowY: "auto" }}>
+        <Box sx={{ p: theme.spacing(2), maxHeight: "90vh", overflowY: "auto" }}>
           {renderFilters()}
         </Box>
       </Drawer>

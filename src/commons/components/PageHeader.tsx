@@ -25,8 +25,8 @@ const PageHeader: React.FC<PageHeaderProps> = ({
     <Paper
       elevation={4}
       sx={{
-        p: { xs: 3, md: 4 },
-        mb: 4,
+        p: { xs: theme.spacing(3), md: theme.spacing(4) },
+        mb: theme.spacing(4),
         borderRadius: 2,
         background: background || `linear-gradient(135deg, ${theme.palette.primary.main}, ${theme.palette.primary.dark})`,
         color: color || "white",
@@ -34,7 +34,7 @@ const PageHeader: React.FC<PageHeaderProps> = ({
         overflow: "hidden",
       }}
     >
-      <Box sx={{ display: "flex", alignItems: "center", gap: 2, position: "relative", zIndex: 1 }}>
+      <Box sx={{ display: "flex", alignItems: "center", gap: theme.spacing(2), position: "relative", zIndex: 1 }}>
         {icon && (
           <Box
             sx={{
@@ -46,7 +46,7 @@ const PageHeader: React.FC<PageHeaderProps> = ({
               borderRadius: 2,
               backgroundColor: "rgba(255,255,255,0.2)",
               backdropFilter: "blur(10px)",
-              mr: 2,
+              mr: theme.spacing(2),
             }}
           >
             {icon}

@@ -69,7 +69,7 @@ const SkeletonLoader: React.FC = () => {
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
 
   return (
-    <Grid container spacing={3}>
+    <Grid container spacing={theme.spacing(3)}>
       {Array.from({ length: 6 }).map((_, index) => (
         <Grid item xs={12} md={12} lg={6} key={`skeleton-${index}`}>
           <Card elevation={2} sx={{ borderRadius: 3, overflow: "hidden" }}>
@@ -85,7 +85,7 @@ const SkeletonLoader: React.FC = () => {
                 height={isMobile ? 200 : 300}
                 animation="wave"
               />
-              <Box sx={{ p: 2, flex: 1 }}>
+              <Box sx={{ p: theme.spacing(2), flex: 1 }}>
                 <Skeleton
                   variant="text"
                   height={32}
@@ -118,7 +118,7 @@ const EmptyState: React.FC<{ weekday: string }> = ({ weekday }) => {
       <Paper
         elevation={2}
         sx={{
-          p: { xs: 4, md: 6 },
+          p: { xs: theme.spacing(4), md: theme.spacing(6) },
           textAlign: "center",
           borderRadius: 3,
           background: `linear-gradient(135deg, ${theme.palette.background.paper}, ${theme.palette.background.default})`,
@@ -155,7 +155,7 @@ const ErrorState: React.FC<{ onRetry: () => void }> = ({ onRetry }) => {
       <Paper
         elevation={2}
         sx={{
-          p: { xs: 4, md: 6 },
+          p: { xs: theme.spacing(4), md: theme.spacing(6) },
           textAlign: "center",
           borderRadius: 3,
           background: `linear-gradient(135deg, ${theme.palette.background.paper}, ${theme.palette.background.default})`,
@@ -239,7 +239,7 @@ const SchedulePage: React.FC = () => {
         icon={<CalendarToday fontSize={isMobile ? "medium" : "large"} />}
         background={`linear-gradient(135deg, ${theme.palette.info.light}, ${theme.palette.primary.light})`}
       >
-        <Box sx={{ mt: 1 }}>
+        <Box sx={{ mt: theme.spacing(1) }}>
           <Chip
             icon={<AccessTime fontSize="small" />}
             label={`Current time: ${getCurrentTime()}`}
@@ -261,7 +261,7 @@ const SchedulePage: React.FC = () => {
         <Paper
           elevation={2}
           sx={{
-            mb: 4,
+            mb: theme.spacing(4),
             borderRadius: 3,
             background: theme.palette.background.paper,
             overflow: "hidden",
@@ -351,8 +351,8 @@ const SchedulePage: React.FC = () => {
       {loading ? (
         <Fade in timeout={300}>
           <Box>
-            <Paper elevation={1} sx={{ p: 3, mb: 3, borderRadius: 3 }}>
-              <Stack direction="row" alignItems="center" spacing={2}>
+            <Paper elevation={1} sx={{ p: theme.spacing(3), mb: theme.spacing(3), borderRadius: 3 }}>
+              <Stack direction="row" alignItems="center" spacing={theme.spacing(2)}>
                 <CircularProgress size={24} />
                 <Typography variant="h6" color="text.secondary">
                   Loading {getSelectedWeekdayName()}'s schedule...
@@ -375,7 +375,7 @@ const SchedulePage: React.FC = () => {
                   subtitle={`Airing anime: ${weekdayMap[tab].length}`}
                   icon={<CalendarToday />}
                   right={
-                    <Stack direction="row" spacing={1}>
+                    <Stack direction="row" spacing={theme.spacing(1)}>
                       <Chip
                         label={`Updated: ${getCurrentTime()}`}
                         size="small"
@@ -398,7 +398,7 @@ const SchedulePage: React.FC = () => {
                 />
 
                 {/* Anime Cards */}
-                <Grid container spacing={3}>
+                <Grid container spacing={theme.spacing(3)}>
                   {weekdayMap[tab].map((anime, index) => (
                     <Grid
                       item

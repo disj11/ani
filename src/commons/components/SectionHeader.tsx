@@ -21,15 +21,15 @@ const SectionHeader: React.FC<SectionHeaderProps> = ({
     <Paper
       elevation={0}
       sx={{
-        p: 1.5,
-        mb: 1.5,
+        p: theme.spacing(1.5),
+        mb: theme.spacing(1.5),
         borderRadius: 1,
         background: theme.palette.background.paper,
         color: theme.palette.text.primary,
         boxShadow: "none",
       }}
     >
-      <Stack direction="row" alignItems="center" spacing={2} sx={{ position: "relative", zIndex: 1 }}>
+      <Stack direction="row" alignItems="center" spacing={theme.spacing(2)} sx={{ position: "relative", zIndex: 1 }}>
         {icon && (
           <Box
             sx={{
@@ -40,7 +40,7 @@ const SectionHeader: React.FC<SectionHeaderProps> = ({
               height: 32,
               borderRadius: 1,
               backgroundColor: "transparent",
-              mr: 1,
+              mr: theme.spacing(1),
             }}
           >
             {icon}

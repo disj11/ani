@@ -14,6 +14,7 @@ import {
   Paper,
   SelectChangeEvent,
   Chip,
+  useTheme,
 } from "@mui/material";
 import { useLocation } from "react-router";
 import AnimationCard from "../trending/components/AnimationCard/AnimationCard";
@@ -30,6 +31,7 @@ interface TabPanelProps {
 }
 
 function TabPanel(props: TabPanelProps) {
+  const theme = useTheme();
   const { children, value, index, ...other } = props;
   return (
     <div
@@ -39,12 +41,13 @@ function TabPanel(props: TabPanelProps) {
       aria-labelledby={`tab-${index}`}
       {...other}
     >
-      {value === index && <Box sx={{ pt: 3 }}>{children}</Box>}
+      {value === index && <Box sx={{ pt: theme.spacing(3) }}>{children}</Box>}
     </div>
   );
 }
 
 const PopularPage: React.FC = () => {
+  const theme = useTheme();
   const location = useLocation();
   const [tabValue, setTabValue] = useState(0);
   const [selectedYear, setSelectedYear] = useState<number | "all">("all");
@@ -116,7 +119,7 @@ const PopularPage: React.FC = () => {
         background={`linear-gradient(135deg, #ff9800, #f44336)`}
       />
 
-      <Paper sx={{ mb: 3 }}>
+      <Paper sx={{ mb: theme.spacing(3) }}>
         <Box
           sx={{
             borderBottom: 1,
@@ -135,7 +138,7 @@ const PopularPage: React.FC = () => {
             onChange={handleTabChange}
             variant="scrollable"
             allowScrollButtonsMobile
-            sx={{ px: 2 }}
+            sx={{ px: theme.spacing(2) }}
           >
             <Tab label="Popularity" />
             <Tab label="Score" />
@@ -144,7 +147,7 @@ const PopularPage: React.FC = () => {
           </Tabs>
         </Box>
 
-        <Box sx={{ p: 2 }}>
+        <Box sx={{ p: theme.spacing(2) }}>
           <FormControl size="small" sx={{ minWidth: 120 }}>
             <InputLabel>Year</InputLabel>
             <Select
@@ -240,7 +243,7 @@ const PopularPage: React.FC = () => {
       </TabPanel>
 
       {loading && (
-        <Box display="flex" justifyContent="center" py={4}>
+        <Box display="flex" justifyContent="center" py={theme.spacing(4)}>
           <CircularProgress />
         </Box>
       )}
@@ -253,7 +256,7 @@ const PopularPage: React.FC = () => {
 
       {data && (
         <>
-          <Grid container spacing={3}>
+          <Grid container spacing={theme.spacing(3)}>
             {data.Page.media.map((anime: Media) => (
               <Grid item xs={12} md={6} key={anime.id}>
                 <Box sx={{ flex: 1 }}>
@@ -264,7 +267,7 @@ const PopularPage: React.FC = () => {
           </Grid>
 
           {data.Page.pageInfo.lastPage > 1 && (
-            <Box display="flex" justifyContent="center" mt={4}>
+            <Box display="flex" justifyContent="center" mt={theme.spacing(4)}>
               <Pagination
                 count={data.Page.pageInfo.lastPage}
                 page={page}

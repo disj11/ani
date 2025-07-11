@@ -29,7 +29,7 @@ const Animations = ({
 
   if (loading) {
     return (
-      <Grid container spacing={3}>
+      <Grid container spacing={theme.spacing(3)}>
         {Array.from({ length: 6 }).map((_, index) => (
           <Grid size={{ xs: 12, md: 12, lg: 6 }} key={`skeleton-${index}`}>
             <Paper elevation={2} sx={{ borderRadius: 3, overflow: "hidden" }}>
@@ -71,7 +71,7 @@ const Animations = ({
   }
 
   return (
-    <Grid container spacing={3}>
+    <Grid container spacing={theme.spacing(3)}>
       {media.map((item, index) => (
         <Grid
           size={{ xs: 12, md: 12, lg: 6 }}
@@ -131,17 +131,17 @@ const TrendingPage = () => {
   if (loading) {
     return (
       <Container maxWidth="xl">
-        <Box sx={{ mb: 4 }}>
+        <Box sx={{ mb: theme.spacing(4) }}>
           <Skeleton variant="text" height={48} width="60%" sx={{ mb: 1 }} />
           <Skeleton variant="text" height={24} width="40%" />
         </Box>
         {sections.map((_, index) => (
-          <Box key={index} sx={{ mb: 6 }}>
+          <Box key={index} sx={{ mb: theme.spacing(6) }}>
             <Paper
               elevation={2}
               sx={{
-                p: 3,
-                mb: 3,
+                p: theme.spacing(3),
+                mb: theme.spacing(3),
                 borderRadius: 3,
                 background: theme.palette.background.paper,
               }}
@@ -168,7 +168,7 @@ const TrendingPage = () => {
       {/* Sections */}
       {sections.map((section, sectionIndex) => (
         <Fade in timeout={300 + sectionIndex * 200} key={section.title}>
-          <Box sx={{ mb: 6 }}>
+          <Box sx={{ mb: theme.spacing(6) }}>
             <SectionHeader
               title={section.title}
               subtitle={section.subtitle}

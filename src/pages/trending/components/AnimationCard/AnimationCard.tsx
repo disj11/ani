@@ -99,7 +99,7 @@ const AnimationCard = ({ media }: AnimationCardProps) => {
               transition: "opacity 0.3s ease-in-out",
               display: "flex",
               flexDirection: "column",
-              gap: 0.5,
+              gap: theme.spacing(0.5),
             }}
           >
             <Tooltip title="관심목록에 추가">
@@ -144,8 +144,8 @@ const AnimationCard = ({ media }: AnimationCardProps) => {
                 background: `linear-gradient(135deg, ${theme.palette.primary.main}, ${theme.palette.primary.dark})`,
                 color: "white",
                 borderRadius: 2,
-                px: 1,
-                py: 0.5,
+                px: theme.spacing(1),
+                py: theme.spacing(0.5),
                 fontSize: "0.75rem",
                 fontWeight: "bold",
                 boxShadow: theme.shadows[4],
@@ -159,7 +159,7 @@ const AnimationCard = ({ media }: AnimationCardProps) => {
         <CardContent
           sx={{
             flex: 1,
-            p: { xs: 2, sm: 3 },
+            p: { xs: theme.spacing(2), sm: theme.spacing(3) },
             display: "flex",
             flexDirection: "column",
             position: "relative",
@@ -177,7 +177,7 @@ const AnimationCard = ({ media }: AnimationCardProps) => {
               display: "-webkit-box",
               WebkitLineClamp: { xs: 2, sm: 1 },
               WebkitBoxOrient: "vertical",
-              mb: 1,
+              mb: theme.spacing(1),
               lineHeight: 1.3,
             }}
           >
@@ -185,7 +185,7 @@ const AnimationCard = ({ media }: AnimationCardProps) => {
           </Typography>
 
           {/* Rating and Status */}
-          <Stack direction="row" spacing={1} alignItems="center" sx={{ mb: 2 }}>
+          <Stack direction="row" spacing={theme.spacing(1)} alignItems="center" sx={{ mb: theme.spacing(2) }}>
             {media.averageScore && (
               <Rating
                 value={media.averageScore / 20}
@@ -211,11 +211,11 @@ const AnimationCard = ({ media }: AnimationCardProps) => {
           </Stack>
 
           {/* Genres */}
-          <Box sx={{ mb: 2 }}>
+          <Box sx={{ mb: theme.spacing(2) }}>
             <Stack
               direction="row"
-              spacing={0.5}
-              sx={{ flexWrap: "wrap", gap: 0.5 }}
+              spacing={theme.spacing(0.5)}
+              sx={{ flexWrap: "wrap", gap: theme.spacing(0.5) }}
             >
               {media.genres.slice(0, isMobile ? 2 : 3).map((genre) => (
                 <Chip
@@ -257,7 +257,7 @@ const AnimationCard = ({ media }: AnimationCardProps) => {
               WebkitBoxOrient: "vertical",
               lineHeight: 1.5,
               flex: 1,
-              mb: 2,
+              mb: theme.spacing(2),
             }}
             dangerouslySetInnerHTML={{
               __html: DOMPurify.sanitize(

@@ -12,6 +12,7 @@ import {
   Paper,
   Chip,
   SelectChangeEvent,
+  useTheme,
 } from "@mui/material";
 import AnimationCard from "../trending/components/AnimationCard/AnimationCard";
 import { useNewReleasesQuery } from "./apis/new-releases.api";
@@ -28,6 +29,7 @@ const seasons = [
 ];
 
 const NewReleasesPage: React.FC = () => {
+  const theme = useTheme();
   const [page, setPage] = useState(1);
   const [selectedSeason, setSelectedSeason] = useState("all");
   const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
@@ -68,11 +70,11 @@ const NewReleasesPage: React.FC = () => {
         background={`linear-gradient(135deg, #2196f3, #21cbf3)`}
       />
 
-      <Paper sx={{ p: 2, mb: 3 }}>
+      <Paper sx={{ p: theme.spacing(2), mb: theme.spacing(3) }}>
         <Box
           sx={{
             display: "flex",
-            gap: 2,
+            gap: theme.spacing(2),
             alignItems: "center",
             flexWrap: "wrap",
           }}
@@ -125,7 +127,7 @@ const NewReleasesPage: React.FC = () => {
       />
 
       {loading && (
-        <Box display="flex" justifyContent="center" py={4}>
+        <Box display="flex" justifyContent="center" py={theme.spacing(4)}>
           <CircularProgress />
         </Box>
       )}
@@ -138,7 +140,7 @@ const NewReleasesPage: React.FC = () => {
 
       {data && (
         <>
-          <Box mb={2}>
+          <Box mb={theme.spacing(2)}>
             <Typography variant="h6">
               {selectedYear}{" "}
               {selectedSeason
@@ -148,7 +150,7 @@ const NewReleasesPage: React.FC = () => {
             </Typography>
           </Box>
 
-          <Grid container spacing={3}>
+          <Grid container spacing={theme.spacing(3)}>
             {data.Page.media.map((anime: Media) => (
               <Grid item xs={12} sm={6} key={anime.id}>
                 <AnimationCard media={anime} />
@@ -157,7 +159,7 @@ const NewReleasesPage: React.FC = () => {
           </Grid>
 
           {data.Page.pageInfo.lastPage > 1 && (
-            <Box display="flex" justifyContent="center" mt={4}>
+            <Box display="flex" justifyContent="center" mt={theme.spacing(4)}>
               <Pagination
                 count={data.Page.pageInfo.lastPage}
                 page={page}

@@ -92,7 +92,7 @@ export default function Layout() {
       </Toolbar>
 
       {/* Quick Search */}
-      <Box sx={{ p: 2, borderBottom: `1px solid ${theme.palette.divider}` }}>
+      <Box sx={{ p: theme.spacing(2), borderBottom: `1px solid ${theme.palette.divider}` }}>
         <TextField
           fullWidth
           size="small"
@@ -130,7 +130,7 @@ export default function Layout() {
       </Box>
 
       <Box sx={{ flex: 1, overflowY: "auto" }}>
-        <List sx={{ px: 1, py: 2 }}>
+        <List sx={{ px: theme.spacing(1), py: theme.spacing(2) }}>
           {navigation.map((item, index) => {
             if (item.kind === "header") {
               return (
@@ -313,8 +313,8 @@ export default function Layout() {
         <Container
           maxWidth="xl"
           sx={{
-            mt: { xs: 2, sm: 3 },
-            px: { xs: 1, sm: 2, md: 3 },
+            mt: theme.spacing(4),
+            px: { xs: theme.spacing(2), sm: theme.spacing(2), md: theme.spacing(3) },
           }}
         >
           <Fade in timeout={300}>

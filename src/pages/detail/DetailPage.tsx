@@ -77,7 +77,7 @@ const DetailPage: React.FC = () => {
   return (
     <Container maxWidth="xl">
       {/* Back Button */}
-      <Box sx={{ mb: 2 }}>
+      <Box sx={{ mb: theme.spacing(2) }}>
         <Button
           startIcon={<ArrowBack />}
           onClick={() => navigate(-1)}
@@ -97,7 +97,7 @@ const DetailPage: React.FC = () => {
             backgroundSize: 'cover',
             backgroundPosition: 'center',
             position: 'relative',
-            mb: 3,
+            mb: theme.spacing(3),
             borderRadius: 3,
             overflow: 'hidden'
           }}
@@ -109,7 +109,7 @@ const DetailPage: React.FC = () => {
               left: 0,
               right: 0,
               background: 'linear-gradient(transparent, rgba(0,0,0,0.8))',
-              p: { xs: 2, md: 3 },
+              p: { xs: theme.spacing(2), md: theme.spacing(3) },
             }}
           >
             <Typography 
@@ -124,10 +124,10 @@ const DetailPage: React.FC = () => {
         </Paper>
       )}
 
-      <Grid container spacing={3}>
+      <Grid container spacing={theme.spacing(3)}>
         {/* Left Column - Cover Image and Basic Info */}
         <Grid item xs={12} md={4}>
-          <Stack spacing={3}>
+          <Stack spacing={theme.spacing(3)}>
             <Card elevation={4} sx={{ borderRadius: 3, overflow: 'hidden' }}>
               <CardMedia
                 component="img"
@@ -144,10 +144,10 @@ const DetailPage: React.FC = () => {
               />
             </Card>
 
-            <Paper elevation={2} sx={{ p: 3, borderRadius: 3 }}>
+            <Paper elevation={2} sx={{ p: theme.spacing(3), borderRadius: 3 }}>
               {/* Rating */}
               {media.averageScore && (
-                <Box sx={{ mb: 3, textAlign: 'center' }}>
+                <Box sx={{ mb: theme.spacing(3), textAlign: 'center' }}>
                   <Typography variant="h4" color="primary" fontWeight="bold">
                     {media.averageScore}%
                   </Typography>
@@ -168,10 +168,10 @@ const DetailPage: React.FC = () => {
                 </Box>
               )}
 
-              <Divider sx={{ mb: 2 }} />
+              <Divider sx={{ mb: theme.spacing(2) }} />
 
               {/* Basic Info */}
-              <Stack spacing={2}>
+              <Stack spacing={theme.spacing(2)}>
                 <Box>
                   <Typography variant="subtitle2" color="primary" fontWeight="bold">
                     Format
@@ -209,7 +209,7 @@ const DetailPage: React.FC = () => {
                     <Typography variant="subtitle2" color="primary" fontWeight="bold">
                       Runtime
                     </Typography>
-                    <Stack direction="row" alignItems="center" spacing={1}>
+                    <Stack direction="row" alignItems="center" spacing={theme.spacing(1)}>
                       <AccessTime fontSize="small" color="action" />
                       <Typography variant="body2">
                         {media.duration} minutes
@@ -222,7 +222,7 @@ const DetailPage: React.FC = () => {
                   <Typography variant="subtitle2" color="primary" fontWeight="bold">
                     Air Date
                   </Typography>
-                  <Stack direction="row" alignItems="center" spacing={1}>
+                  <Stack direction="row" alignItems="center" spacing={theme.spacing(1)}>
                     <CalendarToday fontSize="small" color="action" />
                     <Typography variant="body2">
                       {formatDate(media.startDate)}
@@ -245,14 +245,14 @@ const DetailPage: React.FC = () => {
                 )}
               </Stack>
 
-              <Divider sx={{ my: 2 }} />
+              <Divider sx={{ my: theme.spacing(2) }} />
 
               {/* Genres */}
               <Box>
                 <Typography variant="subtitle2" color="primary" fontWeight="bold" gutterBottom>
                   Genre
                 </Typography>
-                <Box display="flex" flexWrap="wrap" gap={0.5}>
+                <Box display="flex" flexWrap="wrap" gap={theme.spacing(0.5)}>
                   {media.genres.map((genre: string) => (
                     <Chip 
                       key={genre} 
@@ -274,7 +274,7 @@ const DetailPage: React.FC = () => {
               {/* Studios */}
               {media.studios.nodes.length > 0 && (
                 <>
-                  <Divider sx={{ my: 2 }} />
+                  <Divider sx={{ my: theme.spacing(2) }} />
                   <Box>
                     <Typography variant="subtitle2" color="primary" fontWeight="bold" gutterBottom>
                       Studio
@@ -293,7 +293,7 @@ const DetailPage: React.FC = () => {
               )}
 
               {/* Action Buttons */}
-              <Stack spacing={2} sx={{ mt: 3 }}>
+              <Stack spacing={theme.spacing(2)} sx={{ mt: 3 }}>
                 {media.trailer && (
                   <Button
                     variant="contained"
@@ -315,7 +315,7 @@ const DetailPage: React.FC = () => {
                   </Button>
                 )}
                 
-                <Stack direction="row" spacing={1}>
+                <Stack direction="row" spacing={theme.spacing(1)}>
                   <Tooltip title="Add to Favorites">
                     <IconButton
                       sx={{
@@ -356,9 +356,9 @@ const DetailPage: React.FC = () => {
 
         {/* Right Column - Main Content */}
         <Grid item xs={12} md={8}>
-          <Stack spacing={3}>
+          <Stack spacing={theme.spacing(3)}>
             {/* Title and Description */}
-            <Paper elevation={2} sx={{ p: 3, borderRadius: 3 }}>
+            <Paper elevation={2} sx={{ p: theme.spacing(3), borderRadius: 3 }}>
               {!media.bannerImage && (
                 <Typography variant={isMobile ? "h5" : "h4"} gutterBottom fontWeight="bold">
                   {media.title.userPreferred}
@@ -378,7 +378,7 @@ const DetailPage: React.FC = () => {
               {media.description && (
                 <Typography
                   variant="body1"
-                  sx={{ mt: 2, lineHeight: 1.7 }}
+                  sx={{ mt: theme.spacing(2), lineHeight: 1.7 }}
                   dangerouslySetInnerHTML={{
                     __html: DOMPurify.sanitize(media.description),
                   }}
@@ -387,13 +387,13 @@ const DetailPage: React.FC = () => {
             </Paper>
 
             {/* Statistics */}
-            <Paper elevation={2} sx={{ p: 3, borderRadius: 3 }}>
+            <Paper elevation={2} sx={{ p: theme.spacing(3), borderRadius: 3 }}>
               <Typography variant="h6" gutterBottom fontWeight="bold" color="primary">
                 Statistics
               </Typography>
-              <Grid container spacing={2}>
+              <Grid container spacing={theme.spacing(2)}>
                 <Grid item xs={6} sm={3}>
-                  <Paper elevation={1} sx={{ p: 2, textAlign: 'center', borderRadius: 2 }}>
+                  <Paper elevation={1} sx={{ p: theme.spacing(2), textAlign: 'center', borderRadius: 2 }}>
                     <Typography variant="h5" color="primary" fontWeight="bold">
                       {media.averageScore || 'N/A'}
                     </Typography>
@@ -403,7 +403,7 @@ const DetailPage: React.FC = () => {
                   </Paper>
                 </Grid>
                 <Grid item xs={6} sm={3}>
-                  <Paper elevation={1} sx={{ p: 2, textAlign: 'center', borderRadius: 2 }}>
+                  <Paper elevation={1} sx={{ p: theme.spacing(2), textAlign: 'center', borderRadius: 2 }}>
                     <Typography variant="h5" color="primary" fontWeight="bold">
                       {media.popularity?.toLocaleString() || 'N/A'}
                     </Typography>
@@ -413,7 +413,7 @@ const DetailPage: React.FC = () => {
                   </Paper>
                 </Grid>
                 <Grid item xs={6} sm={3}>
-                  <Paper elevation={1} sx={{ p: 2, textAlign: 'center', borderRadius: 2 }}>
+                  <Paper elevation={1} sx={{ p: theme.spacing(2), textAlign: 'center', borderRadius: 2 }}>
                     <Typography variant="h5" color="primary" fontWeight="bold">
                       {media.favourites?.toLocaleString() || 'N/A'}
                     </Typography>
@@ -423,7 +423,7 @@ const DetailPage: React.FC = () => {
                   </Paper>
                 </Grid>
                 <Grid item xs={6} sm={3}>
-                  <Paper elevation={1} sx={{ p: 2, textAlign: 'center', borderRadius: 2 }}>
+                  <Paper elevation={1} sx={{ p: theme.spacing(2), textAlign: 'center', borderRadius: 2 }}>
                     <Typography variant="h5" color="primary" fontWeight="bold">
                       #{media.id}
                     </Typography>
@@ -437,17 +437,17 @@ const DetailPage: React.FC = () => {
 
             {/* Characters */}
             {media.characters.nodes.length > 0 && (
-              <Paper elevation={2} sx={{ p: 3, borderRadius: 3 }}>
+              <Paper elevation={2} sx={{ p: theme.spacing(3), borderRadius: 3 }}>
                 <Typography variant="h6" gutterBottom fontWeight="bold" color="primary">
                   Characters
                 </Typography>
-                <Grid container spacing={2}>
+                <Grid container spacing={theme.spacing(2)}>
                   {media.characters.nodes.slice(0, isMobile ? 4 : 8).map((character: { id: number; name: { userPreferred: string }; image?: { medium: string } }) => (
                     <Grid item xs={6} sm={4} md={3} key={character.id}>
                       <Card 
                         elevation={1} 
                         sx={{ 
-                          p: 2, 
+                          p: theme.spacing(2), 
                           textAlign: 'center', 
                           borderRadius: 2,
                           transition: 'all 0.2s ease-in-out',
@@ -487,17 +487,17 @@ const DetailPage: React.FC = () => {
 
             {/* Staff */}
             {media.staff.nodes.length > 0 && (
-              <Paper elevation={2} sx={{ p: 3, borderRadius: 3 }}>
+              <Paper elevation={2} sx={{ p: theme.spacing(3), borderRadius: 3 }}>
                 <Typography variant="h6" gutterBottom fontWeight="bold" color="primary">
                   Staff
                 </Typography>
-                <Grid container spacing={2}>
+                <Grid container spacing={theme.spacing(2)}>
                   {media.staff.nodes.slice(0, isMobile ? 4 : 8).map((staff: { id: number; name: { userPreferred: string }; image?: { medium: string } }) => (
                     <Grid item xs={6} sm={4} md={3} key={staff.id}>
                       <Card 
                         elevation={1} 
                         sx={{ 
-                          p: 2, 
+                          p: theme.spacing(2), 
                           textAlign: 'center', 
                           borderRadius: 2,
                           transition: 'all 0.2s ease-in-out',
@@ -537,11 +537,11 @@ const DetailPage: React.FC = () => {
 
             {/* Recommendations */}
             {media.recommendations.nodes.length > 0 && (
-              <Paper elevation={2} sx={{ p: 3, borderRadius: 3 }}>
+              <Paper elevation={2} sx={{ p: theme.spacing(3), borderRadius: 3 }}>
                 <Typography variant="h6" gutterBottom fontWeight="bold" color="primary">
                   Recommended Works
                 </Typography>
-                <Grid container spacing={2}>
+                <Grid container spacing={theme.spacing(2)}>
                   {media.recommendations.nodes.slice(0, isMobile ? 3 : 6).map((rec: { mediaRecommendation: { id: number; title: { userPreferred: string }; coverImage: { medium: string }; averageScore?: number } }, index: number) => (
                     <Grid item xs={4} sm={4} md={2} key={index}>
                       <Card
@@ -565,7 +565,7 @@ const DetailPage: React.FC = () => {
                             objectFit: 'cover',
                           }}
                         />
-                        <CardContent sx={{ p: 1 }}>
+                        <CardContent sx={{ p: theme.spacing(1) }}>
                           <Typography 
                             variant="caption" 
                             noWrap
@@ -592,11 +592,11 @@ const DetailPage: React.FC = () => {
 
             {/* External Links */}
             {media.externalLinks.length > 0 && (
-              <Paper elevation={2} sx={{ p: 3, borderRadius: 3 }}>
+              <Paper elevation={2} sx={{ p: theme.spacing(3), borderRadius: 3 }}>
                 <Typography variant="h6" gutterBottom fontWeight="bold" color="primary">
                   External Links
                 </Typography>
-                <Stack direction="row" spacing={1} sx={{ flexWrap: 'wrap', gap: 1 }}>
+                <Stack direction="row" spacing={theme.spacing(1)} sx={{ flexWrap: 'wrap', gap: theme.spacing(1) }}>
                   {media.externalLinks.map((link: { id: number; url: string; site: string }) => (
                     <Button
                       key={link.id}

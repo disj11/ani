@@ -44,6 +44,7 @@ export const CustomThemeProvider: React.FC<CustomThemeProviderProps> = ({
   }, [mode]);
 
   const theme = createTheme({
+    spacing: 8,
     palette: {
       mode,
       primary: {
@@ -174,12 +175,12 @@ export const CustomThemeProvider: React.FC<CustomThemeProviderProps> = ({
       },
       MuiButton: {
         styleOverrides: {
-          root: {
+          root: ({ theme }) => ({
             borderRadius: 8,
             textTransform: "none",
             fontWeight: 600,
-            padding: "8px 24px",
-          },
+            padding: theme.spacing(1, 3),
+          }),
           contained: {
             boxShadow: "0px 2px 4px rgba(0,0,0,0.1)",
             "&:hover": {
