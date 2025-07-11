@@ -104,10 +104,13 @@ const PopularPage: React.FC = () => {
       <PageHeader
         title={getPageTitle()}
         subtitle={
-          tabValue === 0 ? "Most popular anime rankings" :
-          tabValue === 1 ? "Top Rated Rankings" :
-          tabValue === 2 ? "Trending Rankings" :
-          "Favorites Rankings"
+          tabValue === 0
+            ? "Most popular anime rankings"
+            : tabValue === 1
+              ? "Top Rated Rankings"
+              : tabValue === 2
+                ? "Trending Rankings"
+                : "Favorites Rankings"
         }
         icon={tabValue === 1 ? <Star /> : <Whatshot />}
         background={`linear-gradient(135deg, #ff9800, #f44336)`}
@@ -165,7 +168,17 @@ const PopularPage: React.FC = () => {
           title="Popularity Rankings"
           subtitle="Most popular anime rankings"
           icon={<Whatshot />}
-          right={selectedYear !== "all" ? <Chip label={selectedYear} sx={{ backgroundColor: "rgba(255,255,255,0.2)", color: "white" }} /> : undefined}
+          right={
+            selectedYear !== "all" ? (
+              <Chip
+                label={selectedYear}
+                sx={{
+                  backgroundColor: "rgba(255,255,255,0.2)",
+                  color: "white",
+                }}
+              />
+            ) : undefined
+          }
         />
       </TabPanel>
 
@@ -174,7 +187,17 @@ const PopularPage: React.FC = () => {
           title="Score Rankings"
           subtitle="Top Rated Rankings"
           icon={<Star />}
-          right={selectedYear !== "all" ? <Chip label={selectedYear} sx={{ backgroundColor: "rgba(255,255,255,0.2)", color: "white" }} /> : undefined}
+          right={
+            selectedYear !== "all" ? (
+              <Chip
+                label={selectedYear}
+                sx={{
+                  backgroundColor: "rgba(255,255,255,0.2)",
+                  color: "white",
+                }}
+              />
+            ) : undefined
+          }
         />
       </TabPanel>
 
@@ -183,7 +206,17 @@ const PopularPage: React.FC = () => {
           title="Trending Rankings"
           subtitle="Trending anime rankings"
           icon={<Whatshot />}
-          right={selectedYear !== "all" ? <Chip label={selectedYear} sx={{ backgroundColor: "rgba(255,255,255,0.2)", color: "white" }} /> : undefined}
+          right={
+            selectedYear !== "all" ? (
+              <Chip
+                label={selectedYear}
+                sx={{
+                  backgroundColor: "rgba(255,255,255,0.2)",
+                  color: "white",
+                }}
+              />
+            ) : undefined
+          }
         />
       </TabPanel>
 
@@ -192,7 +225,17 @@ const PopularPage: React.FC = () => {
           title="Favorites Rankings"
           subtitle="Favorites anime rankings"
           icon={<Star />}
-          right={selectedYear !== "all" ? <Chip label={selectedYear} sx={{ backgroundColor: "rgba(255,255,255,0.2)", color: "white" }} /> : undefined}
+          right={
+            selectedYear !== "all" ? (
+              <Chip
+                label={selectedYear}
+                sx={{
+                  backgroundColor: "rgba(255,255,255,0.2)",
+                  color: "white",
+                }}
+              />
+            ) : undefined
+          }
         />
       </TabPanel>
 
@@ -213,18 +256,8 @@ const PopularPage: React.FC = () => {
           <Grid container spacing={3}>
             {data.Page.media.map((anime: Media, index: number) => (
               <Grid item xs={12} md={6} key={anime.id}>
-                <Box sx={{ display: "flex", flexDirection: { xs: "column", sm: "row" }, alignItems: "center", gap: 2 }}>
-                  <Typography
-                    variant="h4"
-                    color="primary"
-                    fontWeight="bold"
-                    sx={{ minWidth: 60, textAlign: "center" }}
-                  >
-                    #{(page - 1) * 20 + index + 1}
-                  </Typography>
-                  <Box sx={{ flex: 1 }}>
-                    <AnimationCard media={anime} />
-                  </Box>
+                <Box sx={{ flex: 1 }}>
+                  <AnimationCard media={anime} />
                 </Box>
               </Grid>
             ))}

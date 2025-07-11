@@ -94,7 +94,7 @@ export const CustomThemeProvider: React.FC<CustomThemeProviderProps> = ({
       },
     },
     shape: {
-      borderRadius: 12,
+      borderRadius: 8,
     },
     shadows:
       mode === "light"
@@ -156,7 +156,7 @@ export const CustomThemeProvider: React.FC<CustomThemeProviderProps> = ({
       MuiCard: {
         styleOverrides: {
           root: {
-            borderRadius: 16,
+            borderRadius: 8,
             border:
               mode === "light"
                 ? "1px solid rgba(0,0,0,0.06)"
@@ -167,7 +167,7 @@ export const CustomThemeProvider: React.FC<CustomThemeProviderProps> = ({
       MuiButton: {
         styleOverrides: {
           root: {
-            borderRadius: 12,
+            borderRadius: 8,
             textTransform: "none",
             fontWeight: 600,
             padding: "8px 24px",
@@ -183,7 +183,7 @@ export const CustomThemeProvider: React.FC<CustomThemeProviderProps> = ({
       MuiChip: {
         styleOverrides: {
           root: {
-            borderRadius: 8,
+            borderRadius: 4,
             fontWeight: 500,
           },
         },
@@ -192,7 +192,7 @@ export const CustomThemeProvider: React.FC<CustomThemeProviderProps> = ({
         styleOverrides: {
           root: {
             "& .MuiOutlinedInput-root": {
-              borderRadius: 12,
+              borderRadius: 8,
             },
           },
         },
@@ -200,7 +200,7 @@ export const CustomThemeProvider: React.FC<CustomThemeProviderProps> = ({
       MuiPaper: {
         styleOverrides: {
           root: {
-            borderRadius: 16,
+            borderRadius: 8,
             border:
               mode === "light"
                 ? "1px solid rgba(0,0,0,0.06)"
