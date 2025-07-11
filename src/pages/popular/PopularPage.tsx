@@ -254,7 +254,7 @@ const PopularPage: React.FC = () => {
       {data && (
         <>
           <Grid container spacing={3}>
-            {data.Page.media.map((anime: Media, index: number) => (
+            {data.Page.media.map((anime: Media) => (
               <Grid item xs={12} md={6} key={anime.id}>
                 <Box sx={{ flex: 1 }}>
                   <AnimationCard media={anime} />
