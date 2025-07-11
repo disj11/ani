@@ -28,7 +28,6 @@ const AnimationCard = ({ media }: AnimationCardProps) => {
   const navigate = useNavigate();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
-  const isTablet = useMediaQuery(theme.breakpoints.down("lg"));
 
   const handleDetailClick = () => {
     navigate(`/detail/${media.id}`);
@@ -42,7 +41,7 @@ const AnimationCard = ({ media }: AnimationCardProps) => {
     if (isMobile) {
       return { width: 120, height: 170 };
     }
-    if (isTablet) {
+    if (isMobile) {
       return { width: 180, height: 240 };
     }
     return { width: 220, height: 300 };
@@ -56,7 +55,6 @@ const AnimationCard = ({ media }: AnimationCardProps) => {
         sx={{
           display: "flex",
           flexDirection: { xs: "column", sm: "row" },
-          height: { xs: "auto", sm: imageHeight },
           borderRadius: 3,
           overflow: "hidden",
           transition: "all 0.3s ease-in-out",

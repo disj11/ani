@@ -304,8 +304,9 @@ export default function Layout() {
           bgcolor: "background.default",
           minHeight: "100vh",
           background: `linear-gradient(135deg, ${theme.palette.background.default}, ${theme.palette.background.paper})`,
-          p: { xs: 2, sm: 3 },
           transition: "margin 0.3s ease-in-out",
+          width: '100%',
+          overflowX: 'hidden',
         }}
       >
         <Toolbar />

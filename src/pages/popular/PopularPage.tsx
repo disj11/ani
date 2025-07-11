@@ -114,8 +114,26 @@ const PopularPage: React.FC = () => {
       />
 
       <Paper sx={{ mb: 3 }}>
-        <Box sx={{ borderBottom: 1, borderColor: "divider", px: 2 }}>
-          <Tabs value={tabValue} onChange={handleTabChange}>
+        <Box
+          sx={{
+            borderBottom: 1,
+            borderColor: "divider",
+            width: "100%",
+            overflowX: "auto",
+            "&::-webkit-scrollbar": {
+              display: "none",
+            },
+            "-ms-overflow-style": "none",
+            "scrollbar-width": "none",
+          }}
+        >
+          <Tabs
+            value={tabValue}
+            onChange={handleTabChange}
+            variant="scrollable"
+            allowScrollButtonsMobile
+            sx={{ px: 2 }}
+          >
             <Tab label="Popularity" />
             <Tab label="Score" />
             <Tab label="Trending" />
@@ -194,8 +212,8 @@ const PopularPage: React.FC = () => {
         <>
           <Grid container spacing={3}>
             {data.Page.media.map((anime: Media, index: number) => (
-              <Grid item xs={12} sm={6} key={anime.id}>
-                <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
+              <Grid item xs={12} md={6} key={anime.id}>
+                <Box sx={{ display: "flex", flexDirection: { xs: "column", sm: "row" }, alignItems: "center", gap: 2 }}>
                   <Typography
                     variant="h4"
                     color="primary"

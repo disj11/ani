@@ -198,7 +198,6 @@ const ErrorState: React.FC<{ onRetry: () => void }> = ({ onRetry }) => {
 const SchedulePage: React.FC = () => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
-  const isTablet = useMediaQuery(theme.breakpoints.down("lg"));
   const [tab, setTab] = useState<number>(new Date().getDay()); // 오늘 요일로 초기화
 
   // 한 번에 100개까지 불러옴 (방영중 애니는 100개 내외)
@@ -268,71 +267,83 @@ const SchedulePage: React.FC = () => {
             overflow: "hidden",
           }}
         >
-          <Tabs
-            value={tab}
-            onChange={handleTabChange}
-            variant={isMobile ? "scrollable" : "standard"}
-            scrollButtons={isMobile ? "auto" : false}
-            allowScrollButtonsMobile
-            centered={!isMobile}
+          <Box
             sx={{
-              "& .MuiTab-root": {
-                fontWeight: 600,
-                fontSize: isMobile ? "0.9rem" : "1.1rem",
-                minWidth: { xs: 80, sm: 100 },
-                padding: { xs: "12px 8px", sm: "12px 16px" },
-                transition: "all 0.3s ease-in-out",
-                "&:hover": {
-                  backgroundColor: "action.hover",
-                },
+              width: "100%",
+              overflowX: "auto",
+              "&::-webkit-scrollbar": {
+                display: "none",
               },
-              "& .MuiTab-selected": {
-                color: "primary.main",
-                fontWeight: 700,
-              },
-              "& .MuiTabs-indicator": {
-                height: 3,
-                borderRadius: "3px 3px 0 0",
-              },
+              "-ms-overflow-style": "none",
+              "scrollbar-width": "none",
             }}
           >
-            {WEEKDAY_ORDER.map((weekday) => (
-              <Tab
-                key={weekday}
-                label={
-                  <Stack
-                    direction={isMobile ? "column" : "row"}
-                    alignItems="center"
-                    spacing={isMobile ? 0.5 : 1}
-                  >
-                    <Typography
-                      variant={isMobile ? "body2" : "body1"}
-                      fontWeight="inherit"
+            <Tabs
+              value={tab}
+              onChange={handleTabChange}
+              variant="scrollable"
+              scrollButtons="auto"
+              allowScrollButtonsMobile
+              centered={!isMobile}
+              sx={{
+                "& .MuiTab-root": {
+                  fontWeight: 600,
+                  fontSize: isMobile ? "0.9rem" : "1.1rem",
+                  minWidth: { xs: 80, sm: 100 },
+                  padding: { xs: "12px 8px", sm: "12px 16px" },
+                  transition: "all 0.3s ease-in-out",
+                  "&:hover": {
+                    backgroundColor: "action.hover",
+                  },
+                },
+                "& .MuiTab-selected": {
+                  color: "primary.main",
+                  fontWeight: 700,
+                },
+                "& .MuiTabs-indicator": {
+                  height: 3,
+                  borderRadius: "3px 3px 0 0",
+                },
+              }}
+            >
+              {WEEKDAY_ORDER.map((weekday) => (
+                <Tab
+                  key={weekday}
+                  label={
+                    <Stack
+                      direction={isMobile ? "column" : "row"}
+                      alignItems="center"
+                      spacing={isMobile ? 0.5 : 1}
                     >
-                      {WEEKDAYS[weekday].label}
-                    </Typography>
-                    {weekdayMap[weekday]?.length > 0 && (
-                      <Chip
-                        label={weekdayMap[weekday].length}
-                        size="small"
-                        color="primary"
-                        sx={{
-                          fontWeight: "bold",
-                          height: { xs: 16, sm: 20 },
-                          fontSize: { xs: "0.7rem", sm: "0.8rem" },
-                          minWidth: { xs: 16, sm: 20 },
-                          "& .MuiChip-label": {
-                            px: { xs: 0.5, sm: 1 },
-                          },
-                        }}
-                      />
-                    )}
-                  </Stack>
-                }
-                value={weekday}
-              />
-            ))}
-          </Tabs>
+                      <Typography
+                        variant={isMobile ? "body2" : "body1"}
+                        fontWeight="inherit"
+                      >
+                        {WEEKDAYS[weekday].label}
+                      </Typography>
+                      {weekdayMap[weekday]?.length > 0 && (
+                        <Chip
+                          label={weekdayMap[weekday].length}
+                          size="small"
+                          color="primary"
+                          sx={{
+                            fontWeight: "bold",
+                            height: { xs: 16, sm: 20 },
+                            fontSize: { xs: "0.7rem", sm: "0.8rem" },
+                            minWidth: { xs: 16, sm: 20 },
+                            "& .MuiChip-label": {
+                              px: { xs: 0.5, sm: 1 },
+                            },
+                          }}
+                        />
+                      )}
+                    </Stack>
+                  }
+                  value={weekday}
+                />
+              ))}
+            </Tabs>
+          </Box>
         </Paper>
       </Fade>
 
@@ -392,8 +403,9 @@ const SchedulePage: React.FC = () => {
                     <Grid
                       item
                       xs={12}
-                      md={12}
-                      lg={isTablet ? 12 : 6}
+                      sm={6}
+                      md={6}
+                      lg={6}
                       key={anime.id}
                     >
                       <Fade in timeout={300 + index * 100}>
