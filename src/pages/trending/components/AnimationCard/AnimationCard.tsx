@@ -102,7 +102,7 @@ const AnimationCard = ({ media }: AnimationCardProps) => {
               gap: theme.spacing(0.5),
             }}
           >
-            <Tooltip title="관심목록에 추가">
+            <Tooltip title="Add to Watchlist">
               <IconButton
                 size="small"
                 sx={{
@@ -117,7 +117,7 @@ const AnimationCard = ({ media }: AnimationCardProps) => {
                 <Favorite fontSize="small" />
               </IconButton>
             </Tooltip>
-            <Tooltip title="공유">
+            <Tooltip title="Share">
               <IconButton
                 size="small"
                 sx={{
@@ -185,7 +185,12 @@ const AnimationCard = ({ media }: AnimationCardProps) => {
           </Typography>
 
           {/* Rating and Status */}
-          <Stack direction="row" spacing={theme.spacing(1)} alignItems="center" sx={{ mb: theme.spacing(2) }}>
+          <Stack
+            direction="row"
+            spacing={theme.spacing(1)}
+            alignItems="center"
+            sx={{ mb: theme.spacing(2) }}
+          >
             {media.averageScore && (
               <Rating
                 value={media.averageScore / 20}
