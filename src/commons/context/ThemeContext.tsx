@@ -164,13 +164,18 @@ export const CustomThemeProvider: React.FC<CustomThemeProviderProps> = ({
     components: {
       MuiCard: {
         styleOverrides: {
-          root: {
+          root: ({ theme }) => ({
             borderRadius: 8,
             border:
               mode === "light"
                 ? "1px solid rgba(0,0,0,0.06)"
                 : "1px solid rgba(255,255,255,0.1)",
-          },
+            transition: "all 0.2s ease-in-out",
+            "&:hover": {
+              transform: "translateY(-2px)",
+              boxShadow: theme.shadows[4],
+            },
+          }),
         },
       },
       MuiButton: {
@@ -199,22 +204,38 @@ export const CustomThemeProvider: React.FC<CustomThemeProviderProps> = ({
       },
       MuiTextField: {
         styleOverrides: {
-          root: {
+          root: ({ theme }) => ({
             "& .MuiOutlinedInput-root": {
               borderRadius: 8,
+              transition: "all 0.2s ease-in-out",
+              "&:hover fieldset": {
+                borderColor: theme.palette.primary.light,
+              },
+              "&.Mui-focused fieldset": {
+                borderColor: theme.palette.primary.main,
+                boxShadow: theme.shadows[2],
+              },
             },
-          },
+          }),
         },
       },
       MuiPaper: {
+        defaultProps: {
+          elevation: 1,
+        },
         styleOverrides: {
-          root: {
+          root: ({ theme }) => ({
             borderRadius: 8,
             border:
               mode === "light"
                 ? "1px solid rgba(0,0,0,0.06)"
                 : "1px solid rgba(255,255,255,0.1)",
-          },
+            transition: "all 0.2s ease-in-out",
+            "&:hover": {
+              transform: "translateY(-2px)",
+              boxShadow: theme.shadows[4],
+            },
+          }),
         },
       },
     },
